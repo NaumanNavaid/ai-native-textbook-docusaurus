@@ -74,6 +74,24 @@ export default function BookSidebar(): React.JSX.Element {
       </div>
 
       <div className={styles.bookStructure}>
+        {/* Standard Navigation Links */}
+        <div className={styles.partSection}>
+          <div className={styles.chaptersList}>
+            <Link to="/" className={styles.chapterLink}>
+              <span className={styles.chapterTitle}>Home</span>
+            </Link>
+            <Link 
+              to="/docs/intro" 
+              className={clsx(
+                styles.chapterLink,
+                currentPath.endsWith('/docs/intro') && styles.chapterLinkActive
+              )}
+            >
+              <span className={styles.chapterTitle}>Introduction</span>
+            </Link>
+          </div>
+        </div>
+
         {bookStructure.map((part) => (
           <div key={part.part} className={styles.partSection}>
             <div className={styles.partHeader}>
@@ -84,7 +102,7 @@ export default function BookSidebar(): React.JSX.Element {
             </div>
             <div className={styles.chaptersList}>
               {part.chapters.map((chapter) => {
-                const isActive = currentPath === chapter.slug;
+                const isActive = currentPath.endsWith(chapter.slug);
                 return (
                   <Link
                     key={chapter.num}
