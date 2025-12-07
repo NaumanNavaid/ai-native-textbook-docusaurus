@@ -30,17 +30,17 @@ export function usePageDetection(): {
     }
 
     // Check for chapters page
-    if (pathname.startsWith('/chapters') || pathname.startsWith('/chapter')) {
+    if (pathname.includes('/chapters') || pathname.includes('/chapter')) {
       return 'chapters';
     }
 
     // Check for docs pages
-    if (pathname.startsWith('/docs')) {
+    if (pathname.includes('/docs')) {
       return 'docs';
     }
 
     // Check for blog pages
-    if (pathname.startsWith('/blog')) {
+    if (pathname.includes('/blog')) {
       return 'blog';
     }
 
