@@ -6,7 +6,7 @@ export default function BookFooter(): React.JSX.Element {
     <footer className={styles.bookFooter}>
       <div className={styles.footerContent}>
         <p className={styles.footerText}>
-          © 2025 AI-Native Textbook. Built with ❤️ for the Physical AI community.
+          © 2025 AI-Native Textbook. All rights reserved. Created by SNN Studio.
         </p>
         <div className={styles.footerLinks}>
           <a href="https://github.com" className={styles.footerLink} target="_blank" rel="noopener noreferrer">

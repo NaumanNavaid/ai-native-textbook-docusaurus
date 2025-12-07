@@ -20,7 +20,7 @@ const config: Config = {
   url: 'https://NaumanNavaid.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
+  baseUrl: '/ai-native-textbook-docusaurus/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -48,7 +48,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/NaumanNavaid/hackathon-1/tree/main/',
+            'https://github.com/NaumanNavaid/ai-native-textbook-docusaurus/tree/main/',
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
           include: ['**/*.md', '**/*.mdx'],
@@ -106,14 +106,16 @@ const config: Config = {
         {to: '/chapters', label: 'Chapters', position: 'left'},
         {to: '/docs/intro', label: 'Documentation', position: 'left'},
         {
-          href: 'https://github.com/NaumanNavaid/hackathon-1',
+          href: 'https://github.com/NaumanNavaid/ai-native-textbook-docusaurus',
           label: 'GitHub',
           position: 'right',
         },
       ],
       hideOnScroll: false,
     },
-    footer: {
+    // Footer is handled by custom component in src/theme/Footer/
+    // This config is kept for reference but not used
+    /* footer: {
       style: 'dark',
       links: [
         {
@@ -151,13 +153,13 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/NaumanNavaid/hackathon-1',
+              href: 'https://github.com/NaumanNavaid/ai-native-textbook-docusaurus',
             },
           ],
         },
       ],
       copyright: `Copyright © ${new Date().getFullYear()} AI-Native Textbook. Built with Docusaurus. Created by SNN Studio.`,
-    },
+    }, */
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,

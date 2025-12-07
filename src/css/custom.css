@@ -738,6 +738,16 @@ hr {
   margin-top: 0;
 }
 
+/* Show custom footer even when book layout is active */
+body.book-layout-active .nm-custom-footer {
+  display: block !important;
+}
+
+/* Hide default footer when book layout is active */
+body.book-layout-active footer:not(.nm-custom-footer):not(.bookFooter) {
+  display: none !important;
+}
+
 /* Animation utilities */
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(10px); }

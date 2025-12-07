@@ -6,6 +6,8 @@ type FooterProps = ComponentProps<typeof Footer>;
 
 export default function FooterWrapper(props: FooterProps): React.JSX.Element {
   // Don't render the original footer at all
+  // Ensure we don't pass any props that might cause the original footer to render
+  console.log('FooterWrapper rendered, not rendering original Footer');
   return <CustomFooter />;
 }
 
@@ -13,7 +15,7 @@ function CustomFooter(): React.JSX.Element {
   const currentYear = typeof window !== 'undefined' ? new Date().getFullYear() : 2025;
 
   return (
-    <footer className="nm-custom-footer">
+    <footer className="nm-custom-footer" data-testid="custom-footer">
       <div className="nm-footer-container">
         <div className="nm-footer-grid">
           {/* Branding Section */}
@@ -116,7 +118,7 @@ function CustomFooter(): React.JSX.Element {
         <div className="nm-footer-bottom">
           <div className="nm-footer-bottom-left">
             <span className="nm-footer-copyright">
-              © {currentYear} AI-Native Textbook. All rights reserved.
+              © {currentYear} AI-Native Textbook. All rights reserved. Created by SNN Studio.
             </span>
           </div>
           <div className="nm-footer-bottom-right">

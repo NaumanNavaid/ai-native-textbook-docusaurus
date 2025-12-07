@@ -194,69 +194,67 @@ const bookStructure = [
 
 export default function ChaptersPage(): React.JSX.Element {
   return (
-    <Layout title="Chapters" description="All chapters of the Physical AI & Humanoid Robotics textbook">
-      <div className={styles.chaptersPage}>
-        <div className={styles.heroSection}>
-          <div className={styles.heroContent}>
-            <BookOpen className={styles.heroIcon} />
-            <h1 className={styles.heroTitle}>Physical AI & Humanoid Robotics</h1>
-            <p className={styles.heroDescription}>
-              A comprehensive guide to building intelligent physical systems that perceive, reason, and act in the real world
-            </p>
-            <div className={styles.stats}>
-              <div className={styles.stat}>
-                <span className={styles.statNumber}>20</span>
-                <span className={styles.statLabel}>Chapters</span>
-              </div>
-              <div className={styles.stat}>
-                <span className={styles.statNumber}>5</span>
-                <span className={styles.statLabel}>Parts</span>
-              </div>
-              <div className={styles.stat}>
-                <span className={styles.statNumber}>40+</span>
-                <span className={styles.statLabel}>Hours</span>
-              </div>
+    <div className={styles.chaptersPage}>
+      <div className={styles.heroSection}>
+        <div className={styles.heroContent}>
+          <BookOpen className={styles.heroIcon} />
+          <h1 className={styles.heroTitle}>Physical AI & Humanoid Robotics</h1>
+          <p className={styles.heroDescription}>
+            A comprehensive guide to building intelligent physical systems that perceive, reason, and act in the real world
+          </p>
+          <div className={styles.stats}>
+            <div className={styles.stat}>
+              <span className={styles.statNumber}>20</span>
+              <span className={styles.statLabel}>Chapters</span>
+            </div>
+            <div className={styles.stat}>
+              <span className={styles.statNumber}>5</span>
+              <span className={styles.statLabel}>Parts</span>
+            </div>
+            <div className={styles.stat}>
+              <span className={styles.statNumber}>40+</span>
+              <span className={styles.statLabel}>Hours</span>
             </div>
           </div>
         </div>
+      </div>
 
-        <div className={styles.partsContainer}>
-          {bookStructure.map((part) => (
-            <div key={part.part} className={styles.partSection}>
-              <div className={styles.partHeader} style={{ '--part-color': part.color } as React.CSSProperties}>
-                <div className={styles.partIconWrapper}>
-                  {part.icon}
-                </div>
-                <div className={styles.partInfo}>
-                  <h2 className={styles.partTitle}>Part {part.part}: {part.title}</h2>
-                  <p className={styles.partDescription}>{part.description}</p>
-                </div>
+      <div className={styles.partsContainer}>
+        {bookStructure.map((part) => (
+          <div key={part.part} className={styles.partSection}>
+            <div className={styles.partHeader} style={{ '--part-color': part.color } as React.CSSProperties}>
+              <div className={styles.partIconWrapper}>
+                {part.icon}
               </div>
-
-              <div className={styles.chaptersGrid}>
-                {part.chapters.map((chapter) => (
-                  <Link key={chapter.num} to={chapter.slug} className={styles.chapterCard}>
-                    <div className={styles.chapterHeader}>
-                      <span className={styles.chapterNumber}>Chapter {chapter.num}</span>
-                      <span className={`${styles.difficulty} ${styles[chapter.difficulty.toLowerCase()]}`}>
-                        {chapter.difficulty}
-                      </span>
-                    </div>
-                    <h3 className={styles.chapterTitle}>{chapter.title}</h3>
-                    <div className={styles.chapterMeta}>
-                      <span className={styles.duration}>
-                        <Clock className="w-4 h-4" />
-                        {chapter.duration}
-                      </span>
-                      <ArrowRight className={styles.arrowIcon} />
-                    </div>
-                  </Link>
-                ))}
+              <div className={styles.partInfo}>
+                <h2 className={styles.partTitle}>Part {part.part}: {part.title}</h2>
+                <p className={styles.partDescription}>{part.description}</p>
               </div>
             </div>
-          ))}
-        </div>
+
+            <div className={styles.chaptersGrid}>
+              {part.chapters.map((chapter) => (
+                <Link key={chapter.num} to={chapter.slug} className={styles.chapterCard}>
+                  <div className={styles.chapterHeader}>
+                    <span className={styles.chapterNumber}>Chapter {chapter.num}</span>
+                    <span className={`${styles.difficulty} ${styles[chapter.difficulty.toLowerCase()]}`}>
+                      {chapter.difficulty}
+                    </span>
+                  </div>
+                  <h3 className={styles.chapterTitle}>{chapter.title}</h3>
+                  <div className={styles.chapterMeta}>
+                    <span className={styles.duration}>
+                      <Clock className="w-4 h-4" />
+                      {chapter.duration}
+                    </span>
+                    <ArrowRight className={styles.arrowIcon} />
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
-    </Layout>
+    </div>
   );
 }
