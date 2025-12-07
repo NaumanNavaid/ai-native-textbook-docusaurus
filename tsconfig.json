@@ -1,0 +1,10 @@
+{
+  // This file is not used in compilation. It is here just for a nice editor experience.
+  "extends": "@docusaurus/tsconfig",
+  "compilerOptions": {
+    "ignoreDeprecations": "5.0",
+    "baseUrl": ".",
+    "jsx": "react-jsx"
+  },
+  "exclude": [".docusaurus", "build"]
+}
