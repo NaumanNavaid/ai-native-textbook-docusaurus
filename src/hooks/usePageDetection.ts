@@ -54,9 +54,21 @@ export function usePageDetection(): {
 
   // Get hierarchical navigation structure
   const contextualNav = useMemo((): NavItem[] => {
+    console.log('Page Detection:', { pathname: location.pathname, pageType });
+    
     if (pageType === 'docs') {
       // Return the actual docs structure based on files found
       return [
+        {
+          label: 'Home',
+          href: '/',
+          type: 'link'
+        },
+        {
+          label: 'Introduction',
+          href: '/docs/intro',
+          type: 'link'
+        },
         {
           type: 'category',
           label: 'Part 1: Foundations',
