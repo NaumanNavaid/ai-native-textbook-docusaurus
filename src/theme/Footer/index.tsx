@@ -73,7 +73,7 @@ function CustomFooter(): React.JSX.Element {
           <div className="nm-footer-section">
             <h4 className="nm-footer-heading">Community</h4>
             <ul className="nm-footer-links">
-              <li><a href="https://github.com/your-username/ai-native-textbook">GitHub</a></li>
+              <li><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus">GitHub</a></li>
               <li><a href="https://discord.gg/your-server">Discord</a></li>
               <li><a href="https://forum.example.com">Forum</a></li>
               <li><Link to="/contributors">Contributors</Link></li>

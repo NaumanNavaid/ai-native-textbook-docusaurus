@@ -9,8 +9,8 @@
 ### 1. Update Configuration
 Edit `docusaurus.config.ts` and update:
 ```typescript
-url: 'https://YOUR-USERNAME.github.io', // Replace with your GitHub username
-organizationName: 'YOUR-USERNAME', // Replace with your GitHub username
+url: 'https://NaumanNavaid.github.io', // Replace with your GitHub username
+organizationName: 'NaumanNavaid', // Replace with your GitHub username
 projectName: 'ai-native-textbook-docusaurus', // Your repository name
 ```
 
@@ -21,7 +21,7 @@ git init
 git add .
 git commit -m "Initial commit"
 git branch -M main
-git remote add origin https://github.com/YOUR-USERNAME/ai-native-textbook-docusaurus.git
+git remote add origin https://github.com/NaumanNavaid/ai-native-textbook-docusaurus.git
 git push -u origin main
 ```
 
@@ -46,7 +46,7 @@ The GitHub Actions workflow `.github/workflows/deploy.yml` will automatically de
 1. When you push to `main` branch
 2. GitHub Actions triggers
 3. Site is built and deployed to `gh-pages` branch
-4. Your site is live at `https://YOUR-USERNAME.github.io/ai-native-textbook-docusaurus/`
+4. Your site is live at `https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/`
 
 ## Local Development
 
@@ -70,7 +70,7 @@ The built files will be in the `build/` directory.
 ### Site not appearing?
 - Wait 5-10 minutes after deployment
 - Check that GitHub Pages is enabled in repository settings
-- Verify the URL is correct: `https://YOUR-USERNAME.github.io/ai-native-textbook-docusaurus/`
+- Verify the URL is correct: `https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/`
 
 ### Links not working?
 - Make sure `baseUrl` in `docusaurus.config.ts` is correct

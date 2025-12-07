@@ -18,7 +18,11 @@
       "Bash(npm run swizzle:*)",
       "Bash(npm run start:*)",
       "Bash(git config:*)",
-      "Bash(git subtree push:*)"
+      "Bash(git subtree push:*)",
+      "Bash(npm run deploy:*)",
+      "Bash(set:*)",
+      "Bash($env:GIT_USER=\"NaumanNavaid\")",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []
