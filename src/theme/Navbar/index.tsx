@@ -156,7 +156,7 @@ function CustomNavbar({ isMobileMenuOpen, toggleMobileMenu, isResponsiveMenuOpen
 
           {/* GitHub Link */}
           <a
-            href="https://github.com/NaumanNavaid/hackathon-1"
+            href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus"
             className="nm-action-button"
             aria-label="GitHub"
             target="_blank"
