@@ -1,0 +1,35 @@
+.mobile-sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9998; /* Below sidebar, above everything else */
+  backdrop-filter: blur(2px);
+}
+
+.mobile-sidebar-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  max-width: 85vw;
+  background-color: var(--ifm-background-surface-color);
+  z-index: 9999; /* Highest priority */
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-sidebar-content {
+  padding: 1.5rem 0;
+  flex: 1;
+}
+
+/* Ensure BookSidebar styling works within this container */
+.mobile-sidebar-content nav {
+  padding: 0 1.5rem;
+}

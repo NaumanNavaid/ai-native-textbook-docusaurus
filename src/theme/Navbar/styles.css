@@ -1,0 +1,314 @@
+/* Book Sidebar Toggle Button */
+.nm-book-sidebar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--ifm-navbar-link-color);
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.nm-book-sidebar-toggle:hover {
+  color: var(--ifm-color-primary);
+}
+
+@media (max-width: 1024px) {
+  .nm-book-sidebar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Custom Navbar Styles - Neo-Machina Theme */
+/* ... rest of the file ... */
+
+.nm-custom-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--ifm-navbar-background-color);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  height: 64px;
+}
+
+.nm-navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo Section */
+.nm-navbar-logo {
+  display: flex;
+  align-items: center;
+}
+
+.nm-logo-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--ifm-navbar-link-color);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.nm-logo-link:hover {
+  color: var(--ifm-navbar-link-hover-color);
+  transform: translateY(-1px);
+}
+
+.nm-logo-icon {
+  color: var(--ifm-color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: var(--ifm-background-surface-color);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 217, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.nm-logo-link:hover .nm-logo-icon {
+  box-shadow: var(--nm-blue-glow);
+  border-color: var(--ifm-color-primary);
+}
+
+.nm-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.nm-logo-title {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ifm-navbar-link-color);
+}
+
+.nm-logo-subtitle {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.75rem;
+  color: var(--ifm-color-primary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Desktop Navigation */
+.nm-navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nm-nav-link {
+  color: var(--ifm-navbar-link-color);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nm-nav-link:hover {
+  color: var(--ifm-navbar-link-hover-color);
+  background: rgba(0, 217, 255, 0.1);
+}
+
+.nm-nav-link--active {
+  color: var(--ifm-color-primary);
+  background: rgba(0, 217, 255, 0.15);
+}
+
+/* Right Side Actions */
+.nm-navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nm-action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: rgba(0, 0, 0, 0.2);
+  color: var(--ifm-navbar-link-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  text-decoration: none;
+}
+
+/* Theme toggle button - white on light, inverted on dark */
+.nm-action-button.color-mode-toggle {
+  background: rgba(255, 255, 255, 0.9) !important;
+  color: var(--ifm-color-content) !important;
+  border: 1px solid var(--ifm-color-emphasis-200) !important;
+}
+
+[data-theme='dark'] .nm-action-button.color-mode-toggle {
+  background: rgba(0, 0, 0, 0.7) !important;
+  color: white !important;
+  border: 1px solid var(--ifm-color-emphasis-300) !important;
+}
+
+.nm-action-button:hover {
+  transform: translateY(-1px);
+  background: rgba(0, 217, 255, 0.1) !important;
+}
+
+.nm-action-button.color-mode-toggle:hover {
+  transform: translateY(-1px) !important;
+  background: var(--ifm-color-primary) !important;
+  color: white !important;
+  border-color: var(--ifm-color-primary) !important;
+  box-shadow: var(--nm-blue-glow) !important;
+}
+
+[data-theme='dark'] .nm-action-button.color-mode-toggle:hover {
+  transform: translateY(-1px) !important;
+  background: var(--ifm-color-primary) !important;
+  color: white !important;
+  border-color: var(--ifm-color-primary) !important;
+  box-shadow: var(--nm-blue-glow) !important;
+}
+
+.nm-action-button:active {
+  transform: translateY(0);
+}
+
+/* Mobile Menu Toggle */
+.nm-mobile-menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: var(--ifm-navbar-link-color);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.nm-mobile-menu-toggle:hover {
+  background: rgba(0, 217, 255, 0.1);
+  color: var(--ifm-color-primary);
+}
+
+
+/* Hide default Docusaurus navbar completely */
+.navbar {
+  display: none !important;
+}
+
+/* Responsive Design */
+@media (max-width: 996px) {
+  .nm-navbar-links {
+    display: none;
+  }
+
+  .nm-mobile-menu-toggle {
+    display: flex;
+  }
+
+  .nm-action-button {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nm-navbar-container {
+    padding: 0 1rem;
+  }
+
+  .nm-logo-text {
+    display: none;
+  }
+
+  .nm-logo-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .nm-logo-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nm-custom-navbar {
+    height: 56px;
+  }
+
+  .nm-navbar-container {
+    height: 56px;
+  }
+
+  .nm-mobile-menu {
+    top: 56px;
+  }
+
+  .nm-action-button,
+  .nm-mobile-menu-toggle {
+    width: 32px;
+    height: 32px;
+  }
+
+  .nm-mobile-menu-toggle svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Dark theme adjustments */
+[data-theme='dark'] .nm-custom-navbar {
+  background: rgba(11, 11, 12, 0.95);
+}
+
+[data-theme='dark'] .nm-logo-icon {
+  background: var(--ifm-background-surface-color);
+  border-color: rgba(0, 217, 255, 0.3);
+}
+
+
+/* Theme toggle icon visibility - handled in React component */
+
+/* Ensure content doesn't hide behind fixed navbar */
+main,
+#__docusaurus > div > main,
+.markdown {
+  padding-top: 64px !important;
+}
+
+@media (max-width: 480px) {
+  main,
+ #__docusaurus > div > main,
+ .markdown {
+    padding-top: 56px !important;
+  }
+}

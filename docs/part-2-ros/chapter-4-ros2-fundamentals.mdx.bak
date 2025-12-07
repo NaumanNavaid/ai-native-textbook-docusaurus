@@ -1,0 +1,912 @@
+---
+title: "ROS 2 Fundamentals"
+part: 2
+chapter: 4
+slug: "ros2-fundamentals"
+difficulty: "beginner"
+estimatedTime: 60
+prerequisites: ["chapter-3-sensors-actuators-physical-limits"]
+objectives:
+  - "Understand ROS 2 architecture and key concepts"
+  - "Learn DDS-based communication fundamentals"
+  - "Master Quality of Service (QoS) policies"
+  - "Create basic ROS 2 nodes and workspaces"
+---
+
+# ROS 2 Fundamentals
+
+## Introduction
+
+Robot Operating System 2 (ROS 2) represents a fundamental evolution in robotics middleware, addressing the limitations of ROS 1 while maintaining its core philosophy of code reuse in robotics. ROS 2 is built from the ground up for real-world applications, featuring real-time capabilities, security, and support for multi-robot systems. This chapter introduces the fundamental concepts and architecture of ROS 2, providing the foundation for building complex robotic systems.
+
+:::info
+ROS 2 is not an operating system but a middleware framework that provides services like hardware abstraction, device drivers, libraries, visualizers, message-passing, package management, and more.
+:::
+
+## 4.1 ROS 2 Architecture Overview
+
+### 4.1.1 Evolution from ROS 1 to ROS 2
+
+ROS 2 addresses critical limitations in ROS 1 while introducing significant architectural improvements:
+
+<Diagram title="ROS 1 vs ROS 2 Architecture">
+```
+ROS 1 Architecture                    ROS 2 Architecture
+┌─────────────────────────┐         ┌─────────────────────────┐
+│ ROS Master              │         │ DDS (Data Distribution) │
+│ (Centralized)           │         │ (Decentralized)         │
+│    ↕    ↕    ↕          │         │    ↕    ↕    ↕          │
+┌───────┬───────┬───────┐   →    ┌───────┬───────┬───────┐
+│ Node A│ Node B│ Node C│       │ Node A│ Node B│ Node C│
+└───────┴───────┴───────┘       └───────┴───────┴───────┘
+                                │    ↕    ↕    ↕          │
+                                └─────────────────────────┘
+                                   Discovery, Communication
+                                   Security, Real-time
+```
+</Diagram>
+
+### 4.1.2 Key Architectural Improvements
+
+**Decentralized Communication**
+- No single point of failure
+- Dynamic node discovery
+- Native support for multi-robot systems
+
+**Real-time Capabilities**
+- Real-time transport support
+- Deterministic scheduling
+- Bounded latency communication
+
+**Security**
+- Authentication and authorization
+- Encrypted communication
+- Access control mechanisms
+
+**Cross-platform Support**
+- Windows, macOS, Linux support
+- Embedded system deployment
+- Real-time operating systems
+
+### 4.1.3 DDS-based Communication
+
+ROS 2 uses Data Distribution Service (DDS) as its underlying communication middleware:
+
+<Diagram title="DDS Communication Architecture">
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        DDS Domain                           │
+│                                                             │
+│  ┌─────────────┐   Publisher   ┌─────────────┐            │
+│  │   Node A    │ ──────────→   │   Node B    │            │
+│  │             │               │             │            │
+│  │ Publisher   │               │ Subscriber  │            │
+│  │ Subscriber  │               │ Publisher   │            │
+│  └─────────────┘ ←─────────── └─────────────┘            │
+│         │                            │                    │
+│         ↕                            ↕                    │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │              DDS Infrastructure                     │   │
+│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐             │   │
+│  │  │ RTPS    │  │ Discovery│  │Security │             │   │
+│  │  │ Protocol│  │ Service  │  │ Service  │             │   │
+│  │  └─────────┘  └─────────┘  └─────────┘             │   │
+│  └─────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+```
+</Diagram>
+
+## 4.2 Core ROS 2 Concepts
+
+### 4.2.1 Nodes
+
+Nodes are the fundamental units of computation in ROS 2:
+
+**Node Definition**
+A node is a process that performs computation and communicates with other nodes:
+
+<CodeBlock language="cpp" title="Basic ROS 2 Node in C++">
+#include <rclcpp/rclcpp.hpp>
+
+class MinimalNode : public rclcpp::Node {
+public:
+    MinimalNode() : Node("minimal_node") {
+        // Initialize node
+        RCLCPP_INFO(this->get_logger(), "Minimal node has been started");
+
+        // Create a timer for periodic work
+        timer_ = this->create_wall_timer(
+            std::chrono::milliseconds(500),
+            std::bind(&MinimalNode::timer_callback, this));
+    }
+
+private:
+    void timer_callback() {
+        RCLCPP_INFO(this->get_logger(), "Hello from minimal node!");
+    }
+
+    rclcpp::TimerBase::SharedPtr timer_;
+};
+
+int main(int argc, char** argv) {
+    rclcpp::init(argc, argv);
+
+    auto node = std::make_shared<MinimalNode>();
+
+    rclcpp::spin(node);
+
+    rclcpp::shutdown();
+    return 0;
+}
+</CodeBlock>
+
+<CodeBlock language="python" title="Basic ROS 2 Node in Python">
+import rclpy
+from rclpy.node import Node
+
+class MinimalNode(Node):
+    def __init__(self):
+        super().__init__('minimal_node')
+
+        self.get_logger().info('Minimal node has been started')
+
+        # Create a timer for periodic work
+        self.timer = self.create_timer(0.5, self.timer_callback)
+
+    def timer_callback(self):
+        self.get_logger().info('Hello from minimal node!')
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    node = MinimalNode()
+
+    rclpy.spin(node)
+
+    node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    main()
+</CodeBlock>
+
+**Node Characteristics**
+- Independent processes with their own memory space
+- Can be written in different programming languages
+- Communicate through DDS-based middleware
+- Can be distributed across multiple machines
+
+### 4.2.2 Topics
+
+Topics provide named buses for anonymous message exchange:
+
+<Diagram title="Topic-based Communication">
+```
+               Topic: "/robot/joint_states"
+                         ↕
+┌─────────────┐   Publish   ┌─────────────┐   Subscribe   ┌─────────────┐
+│Joint State  │ ──────────→ │  Other      │ ←──────────── │Robot Control│
+│  Publisher  │             │   Nodes     │               │   Node      │
+└─────────────┘             └─────────────┘               └─────────────┘
+      ↕                           ↕                           ↕
+┌─────────────┐   Subscribe   ┌─────────────┐   Publish   ┌─────────────┐
+│   RViz      │ ←──────────── │Motion Planner│ ──────────→ │Simulation   │
+│  Visualizer │               │   Node      │             │   Node      │
+└─────────────┘               └─────────────┘             └─────────────┘
+```
+</Diagram>
+
+**Topic Properties**
+- Named communication channels
+- Anonymous publish/subscribe model
+- Type-safe message passing
+- Many-to-many communication
+
+<CodeBlock language="python" title="Publisher and Subscriber Example">
+import rclpy
+from rclpy.node import Node
+from std_msgs.msg import String
+
+class PublisherNode(Node):
+    def __init__(self):
+        super().__init__('publisher_node')
+
+        # Create publisher
+        self.publisher_ = self.create_publisher(
+            String, 'test_topic', 10)
+
+        # Create timer for periodic publishing
+        self.timer = self.create_timer(1.0, self.publish_message)
+        self.count = 0
+
+    def publish_message(self):
+        msg = String()
+        msg.data = f'Hello ROS 2! Count: {self.count}'
+        self.publisher_.publish(msg)
+        self.count += 1
+        self.get_logger().info(f'Published: {msg.data}')
+
+class SubscriberNode(Node):
+    def __init__(self):
+        super().__init__('subscriber_node')
+
+        # Create subscriber
+        self.subscription = self.create_subscription(
+            String, 'test_topic', self.listener_callback, 10)
+
+    def listener_callback(self, msg):
+        self.get_logger().info(f'Received: {msg.data}')
+```
+
+### 4.2.3 Services
+
+Services provide request-response communication for synchronous operations:
+
+<Diagram title="Service Call Architecture">
+```
+Client Node                    Server Node
+┌─────────────┐                ┌─────────────┐
+│    Call     │ Request/Response│    Service  │
+│ Service     │ ──────────────→ │    Handler  │
+│             │                │             │
+│   Response  │ ←────────────── │   Process   │
+│   Wait      │                │             │
+└─────────────┘                └─────────────┘
+```
+</Diagram>
+
+<CodeBlock language="python" title="Service Example">
+from example_interfaces.srv import AddTwoInts
+
+class ServiceNode(Node):
+    def __init__(self):
+        super().__init__('service_node')
+
+        # Create service
+        self.service = self.create_service(
+            AddTwoInts, 'add_two_ints', self.add_two_ints_callback)
+
+        self.get_logger().info('Service ready')
+
+    def add_two_ints_callback(self, request, response):
+        response.sum = request.a + request.b
+        self.get_logger().info(
+            f'Incoming request: {request.a} + {request.b} = {response.sum}')
+
+        return response
+
+class ClientNode(Node):
+    def __init__(self):
+        super().__init__('client_node')
+
+        # Create client
+        self.client = self.create_client(AddTwoInts, 'add_two_ints')
+
+        # Wait for service to be available
+        while not self.client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info('Service not available, waiting...')
+
+    def send_request(self, a, b):
+        request = AddTwoInts.Request()
+        request.a = a
+        request.b = b
+
+        future = self.client.call_async(request)
+        return future
+```
+
+### 4.2.4 Actions
+
+Actions provide long-running, preemptable, and cancelable asynchronous operations:
+
+<Diagram title="Action Client/Server Architecture">
+```
+Action Client                    Action Server
+┌─────────────┐                ┌─────────────┐
+│   Send      │    Goal       │    Accept   │
+│   Goal      │ ──────────────→ │   Goal      │
+│             │                │             │
+│   Receive   │ Feedback       │    Send     │
+│  Feedback   │ ←────────────── │  Feedback   │
+│             │                │             │
+│   Receive   │   Result       │    Send     │
+│   Result    │ ←────────────── │   Result    │
+└─────────────┘                └─────────────┘
+     ↕   ↕
+Preempt/Cancel
+```
+</Diagram>
+
+<CodeBlock language="python" title="Action Server Example">
+from action_msgs.msg import GoalStatus
+from rclpy.action import ActionServer
+from my_interface.action import Fibonacci
+
+class ActionServerNode(Node):
+    def __init__(self):
+        super().__init__('action_server_node')
+
+        # Create action server
+        self.action_server = ActionServer(
+            self, Fibonacci, 'fibonacci',
+            self.execute_callback)
+
+    def execute_callback(self, goal_handle):
+        self.get_logger().info('Executing goal...')
+
+        feedback_msg = Fibonacci.Feedback()
+        feedback_msg.partial_sequence = [0, 1]
+
+        # Execute long-running task
+        for i in range(1, goal_handle.request.order):
+            # Check for cancellation
+            if goal_handle.is_cancel_requested:
+                goal_handle.canceled()
+                return Fibonacci.Result()
+
+            # Compute next Fibonacci number
+            next_num = feedback_msg.partial_sequence[-1] + \
+                      feedback_msg.partial_sequence[-2]
+            feedback_msg.partial_sequence.append(next_num)
+
+            # Send feedback
+            goal_handle.publish_feedback(feedback_msg)
+
+            # Simulate work
+            self.get_clock().sleep_for(0.5)
+
+        goal_handle.succeed()
+
+        result = Fibonacci.Result()
+        result.sequence = feedback_msg.partial_sequence
+        return result
+</CodeBlock>
+
+## 4.3 Quality of Service (QoS) Policies
+
+### 4.3.1 QoS Overview
+
+QoS policies control how data is exchanged between nodes, enabling fine-tuned control over reliability, durability, and latency:
+
+<Diagram title="QoS Policy Impact">
+```
+     Publisher                         Subscriber
+┌───────────────────┐            ┌───────────────────┐
+│    QoS Settings   │            │    QoS Settings   │
+│  ┌─────────────┐  │            │  ┌─────────────┐  │
+│  │ Reliability │  │            │  │ Reliability │  │
+│  └─────────────┘  │            │  └─────────────┘  │
+│  ┌─────────────┐  │            │  ┌─────────────┐  │
+│  │ Durability  │  │            │  │ Durability  │  │
+│  └─────────────┘  │            │  └─────────────┘  │
+│  ┌─────────────┐  │            │  ┌─────────────┐  │
+│  │ Deadline    │  │            │  │ Deadline    │  │
+│  └─────────────┘  │            │  └─────────────┘  │
+│  ┌─────────────┐  │            │  ┌─────────────┐  │
+│  │ Lifespan    │  │            │  │ Lifespan    │  │
+│  └─────────────┘  │            │  └─────────────┘  │
+└───────────────────┘            └───────────────────┘
+         ↕                                 ↕
+               Communication Channel
+         ↕                                 ↕
+    ┌─────────────────────────────────┐
+    │        DDS Middleware           │
+    │  Policy Negotiation & Enforcement│
+    └─────────────────────────────────┘
+```
+</Diagram>
+
+### 4.3.2 Key QoS Policies
+
+**Reliability**
+- **BEST_EFFORT**: Messages may be lost
+- **RELIABLE**: Guaranteed delivery (when possible)
+
+**Durability**
+- **VOLATILE**: Only current subscribers receive messages
+- **TRANSIENT_LOCAL**: Late-joining subscribers receive last message
+
+**Deadline**
+- Maximum time between consecutive messages
+
+**Lifespan**
+- Maximum time a message is considered valid
+
+<CodeBlock language="python" title="QoS Configuration">
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy
+
+# Custom QoS profile for sensor data
+sensor_qos = QoSProfile(
+    depth=10,
+    reliability=QoSReliabilityPolicy.BEST_EFFORT,  # Allow some loss
+    durability=QoSDurabilityPolicy.VOLATILE,       # Only new data
+)
+
+# QoS for control commands
+control_qos = QoSProfile(
+    depth=10,
+    reliability=QoSReliabilityPolicy.RELIABLE,     # Must arrive
+    durability=QoSDurabilityPolicy.TRANSIENT_LOCAL, # Keep last state
+)
+
+# Create publisher with custom QoS
+publisher = node.create_publisher(
+    String, 'control_topic',
+    qos_profile=control_qos)
+</CodeBlock>
+
+### 4.3.3 Common QoS Profiles
+
+ROS 2 provides predefined QoS profiles:
+
+<Diagram title="Common QoS Profiles">
+```
+SENSOR_DATA Profile
+├── Reliability: BEST_EFFORT
+├── Durability: VOLATILE
+├── Deadline: (disabled)
+└── Lifespan: (disabled)
+Use Cases: Camera images, LiDAR scans
+
+DEFAULT Profile
+├── Reliability: RELIABLE
+├── Durability: VOLATILE
+├── Deadline: (disabled)
+└── Lifespan: (disabled)
+Use Cases: General communication
+
+PARAMETERS Profile
+├── Reliability: RELIABLE
+├── Durability: TRANSIENT_LOCAL
+├── Deadline: (disabled)
+└── Lifespan: (disabled)
+Use Cases: Parameter updates
+
+SERVICES Profile
+├── Reliability: RELIABLE
+├── Durability: VOLATILE
+├── Deadline: (disabled)
+└── Lifespan: (disabled)
+Use Cases: Service calls
+```
+</Diagram>
+
+## 4.4 ROS 2 Workspace and Packages
+
+### 4.4.1 Workspace Structure
+
+A ROS 2 workspace organizes packages and builds them efficiently:
+
+<Diagram title="ROS 2 Workspace Structure">
+```
+ros2_ws/                          # Workspace root
+├── src/                          # Source packages
+│   ├── package_1/                # Package directory
+│   │   ├── include/              # Header files
+│   │   ├── src/                  # Source files
+│   │   ├── launch/               # Launch files
+│   │   ├── config/               # Configuration files
+│   │   ├── CMakeLists.txt        # CMake configuration
+│   │   └── package.xml          # Package metadata
+│   └── package_2/
+├── build/                        # Build artifacts
+├── install/                      # Install files
+├── log/                          # Build logs
+└── devel/                        # Development files
+```
+</Diagram>
+
+### 4.4.2 Creating a Package
+
+<CodeBlock language="bash" title="Creating a ROS 2 Package">
+# Create workspace
+mkdir -p ~/ros2_ws/src
+cd ~/ros2_ws/src
+
+# Create package with dependencies
+ros2 pkg create --build-type ament_cmake \
+    --dependencies rclcpp std_msgs \
+    my_robot_package
+
+# Create Python package
+ros2 pkg create --build-type ament_python \
+    --dependencies rclpy std_msgs \
+    my_python_package
+
+# Navigate to workspace
+cd ~/ros2_ws
+
+# Build the workspace
+colcon build --packages-select my_robot_package
+
+# Source the workspace
+source install/setup.bash
+</CodeBlock>
+
+### 4.4.3 Package Configuration
+
+**CMakeLists.txt for C++ packages**
+<CodeBlock language="cmake">
+cmake_minimum_required(VERSION 3.8)
+project(my_robot_package)
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# Find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+
+# Add executable
+add_executable(my_node src/my_node.cpp)
+
+# Target specific includes and libraries
+ament_target_dependencies(my_node rclcpp std_msgs)
+
+# Install targets
+install(TARGETS my_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+ament_package()
+</CodeBlock>
+
+**package.xml**
+<CodeBlock language="xml">
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>my_robot_package</name>
+  <version>0.0.0</version>
+  <description>Example ROS 2 package</description>
+  <maintainer email="developer@example.com">Developer</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
+</CodeBlock>
+
+## 4.5 Launch System
+
+### 4.5.1 Launch Files
+
+Launch files coordinate multiple nodes and configure their behavior:
+
+<CodeBlock language="python" title="Python Launch File">
+from launch import LaunchDescription
+from launch_ros.actions import Node
+
+def generate_launch_description():
+    return LaunchDescription([
+        Node(
+            package='my_robot_package',
+            executable='motor_controller',
+            name='motor_controller',
+            output='screen',
+            parameters=[
+                {'motor_ids': [1, 2, 3, 4]},
+                {'max_speed': 10.0}
+            ]
+        ),
+        Node(
+            package='my_robot_package',
+            executable='sensor_processor',
+            name='sensor_processor',
+            output='screen',
+            remappings=[
+                ('input_topic', '/raw_sensor_data'),
+                ('output_topic', '/processed_data')
+            ]
+        ),
+    ])
+</CodeBlock>
+
+### 4.5.2 Launch Configuration
+
+<CodeBlock language="bash" title="Running Launch Files">
+# Launch specific nodes
+ros2 launch my_robot_package my_robot_launch.py
+
+# Launch with arguments
+ros2 launch my_robot_package my_robot_launch.py \
+    use_sim_time:=True \
+    robot_name:=my_robot
+
+# Include other launch files
+ros2 launch my_robot_package main_launch.py \
+    navigation:=true \
+    perception:=false
+</CodeBlock>
+
+## 4.6 Parameters and Configuration
+
+### 4.6.1 Parameter System
+
+ROS 2 provides a flexible parameter system for runtime configuration:
+
+<CodeBlock language="python" title="Parameter Usage">
+import rclpy
+from rclpy.node import Node
+
+class ParameterNode(Node):
+    def __init__(self):
+        super().__init__('parameter_node')
+
+        # Declare parameters with defaults
+        self.declare_parameter('max_speed', 5.0)
+        self.declare_parameter('safety_distance', 1.0)
+        self.declare_parameter('use_sensors', True)
+
+        # Get parameter values
+        self.max_speed = self.get_parameter('max_speed').value
+        self.safety_distance = self.get_parameter('safety_distance').value
+        self.use_sensors = self.get_parameter('use_sensors').value
+
+        # Set parameter callback
+        self.add_on_set_parameters_callback(self.parameter_callback)
+
+    def parameter_callback(self, params):
+        """Handle parameter updates"""
+        for param in params:
+            if param.name == 'max_speed' and param.type_ == param.Type.DOUBLE:
+                if param.value > 0.0 and param.value <= 20.0:
+                    self.max_speed = param.value
+                else:
+                    return rclpy.ParameterDescriptor(
+                        type_=param.Type.DOUBLE,
+                        description='Maximum robot speed (0-20 m/s)')
+
+        # Successfully updated
+        return SetParametersResult(successful=True)
+</CodeBlock>
+
+### 4.6.2 Parameter Files
+
+YAML parameter files enable organized configuration:
+
+<CodeBlock language="yaml" title="Parameter File (params.yaml)">
+motor_controller:
+  ros__parameters:
+    motor_ids: [1, 2, 3, 4]
+    max_speed: 10.0
+    acceleration_limit: 5.0
+    use_encoders: true
+    safety_limits:
+      max_current: 10.0
+      max_temperature: 80.0
+
+sensor_processing:
+  ros__parameters:
+    input_topics:
+      - "/camera/image_raw"
+      - "/lidar/scan"
+      - "/imu/data"
+    output_rate: 30.0
+    filter_config:
+      gaussian_kernel_size: 5
+      edge_threshold: 100
+</CodeBlock>
+
+<CodeBlock language="bash" title="Loading Parameters">
+# Load parameters from file
+ros2 param load motor_controller /path/to/params.yaml
+
+# Set individual parameters
+ros2 param set /motor_controller max_speed 8.0
+
+# List parameters
+ros2 param list /motor_controller
+
+# Get parameter value
+ros2 param get /motor_controller max_speed
+</CodeBlock>
+
+## 4.7 Real-world ROS 2 Applications
+
+### 4.7.1 Mobile Robot Control
+
+<Example title="Autonomous Mobile Robot">
+A ROS 2-based autonomous mobile robot system:
+
+**Hardware Abstraction Layer**
+- Motor controller node (CAN bus interface)
+- Sensor driver nodes (LiDAR, cameras, IMU)
+- Power management node
+
+**Perception Stack**
+- LiDAR processing and obstacle detection
+- Visual SLAM using camera data
+- Sensor fusion for robust localization
+
+**Planning and Control**
+- Path planning using Nav2
+- Motion control with feedback
+- Safety monitoring and emergency stops
+
+**User Interface**
+- Web-based control panel
+- RViz visualization
+- Remote monitoring
+</Example>
+
+### 4.7.2 Manipulation System
+
+<Diagram title="ROS 2 Manipulation Architecture">
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     User Interface                          │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐        │
+│  │ RViz    │  │Web UI   │  │Teleop   │  │Program  │        │
+│  │Visual   │  │Control  │  │Interface│  │Interface│        │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────┘        │
+└─────────────────────────────────────────────────────────────┘
+                              ↕
+┌─────────────────────────────────────────────────────────────┐
+│                    High-Level Control                        │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐        │
+│  │Task     │  │Motion   │  │Grasp    │  │Safety   │        │
+│  │Planner  │  │Planner  │  │Planner  │  │Monitor  │        │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────┘        │
+└─────────────────────────────────────────────────────────────┘
+                              ↕
+┌─────────────────────────────────────────────────────────────┐
+│                    Low-Level Control                         │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐        │
+│  │Joint    │  │Force    │  │PID      │  │Hardware │        │
+│  │Control  │  │Control  │  │Control  │  │Drivers  │        │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────┘        │
+└─────────────────────────────────────────────────────────────┘
+```
+</Diagram>
+
+## 4.8 Best Practices and Common Patterns
+
+### 4.8.1 Node Design Patterns
+
+**Single Responsibility Principle**
+- Each node performs one specific function
+- Clear interfaces between nodes
+- Modular and reusable design
+
+**Error Handling**
+- Graceful degradation
+- Retry mechanisms
+- Emergency procedures
+
+**Resource Management**
+- Efficient memory usage
+- Proper cleanup
+- Resource monitoring
+
+### 4.8.2 Communication Patterns
+
+:::tip
+Use topics for high-frequency data streaming, services for sporadic request-response communication, and actions for long-running operations with feedback.
+:::
+
+**Topic Naming Conventions**
+- Use descriptive, hierarchical names
+- Follow ROS 2 naming guidelines
+- Include message type in documentation
+
+**QoS Best Practices**
+- Match publisher and subscriber QoS
+- Consider network conditions
+- Balance reliability with performance
+
+## 4.9 Debugging and Development Tools
+
+### 4.9.1 Command Line Tools
+
+<CodeBlock language="bash" title="Essential ROS 2 Commands">
+# Node management
+ros2 node list                    # List running nodes
+ros2 node info /node_name        # Node information
+ros2 lifecycle                   # Lifecycle management
+
+# Topic operations
+ros2 topic list                   # List topics
+ros2 topic echo /topic_name      # View topic messages
+ros2 topic hz /topic_name        # Topic frequency
+ros2 topic pub /topic_name ...   # Publish to topic
+
+# Service operations
+ros2 service list                 # List services
+ros2 service call /service_name  # Call service
+ros2 service type /service_name  # Service type
+
+# Parameter operations
+ros2 param list /node_name       # List parameters
+ros2 param get /node_name param  # Get parameter
+ros2 param set /node_name param  # Set parameter
+
+# Action operations
+ros2 action list                  # List actions
+ros2 action send_goal /action_name # Send action goal
+</CodeBlock>
+
+### 4.9.2 Visualization Tools
+
+**RViz2**
+- 3D visualization
+- Plugin architecture
+- Custom displays
+
+**rqt**
+- GUI framework
+- Various plugins
+- Custom interfaces
+
+## Summary
+
+ROS 2 provides a robust foundation for building complex robotic systems with improved reliability, security, and real-time capabilities compared to ROS 1. Key concepts include decentralized communication through DDS, flexible QoS policies, and comprehensive development tools.
+
+Key takeaways:
+- ROS 2 uses DDS for decentralized, real-time communication
+- QoS policies enable fine-tuned control over data exchange
+- Nodes, topics, services, and actions provide communication paradigms
+- Launch files coordinate multiple nodes and configurations
+- Parameter system enables runtime configuration
+- Comprehensive tooling supports development and debugging
+
+## Exercises
+
+### Exercise 4.1: Create a ROS 2 Package
+Create a new ROS 2 package that implements:
+- A publisher node that publishes sensor data
+- A subscriber node that processes the data
+- A service node that provides configuration
+- Launch files to coordinate all nodes
+
+### Exercise 4.2: QoS Experiment
+Implement a publisher/subscriber pair with different QoS settings:
+- Compare BEST_EFFORT vs RELIABLE reliability
+- Test VOLATILE vs TRANSIENT_LOCAL durability
+- Measure latency with different profiles
+- Analyze network behavior under load
+
+### Exercise 4.3: Multi-Node System
+Design a multi-node system for a specific robot application:
+- Define node responsibilities and interfaces
+- Implement communication between nodes
+- Handle errors and failures gracefully
+- Test system performance
+
+### Exercise 4.4: Parameter Management
+Create a configurable system using ROS 2 parameters:
+- Define parameter structure and defaults
+- Implement parameter callbacks
+- Create YAML configuration files
+- Test runtime parameter updates
+
+### Exercise 4.5: Action Server
+Implement an action server for a long-running task:
+- Define custom action interface
+- Implement server with feedback
+- Create client with goal handling
+- Add cancellation and preemption support
+
+## Glossary Terms
+
+- **DDS (Data Distribution Service)**: Middleware standard for real-time data distribution
+- **Node**: Process that performs computation and communicates in ROS 2
+- **Topic**: Named bus for anonymous message exchange
+- **Service**: Request-response communication pattern
+- **Action**: Long-running, preemptable asynchronous operations
+- **QoS (Quality of Service)**: Policies controlling data exchange behavior
+- **Launch File**: Configuration file for starting multiple nodes
+- **Parameter**: Runtime configuration values for nodes
+- **Workspace**: Directory containing ROS 2 packages
+- **Package**: Organizational unit containing ROS 2 code and resources

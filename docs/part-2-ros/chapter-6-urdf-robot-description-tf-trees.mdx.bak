@@ -1,0 +1,1254 @@
+---
+title: "URDF, Robot Description, TF Trees"
+part: 2
+chapter: 6
+slug: "urdf-robot-description-tf-trees"
+difficulty: "intermediate"
+estimatedTime: 60
+prerequisites: ["chapter-5-nodes-topics-services-actions"]
+objectives:
+  - "Master URDF (Unified Robot Description Format) modeling"
+  - "Understand coordinate systems and transformations"
+  - "Learn TF (Transform) tree concepts and implementation"
+  - "Create complete robot models with proper kinematics"
+---
+
+# URDF, Robot Description, TF Trees
+
+## Introduction
+
+Robot description is a fundamental aspect of robotics that enables visualization, simulation, and control of robotic systems. The Unified Robot Description Format (URDF) provides a standardized way to define robot geometry, kinematics, and dynamics. Combined with the Transform (TF) library, it creates a powerful system for managing coordinate relationships in complex robotic systems. This chapter covers the complete pipeline from robot modeling to coordinate management.
+
+:::info
+URDF and TF form the backbone of ROS 2 robotics. Mastering these concepts is essential for anyone working with robotic systems, as they provide the foundation for everything from simulation to real-world robot control.
+:::
+
+## 6.1 URDF Fundamentals
+
+### 6.1.1 URDF Structure and Components
+
+URDF uses XML to describe robot models with links (rigid bodies) and joints (connections between links):
+
+<Diagram title="URDF Tree Structure">
+```
+Robot Model (root)
+├── Link: base_link
+│   ├── Visual
+│   │   ├── Geometry
+│   │   └── Material
+│   ├── Collision
+│   │   └── Geometry
+│   └── Inertial
+│       ├── Mass
+│       └── Inertia
+│
+├── Joint: base_to_chassis
+│   ├── Parent: base_link
+│   ├── Child: chassis_link
+│   ├── Type: fixed
+│   └── Origin
+│
+├── Link: chassis_link
+│   ├── Visual/Collision/Inertial
+│   └── ...
+│
+├── Joint: chassis_to_wheel_1
+│   ├── Parent: chassis_link
+│   ├── Child: wheel_1_link
+│   ├── Type: continuous
+│   └── Axis
+│
+└── Link: wheel_1_link
+    └── Visual/Collision/Inertial
+```
+</Diagram>
+
+### 6.1.2 Link Elements
+
+**Visual Elements**
+Define how the link appears visually:
+
+<CodeBlock language="xml" title="URDF Visual Element">
+<visual name="chassis_visual">
+  <!-- Origin of visual element relative to link origin -->
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+
+  <!-- Geometric shape -->
+  <geometry>
+    <box size="1.0 0.5 0.2"/>
+    <!-- Alternative geometries:
+    <cylinder radius="0.1" length="0.5"/>
+    <sphere radius="0.2"/>
+    <mesh filename="package://my_robot/meshes/chassis.stl" scale="1 1 1"/>
+    -->
+  </geometry>
+
+  <!-- Material properties -->
+  <material name="blue_material">
+    <color rgba="0 0 1 1"/>
+    <!-- Alternative material definitions:
+    <texture filename="package://my_robot/textures/chassis.png"/>
+    <script>
+      <uri>file://my_material.material</uri>
+      <name>Blue</name>
+    </script>
+    -->
+  </material>
+</visual>
+</CodeBlock>
+
+**Collision Elements**
+Define collision geometry (can be simpler than visual):
+
+<CodeBlock language="xml" title="URDF Collision Element">
+<collision name="chassis_collision">
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <geometry>
+    <!-- Use simplified geometry for efficient collision detection -->
+    <box size="0.95 0.45 0.18"/>
+  </geometry>
+</collision>
+
+<!-- Multiple collision elements for complex shapes -->
+<collision name="camera_collision">
+  <origin xyz="0.3 0 0.1" rpy="0 0 0"/>
+  <geometry>
+    <cylinder radius="0.05" length="0.1"/>
+  </geometry>
+</collision>
+</CodeBlock>
+
+**Inertial Elements**
+Define physical properties for dynamics:
+
+<CodeBlock language="xml" title="URDF Inertial Element">
+<inertial>
+  <!-- Center of mass relative to link origin -->
+  <origin xyz="0 0 0.05" rpy="0 0 0"/>
+
+  <!-- Mass in kilograms -->
+  <mass value="5.0"/>
+
+  <!-- Inertia tensor (3x3 matrix) in kg*m^2 -->
+  <inertia ixx="0.1" ixy="0.0" ixz="0.0"
+            iyy="0.1" iyz="0.0"
+            izz="0.2"/>
+</inertial>
+</CodeBlock>
+
+### 6.1.3 Joint Types
+
+<Diagram title="URDF Joint Types">
+```
+Revolute Joint
+[Link A] ──(θ)─── [Link B]
+- Single axis rotation
+- Limited range option
+- Continuous or limited
+
+Continuous Joint
+[Link A] ──(∞)─── [Link B]
+- Unlimited rotation
+- Single axis
+- Example: Wheels
+
+Prismatic Joint
+[Link A] ──↕─── [Link B]
+- Linear motion
+- Single axis
+- Limited range
+
+Fixed Joint
+[Link A] ──⊗─── [Link B]
+- No relative motion
+- Rigid connection
+- Base to ground
+
+Floating Joint
+[Link A] ──(6DOF)─── [Link B]
+- 6 degrees of freedom
+- Free motion
+- Flying objects
+
+Planar Joint
+[Link A] ──(3DOF)─── [Link B]
+- X, Y, Yaw motion
+- Ground robots
+- 2D navigation
+```
+</Diagram>
+
+<CodeBlock language="xml" title="URDF Joint Examples">
+<!-- Revolute joint with limits -->
+<joint name="elbow_joint" type="revolute">
+  <parent link="upper_arm_link"/>
+  <child link="forearm_link"/>
+  <origin xyz="0 0 0.3" rpy="0 0 0"/>
+  <axis xyz="0 1 0"/>
+  <limit lower="-2.356" upper="2.356" effort="30.0" velocity="1.0"/>
+</joint>
+
+<!-- Continuous joint for wheels -->
+<joint name="wheel_1_joint" type="continuous">
+  <parent link="base_link"/>
+  <child link="wheel_1_link"/>
+  <origin xyz="0.2 0.2 -0.1" rpy="1.5708 0 0"/>
+  <axis xyz="0 0 1"/>
+</joint>
+
+<!-- Prismatic joint for linear actuator -->
+<joint name="linear_joint" type="prismatic">
+  <parent link="base_link"/>
+  <child link="slider_link"/>
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <axis xyz="0 0 1"/>
+  <limit lower="0.0" upper="0.5" effort="100.0" velocity="0.1"/>
+</joint>
+
+<!-- Fixed joint for rigid connection -->
+<joint name="camera_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="camera_link"/>
+  <origin xyz="0.3 0 0.2" rpy="0 0.2"/>
+</joint>
+</CodeBlock>
+
+## 6.2 Complete Robot Model Example
+
+<CodeBlock language="xml" title="Complete Mobile Robot URDF">
+<?xml version="1.0"?>
+<robot name="mobile_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Define materials -->
+  <material name="blue">
+    <color rgba="0 0 1 1"/>
+  </material>
+
+  <material name="black">
+    <color rgba="0 0 0 1"/>
+  </material>
+
+  <material name="red">
+    <color rgba="1 0 0 1"/>
+  </material>
+
+  <!-- Base link (robot footprint) -->
+  <link name="base_footprint">
+    <!-- Used for ground contact -->
+  </link>
+
+  <!-- Base link (main chassis) -->
+  <link name="base_link">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+
+    <!-- Visual representation -->
+    <visual>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.4 0.3 0.2"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+
+    <!-- Collision geometry -->
+    <collision>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.4 0.3 0.2"/>
+      </geometry>
+    </collision>
+
+    <!-- Inertial properties -->
+    <inertial>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <mass value="5.0"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0"
+                iyy="0.1" iyz="0.0"
+                izz="0.2"/>
+    </inertial>
+  </link>
+
+  <!-- Joint connecting base to footprint -->
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Left wheel -->
+  <link name="left_wheel_link">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.1" length="0.05"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.1" length="0.05"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0"
+                iyy="0.01" iyz="0.0"
+                izz="0.01"/>
+    </inertial>
+  </link>
+
+  <joint name="left_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="left_wheel_link"/>
+    <origin xyz="-0.05 0.175 -0.05" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- Right wheel -->
+  <link name="right_wheel_link">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.1" length="0.05"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <cylinder radius="0.1" length="0.05"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.5"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0"
+                iyy="0.01" iyz="0.0"
+                izz="0.01"/>
+    </inertial>
+  </link>
+
+  <joint name="right_wheel_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="right_wheel_link"/>
+    <origin xyz="-0.05 -0.175 -0.05" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- Caster wheel -->
+  <link name="caster_wheel_link">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <sphere radius="0.05"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.3"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                iyy="0.001" iyz="0.0"
+                izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="caster_wheel_joint" type="sphere">
+    <parent link="base_link"/>
+    <child link="caster_wheel_link"/>
+    <origin xyz="0.15 0 -0.05" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Camera -->
+  <link name="camera_link">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.1"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                iyy="0.001" iyz="0.0"
+                izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera_link"/>
+    <origin xyz="0.2 0 0.15" rpy="0 0 0"/>
+  </joint>
+
+  <!-- LiDAR -->
+  <link name="laser_link">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.05" length="0.1"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.05" length="0.1"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.2"/>
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                iyy="0.001" iyz="0.0"
+                izz="0.001"/>
+    </inertial>
+  </link>
+
+  <joint name="laser_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="laser_link"/>
+    <origin xyz="0 0 0.25" rpy="0 0 0"/>
+  </joint>
+
+  <!-- Gazebo specific settings -->
+  <gazebo reference="left_wheel_link">
+    <material>Gazebo/Black</material>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+  </gazebo>
+
+  <gazebo reference="right_wheel_link">
+    <material>Gazebo/Black</material>
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <kp>1000000.0</kp>
+    <kd>1.0</kd>
+    <minDepth>0.001</minDepth>
+    <maxVel>1.0</maxVel>
+  </gazebo>
+
+</robot>
+</CodeBlock>
+
+## 6.3 TF (Transform) System
+
+### 6.3.1 Coordinate System Fundamentals
+
+The TF system manages coordinate relationships between different parts of a robot:
+
+<Diagram title="TF Tree for Mobile Robot">
+```
+map
+  └─ odom
+     └─ base_footprint
+        └─ base_link
+           ├─ left_wheel_link
+           ├─ right_wheel_link
+           ├─ caster_wheel_link
+           ├─ camera_link
+           │  └─ camera_optical_link
+           └─ laser_link
+```
+</Diagram>
+
+<CodeBlock language="python" title="TF Publisher Example">
+import rclpy
+from rclpy.node import Node
+import tf2_ros
+import tf_transformations
+from geometry_msgs.msg import TransformStamped
+from nav_msgs.msg import Odometry
+
+class TFPublisher(Node):
+    def __init__(self):
+        super().__init__('tf_publisher')
+
+        # TF broadcaster
+        self.tf_broadcaster = tf2_ros.TransformBroadcaster(self)
+
+        # TF static broadcaster
+        self.static_tf_broadcaster = tf2_ros.StaticTransformBroadcaster(self)
+
+        # Publish static transforms
+        self.publish_static_transforms()
+
+        # Subscribe to odometry
+        self.odom_sub = self.create_subscription(
+            Odometry, '/odom', self.odom_callback, 10)
+
+        # Timer for periodic transforms
+        self.timer = self.create_timer(0.05, self.publish_periodic_transforms)
+
+        self.get_logger().info('TF publisher initialized')
+
+    def publish_static_transforms(self):
+        """Publish static transforms that don't change"""
+        transforms = []
+
+        # Camera to optical frame
+        camera_to_optical = TransformStamped()
+        camera_to_optical.header.stamp = self.get_clock().now().to_msg()
+        camera_to_optical.header.frame_id = "camera_link"
+        camera_to_optical.child_frame_id = "camera_optical_link"
+
+        camera_to_optical.transform.translation.x = 0.0
+        camera_to_optical.transform.translation.y = 0.0
+        camera_to_optical.transform.translation.z = 0.0
+
+        # Camera optical frame typically has different axis convention
+        # X right, Y down, Z forward
+        q = tf_transformations.quaternion_from_euler(-1.5708, 0, -1.5708)
+        camera_to_optical.transform.rotation.x = q[0]
+        camera_to_optical.transform.rotation.y = q[1]
+        camera_to_optical.transform.rotation.z = q[2]
+        camera_to_optical.transform.rotation.w = q[3]
+
+        transforms.append(camera_to_optical)
+
+        # Base footprint to base link
+        footprint_to_base = TransformStamped()
+        footprint_to_base.header.stamp = self.get_clock().now().to_msg()
+        footprint_to_base.header.frame_id = "base_footprint"
+        footprint_to_base.child_frame_id = "base_link"
+
+        footprint_to_base.transform.translation.x = 0.0
+        footprint_to_base.transform.translation.y = 0.0
+        footprint_to_base.transform.translation.z = 0.05
+
+        q = tf_transformations.quaternion_from_euler(0, 0, 0)
+        footprint_to_base.transform.rotation.x = q[0]
+        footprint_to_base.transform.rotation.y = q[1]
+        footprint_to_base.transform.rotation.z = q[2]
+        footprint_to_base.transform.rotation.w = q[3]
+
+        transforms.append(footprint_to_base)
+
+        # Send static transforms
+        self.static_tf_broadcaster.sendTransform(transforms)
+
+    def odom_callback(self, msg):
+        """Publish odom to base_link transform from odometry"""
+        odom_to_base = TransformStamped()
+        odom_to_base.header = msg.header
+        odom_to_base.child_frame_id = msg.child_frame_id
+
+        odom_to_base.transform.translation.x = msg.pose.pose.position.x
+        odom_to_base.transform.translation.y = msg.pose.pose.position.y
+        odom_to_base.transform.translation.z = msg.pose.pose.position.z
+
+        odom_to_base.transform.rotation.x = msg.pose.pose.orientation.x
+        odom_to_base.transform.rotation.y = msg.pose.pose.orientation.y
+        odom_to_base.transform.rotation.z = msg.pose.pose.orientation.z
+        odom_to_base.transform.rotation.w = msg.pose.pose.orientation.w
+
+        self.tf_broadcaster.sendTransform(odom_to_base)
+
+    def publish_periodic_transforms(self):
+        """Publish periodic transforms (e.g., for moving joints)"""
+        transforms = []
+
+        # Example: Simulate joint positions
+        current_time = self.get_clock().now().seconds()
+
+        # Left wheel joint
+        left_wheel_transform = TransformStamped()
+        left_wheel_transform.header.stamp = self.get_clock().now().to_msg()
+        left_wheel_transform.header.frame_id = "base_link"
+        left_wheel_transform.child_frame_id = "left_wheel_link"
+
+        left_wheel_transform.transform.translation.x = -0.05
+        left_wheel_transform.transform.translation.y = 0.175
+        left_wheel_transform.transform.translation.z = -0.05
+
+        # Rotate wheel based on time (simulated motion)
+        wheel_angle = current_time * 2.0  # 2 rad/s
+        q = tf_transformations.quaternion_from_euler(wheel_angle, 0, 0)
+        left_wheel_transform.transform.rotation.x = q[0]
+        left_wheel_transform.transform.rotation.y = q[1]
+        left_wheel_transform.transform.rotation.z = q[2]
+        left_wheel_transform.transform.rotation.w = q[3]
+
+        transforms.append(left_wheel_transform)
+
+        # Right wheel joint
+        right_wheel_transform = TransformStamped()
+        right_wheel_transform.header.stamp = self.get_clock().now().to_msg()
+        right_wheel_transform.header.frame_id = "base_link"
+        right_wheel_transform.child_frame_id = "right_wheel_link"
+
+        right_wheel_transform.transform.translation.x = -0.05
+        right_wheel_transform.transform.translation.y = -0.175
+        right_wheel_transform.transform.translation.z = -0.05
+
+        q = tf_transformations.quaternion_from_euler(wheel_angle, 0, 0)
+        right_wheel_transform.transform.rotation.x = q[0]
+        right_wheel_transform.transform.rotation.y = q[1]
+        right_wheel_transform.transform.rotation.z = q[2]
+        right_wheel_transform.transform.rotation.w = q[3]
+
+        transforms.append(right_wheel_transform)
+
+        # Send transforms
+        self.tf_broadcaster.sendTransform(transforms)
+</CodeBlock>
+
+### 6.3.2 TF Listener and Usage
+
+<CodeBlock language="python" title="TF Listener Example">
+import rclpy
+from rclpy.node import Node
+import tf2_ros
+import tf2_geometry_msgs
+from geometry_msgs.msg import PointStamped
+from sensor_msgs.msg import LaserScan
+
+class TFListener(Node):
+    def __init__(self):
+        super().__init__('tf_listener')
+
+        # TF buffer and listener
+        self.tf_buffer = tf2_ros.Buffer()
+        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
+
+        # Subscribe to sensor data
+        self.laser_sub = self.create_subscription(
+            LaserScan, '/laser/scan', self.laser_callback, 10)
+
+        # Publisher for transformed data
+        self.transformed_point_pub = self.create_publisher(
+            PointStamped, '/transformed_point', 10)
+
+        self.get_logger().info('TF listener initialized')
+
+    def laser_callback(self, msg):
+        """Transform LiDAR data and process"""
+        # Create point in laser frame
+        laser_point = PointStamped()
+        laser_point.header = msg.header
+        laser_point.point.x = 1.0  # Point 1m in front of laser
+        laser_point.point.y = 0.0
+        laser_point.point.z = 0.0
+
+        try:
+            # Transform point from laser frame to base_link frame
+            base_point = self.tf_buffer.transform(
+                laser_point, 'base_link', timeout=rclpy.duration.Duration(seconds=1.0))
+
+            # Publish transformed point
+            self.transformed_point_pub.publish(base_point)
+
+            self.get_logger().info(
+                f'Transformed point: laser_frame ({laser_point.point.x:.2f}, {laser_point.point.y:.2f}) '
+                f'-> base_link ({base_point.point.x:.2f}, {base_point.point.y:.2f})')
+
+        except tf2_ros.TransformException as ex:
+            self.get_logger().warn(f'Transform failed: {ex}')
+
+    def lookup_transform_example(self):
+        """Example of looking up transform"""
+        try:
+            # Get transform from base_link to camera_link
+            transform = self.tf_buffer.lookup_transform(
+                'base_link', 'camera_link',
+                rclpy.time.Time(),
+                timeout=rclpy.duration.Duration(seconds=1.0))
+
+            self.get_logger().info(
+                f'Transform base_link -> camera_link:\n'
+                f'Translation: [{transform.transform.translation.x:.3f}, '
+                f'{transform.transform.translation.y:.3f}, '
+                f'{transform.transform.translation.z:.3f}]\n'
+                f'Rotation: [{transform.transform.rotation.x:.3f}, '
+                f'{transform.transform.rotation.y:.3f}, '
+                f'{transform.transform.rotation.z:.3f}, '
+                f'{transform.transform.rotation.w:.3f}]')
+
+        except tf2_ros.TransformException as ex:
+            self.get_logger().warn(f'Lookup transform failed: {ex}')
+
+    def get_robot_pose_in_map(self):
+        """Get robot pose in map frame"""
+        try:
+            # Get transform from map to base_link
+            map_to_base = self.tf_buffer.lookup_transform(
+                'map', 'base_link',
+                rclpy.time.Time(),
+                timeout=rclpy.duration.Duration(seconds=1.0))
+
+            # Extract pose
+            x = map_to_base.transform.translation.x
+            y = map_to_base.transform.translation.y
+            z = map_to_base.transform.translation.z
+
+            # Convert quaternion to euler angles
+            import tf_transformations
+            q = [
+                map_to_base.transform.rotation.x,
+                map_to_base.transform.rotation.y,
+                map_to_base.transform.rotation.z,
+                map_to_base.transform.rotation.w
+            ]
+            roll, pitch, yaw = tf_transformations.euler_from_quaternion(q)
+
+            self.get_logger().info(
+                f'Robot pose in map: x={x:.2f}, y={y:.2f}, yaw={yaw:.2f}')
+
+            return {
+                'x': x, 'y': y, 'z': z,
+                'roll': roll, 'pitch': pitch, 'yaw': yaw
+            }
+
+        except tf2_ros.TransformException as ex:
+            self.get_logger().warn(f'Get robot pose failed: {ex}')
+            return None
+
+# Advanced TF operations
+class AdvancedTFOperations(Node):
+    def __init__(self):
+        super().__init__('advanced_tf_operations')
+
+        self.tf_buffer = tf2_ros.Buffer()
+        self.tf_listener = tf2_ros.TransformListener(self.tf_buffer)
+
+    def calculate_relative_pose(self, frame1, frame2, common_frame='base_link'):
+        """Calculate relative pose between two frames"""
+        try:
+            # Get transform from common_frame to frame1
+            common_to_1 = self.tf_buffer.lookup_transform(
+                common_frame, frame1, rclpy.time.Time())
+
+            # Get transform from common_frame to frame2
+            common_to_2 = self.tf_buffer.lookup_transform(
+                common_frame, frame2, rclpy.time.Time())
+
+            # Calculate relative transform
+            # frame1 -> frame2 = (common_to_1)^-1 * common_to_2
+
+            # This would require matrix operations in a real implementation
+            # For simplicity, we'll just return the transforms
+            return common_to_1, common_to_2
+
+        except tf2_ros.TransformException as ex:
+            self.get_logger().error(f'Relative pose calculation failed: {ex}')
+            return None, None
+
+    def transform_path(self, points, source_frame, target_frame):
+        """Transform a path of points from source to target frame"""
+        transformed_points = []
+
+        for point in points:
+            point_stamped = PointStamped()
+            point_stamped.header.stamp = self.get_clock().now().to_msg()
+            point_stamped.header.frame_id = source_frame
+            point_stamped.point.x = point[0]
+            point_stamped.point.y = point[1]
+            point_stamped.point.z = point[2]
+
+            try:
+                transformed = self.tf_buffer.transform(
+                    point_stamped, target_frame,
+                    timeout=rclpy.duration.Duration(seconds=0.1))
+
+                transformed_points.append([
+                    transformed.point.x,
+                    transformed.point.y,
+                    transformed.point.z
+                ])
+
+            except tf2_ros.TransformException as ex:
+                self.get_logger().warn(f'Point transform failed: {ex}')
+
+        return transformed_points
+</CodeBlock>
+
+## 6.4 Advanced URDF Features
+
+### 6.4.1 Xacro Macros
+
+Xacro (XML Macros) enables reusable URDF components:
+
+<CodeBlock language="xml" title="Xacro Macro for Wheel">
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Wheel macro -->
+  <xacro:macro name="wheel" params="prefix parent side mass:=0.5 radius:=0.1 length:=0.05">
+    <link name="${prefix}_wheel_${side}_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia ixx="${mass*(3*radius*radius+length*length)/12}"
+                  ixy="0" ixz="0"
+                  iyy="${mass*3*radius*radius/12}"
+                  iyz="0"
+                  izz="${mass*(3*radius*radius+length*length)/12}"/>
+      </inertial>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${radius}" length="${length}"/>
+        </geometry>
+        <material name="black"/>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${radius}" length="${length}"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}_wheel_${side}_joint" type="continuous">
+      <parent link="${parent}"/>
+      <child link="${prefix}_wheel_${side}_link"/>
+      <xacro:if value="${side == 'left'}">
+        <origin xyz="-0.05 0.175 -0.05" rpy="0 0 0"/>
+      </xacro:if>
+      <xacro:if value="${side == 'right'}">
+        <origin xyz="-0.05 -0.175 -0.05" rpy="0 0 0"/>
+      </xacro:if>
+      <axis xyz="0 1 0"/>
+    </joint>
+
+    <gazebo reference="${prefix}_wheel_${side}_link">
+      <material>Gazebo/Black</material>
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+      <kp>1000000.0</kp>
+      <kd>1.0</kd>
+      <minDepth>0.001</minDepth>
+      <maxVel>1.0</maxVel>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- Sensor macro -->
+  <xacro:macro name="sensor" params="prefix parent x y z r p y">
+    <link name="${prefix}_link">
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.1"/>
+        <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+                  iyy="0.001" iyz="0.0"
+                  izz="0.001"/>
+      </inertial>
+
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.05 0.05 0.05"/>
+        </geometry>
+        <material name="blue"/>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.05 0.05 0.05"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${prefix}_link"/>
+      <origin xyz="${x} ${y} ${z}" rpy="${r} ${p} ${y}"/>
+    </joint>
+  </xacro:macro>
+
+</robot>
+</CodeBlock>
+
+<CodeBlock language="xml" title="Main Robot Xacro File">
+<?xml version="1.0"?>
+<robot name="xacro_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Include macro files -->
+  <xacro:include filename="$(find my_robot)/urdf/macros.xacro"/>
+
+  <!-- Define properties -->
+  <xacro:property name="wheel_radius" value="0.1"/>
+  <xacro:property name="wheel_mass" value="0.5"/>
+  <xacro:property name="robot_width" value="0.4"/>
+  <xacro:property name="robot_length" value="0.5"/>
+
+  <!-- Base link -->
+  <link name="base_link">
+    <inertial>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <mass value="5.0"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0"
+                iyy="0.1" iyz="0.0"
+                izz="0.2"/>
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <box size="${robot_length} ${robot_width} 0.2"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0.1" rpy="0 0 0"/>
+      <geometry>
+        <box size="${robot_length} ${robot_width} 0.2"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Use wheel macro -->
+  <xacro:wheel prefix="front" parent="base_link" side="left"
+               mass="${wheel_mass}" radius="${wheel_radius}"/>
+  <xacro:wheel prefix="front" parent="base_link" side="right"
+               mass="${wheel_mass}" radius="${wheel_radius}"/>
+  <xacro:wheel prefix="rear" parent="base_link" side="left"
+               mass="${wheel_mass}" radius="${wheel_radius}"/>
+  <xacro:wheel prefix="rear" parent="base_link" side="right"
+               mass="${wheel_mass}" radius="${wheel_radius}"/>
+
+  <!-- Use sensor macro -->
+  <xacro:sensor prefix="camera" parent="base_link"
+                 x="${robot_length/2}" y="0" z="0.15" r="0" p="0" y="0"/>
+  <xacro:sensor prefix="laser" parent="base_link"
+                 x="0" y="0" z="0.25" r="0" p="0" y="0"/>
+
+</robot>
+</CodeBlock>
+
+## 6.5 Kinematics and Dynamics
+
+### 6.5.1 Forward Kinematics
+
+<CodeBlock language="python" title="Forward Kinematics Implementation">
+import numpy as np
+import tf2_ros
+from geometry_msgs.msg import TransformStamped
+
+class RobotKinematics:
+    def __init__(self):
+        # Robot configuration (example 6-DOF arm)
+        self.joint_names = ['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6']
+
+        # DH parameters for a simple 6-DOF arm
+        # a (link length), alpha (link twist), d (link offset), theta (joint angle)
+        self.dh_parameters = [
+            [0.0,  np.pi/2,  0.2,    0.0],    # Joint 1
+            [0.4,  0.0,      0.0,    0.0],    # Joint 2
+            [0.3,  0.0,      0.0,    0.0],    # Joint 3
+            [0.0,  np.pi/2,  0.0,    0.0],    # Joint 4
+            [0.0,  -np.pi/2, 0.15,   0.0],    # Joint 5
+            [0.0,  0.0,      0.0,    0.0]     # Joint 6
+        ]
+
+        self.joint_positions = [0.0] * 6
+
+    def dh_transform(self, a, alpha, d, theta):
+        """Create DH transformation matrix"""
+        ct = np.cos(theta)
+        st = np.sin(theta)
+        ca = np.cos(alpha)
+        sa = np.sin(alpha)
+
+        T = np.array([
+            [ct,      -st*ca,   st*sa,    a*ct],
+            [st,       ct*ca,  -ct*sa,    a*st],
+            [0.0,      sa,      ca,       d],
+            [0.0,      0.0,     0.0,      1.0]
+        ])
+
+        return T
+
+    def forward_kinematics(self, joint_angles=None):
+        """Calculate forward kinematics"""
+        if joint_angles is None:
+            joint_angles = self.joint_positions
+
+        # Start with identity matrix
+        T = np.eye(4)
+
+        # Apply DH transformations
+        for i, angle in enumerate(joint_angles):
+            a, alpha, d, _ = self.dh_parameters[i]
+            T_i = self.dh_transform(a, alpha, d, angle + self.dh_parameters[i][3])
+            T = T @ T_i
+
+        return T
+
+    def get_joint_positions(self):
+        """Get current joint positions"""
+        return self.joint_positions
+
+    def set_joint_position(self, joint_idx, angle):
+        """Set individual joint position"""
+        if 0 <= joint_idx < len(self.joint_positions):
+            self.joint_positions[joint_idx] = angle
+
+    def set_joint_positions(self, angles):
+        """Set all joint positions"""
+        self.joint_positions = angles[:len(self.joint_positions)]
+
+    def get_end_effector_pose(self):
+        """Get end-effector pose in homogeneous transform"""
+        T = self.forward_kinematics()
+
+        pose = {
+            'position': T[:3, 3],
+            'orientation': T[:3, :3],
+            'homogeneous': T
+        }
+
+        return pose
+
+    def publish_tf_tree(self, tf_broadcaster, base_frame='base_link'):
+        """Publish TF tree for current joint positions"""
+        transforms = []
+
+        # Current transformation
+        T = np.eye(4)
+        parent_frame = base_frame
+
+        for i, angle in enumerate(self.joint_positions):
+            a, alpha, d, _ = self.dh_parameters[i]
+            T_i = self.dh_transform(a, alpha, d, angle + self.dh_parameters[i][3])
+            T = T @ T_i
+
+            # Create transform
+            t = TransformStamped()
+            t.header.stamp = self.get_clock().now().to_msg() if hasattr(self, 'get_clock') else None
+            t.header.frame_id = parent_frame
+            t.child_frame_id = f'link_{i+1}'
+
+            # Extract translation
+            t.transform.translation.x = T[0, 3]
+            t.transform.translation.y = T[1, 3]
+            t.transform.translation.z = T[2, 3]
+
+            # Extract rotation (convert rotation matrix to quaternion)
+            import tf_transformations
+            q = tf_transformations.quaternion_from_matrix(T)
+            t.transform.rotation.x = q[0]
+            t.transform.rotation.y = q[1]
+            t.transform.rotation.z = q[2]
+            t.transform.rotation.w = q[3]
+
+            transforms.append(t)
+            parent_frame = f'link_{i+1}'
+
+        return transforms
+
+    def inverse_kinematics_simple(self, target_pose, max_iterations=100, tolerance=0.01):
+        """Simple inverse kinematics using iterative approach"""
+        current_angles = self.joint_positions.copy()
+
+        for iteration in range(max_iterations):
+            # Forward kinematics with current angles
+            T = self.forward_kinematics(current_angles)
+
+            # Calculate error
+            error_position = target_pose['position'] - T[:3, 3]
+            error_magnitude = np.linalg.norm(error_position)
+
+            if error_magnitude < tolerance:
+                self.joint_positions = current_angles
+                return current_angles
+
+            # Simple gradient descent (simplified)
+            # In practice, use more sophisticated IK methods
+            learning_rate = 0.1
+            delta_angles = learning_rate * error_position
+
+            # Update angles (very simplified approach)
+            for i in range(len(current_angles)):
+                current_angles[i] += delta_angles[i % 3] * 0.1
+                # Apply joint limits if needed
+                current_angles[i] = np.clip(current_angles[i], -np.pi, np.pi)
+
+        # Return best effort solution
+        self.joint_positions = current_angles
+        return current_angles
+
+# Advanced kinematics with Jacobian
+class AdvancedKinematics(RobotKinematics):
+    def __init__(self):
+        super().__init__()
+
+    def compute_jacobian(self, joint_angles=None):
+        """Compute Jacobian matrix"""
+        if joint_angles is None:
+            joint_angles = self.joint_positions
+
+        J = np.zeros((6, len(joint_angles)))
+
+        # Numerical computation of Jacobian
+        delta = 0.0001
+        T_current = self.forward_kinematics(joint_angles)
+        p_current = T_current[:3, 3]
+
+        for i in range(len(joint_angles)):
+            # Perturb joint i
+            angles_perturbed = joint_angles.copy()
+            angles_perturbed[i] += delta
+
+            # Compute new pose
+            T_perturbed = self.forward_kinematics(angles_perturbed)
+            p_perturbed = T_perturbed[:3, 3]
+
+            # Approximate derivative
+            J[:3, i] = (p_perturbed - p_current) / delta
+
+        # Orientation part of Jacobian (simplified)
+        # In practice, use proper angular velocity Jacobian
+        J[3:6, :] = 0.1 * np.random.randn(3, len(joint_angles))
+
+        return J
+
+    def inverse_kinematics_jacobian(self, target_pose, max_iterations=100, tolerance=0.01):
+        """Inverse kinematics using Jacobian method"""
+        current_angles = self.joint_positions.copy()
+
+        for iteration in range(max_iterations):
+            # Forward kinematics
+            T = self.forward_kinematics(current_angles)
+
+            # Compute error
+            error_position = target_pose['position'] - T[:3, 3]
+            error_magnitude = np.linalg.norm(error_position)
+
+            if error_magnitude < tolerance:
+                self.joint_positions = current_angles
+                return current_angles
+
+            # Compute Jacobian
+            J = self.compute_jacobian(current_angles)
+
+            # Compute joint angle change using pseudo-inverse
+            try:
+                J_pinv = np.linalg.pinv(J)
+                delta_angles = J_pinv @ np.concatenate([error_position, np.zeros(3)])
+
+                # Update angles
+                current_angles += delta_angles * 0.1  # Learning rate
+
+                # Apply joint limits
+                current_angles = np.clip(current_angles, -np.pi, np.pi)
+
+            except np.linalg.LinAlgError:
+                self.get_logger().error('Jacobian singular')
+                break
+
+        self.joint_positions = current_angles
+        return current_angles
+</CodeBlock>
+
+## Summary
+
+This chapter covered the complete spectrum of robot description and coordinate management in ROS 2. We explored URDF modeling, the TF system, and advanced kinematic calculations essential for robotic applications.
+
+Key takeaways:
+- URDF provides standardized XML format for robot modeling
+- Links define physical properties (visual, collision, inertial)
+- Joints define relationships and motion between links
+- TF system manages coordinate relationships in real-time
+- Xacro macros enable reusable and parameterized URDF components
+- Forward/inverse kinematics are essential for robot control
+- Proper naming conventions and organization are crucial for maintainability
+
+## Exercises
+
+### Exercise 6.1: URDF Robot Creation
+Create a complete URDF model for a specific robot:
+- Choose a robot type (mobile robot, arm, humanoid)
+- Define all links with proper visual, collision, and inertial properties
+- Create appropriate joints with realistic limits
+- Include sensors and actuators
+- Test in RViz and Gazebo
+
+### Exercise 6.2: TF Tree Implementation
+Implement a TF tree system:
+- Create multiple coordinate frames
+- Publish static and dynamic transforms
+- Handle transform lookups with error management
+- Visualize TF tree in RViz
+- Test with different coordinate conversions
+
+### Exercise 6.3: Xacro Macro System
+Develop a reusable Xacro system:
+- Create macros for common components (wheels, sensors, joints)
+- Use properties for parameterization
+- Include conditional logic for different configurations
+- Validate generated URDF
+- Compare with non-xacro implementation
+
+### Exercise 6.4: Kinematics Implementation
+Implement kinematics for a robot arm:
+- Define DH parameters for 6-DOF arm
+- Implement forward kinematics
+- Create inverse kinematics solver
+- Test with various target poses
+- Analyze computational performance
+
+### Exercise 6.5: Complete Robot Integration
+Integrate all concepts in a complete system:
+- Create complex robot URDF with Xacro
+- Implement TF publishing and listening
+- Add kinematics calculations
+- Integrate with robot control
+- Validate with simulation and visualization
+
+## Glossary Terms
+
+- **URDF (Unified Robot Description Format)**: XML format for describing robot models
+- **Link**: Rigid body in robot model with visual, collision, and inertial properties
+- **Joint**: Connection between links that defines relative motion
+- **TF (Transform)**: System for managing coordinate relationships
+- **Coordinate Frame**: Reference system for position and orientation
+- **Transform Tree**: Hierarchical structure of coordinate relationships
+- **Xacro**: XML macro language for creating reusable URDF components
+- **Forward Kinematics**: Computing end-effector pose from joint angles
+- **Inverse Kinematics**: Computing joint angles from desired end-effector pose
+- **DH (Denavit-Hartenberg) Parameters**: Standardized way to describe robot linkages
+- **Jacobian Matrix**: Matrix of partial derivatives relating joint velocities to end-effector velocities

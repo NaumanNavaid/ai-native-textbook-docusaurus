@@ -1,0 +1,975 @@
+---
+title: "Sensor Fusion and State Estimation"
+part: 4
+chapter: 14
+slug: "sensor-fusion-state-estimation"
+difficulty: "advanced"
+prerequisites: ["chapter-13-computer-vision-robots", "chapter-3-sensors-actuators-physical-limits"]
+estimatedTime: 55
+objectives:
+  - "Master sensor fusion techniques for robotics"
+  - "Implement Kalman filters and variants"
+  - "Apply particle filters for non-linear estimation"
+  - "Develop robust state estimation systems"
+---
+
+# Chapter 14: Sensor Fusion and State Estimation
+
+## 14.1 State Estimation Fundamentals
+
+### 14.1.1 Introduction to Sensor Fusion
+
+Sensor fusion combines data from multiple sensors to produce more accurate, reliable, and comprehensive information than any single sensor could provide. In robotics, sensor fusion is essential for robust perception and control.
+
+:::info
+Sensor fusion addresses fundamental challenges in robotics: sensor noise, incomplete coverage, different update rates, and complementary sensor modalities. By intelligently combining measurements, robots can achieve environmental awareness that exceeds the capabilities of individual sensors.
+:::
+
+### 14.1.2 Bayesian Filtering Framework
+
+Bayesian filtering provides the theoretical foundation for state estimation:
+
+<Equation>
+p(x_t | z_1:t) = η * p(z_t | x_t) * ∫ p(x_t | x_{t-1}) * p(x_{t-1} | z_1:t-1) dx_{t-1}
+</Equation>
+
+Where:
+- x_t = State at time t
+- z_t = Measurement at time t
+- η = Normalization constant
+- p(x_t | x_{t-1}) = Motion model
+- p(z_t | x_t) = Measurement model
+
+```python
+class BayesianFilter:
+    def __init__(self, initial_state, initial_covariance):
+        self.state = initial_state
+        self.covariance = initial_covariance
+        self.state_history = [initial_state.copy()]
+        self.covariance_history = [initial_covariance.copy()]
+
+    def predict(self, motion_model, control_input, dt):
+        """Predict step using motion model"""
+        # Predict mean
+        predicted_state = motion_model.predict_state(self.state, control_input, dt)
+
+        # Predict covariance
+        predicted_covariance = motion_model.predict_covariance(
+            self.covariance, control_input, dt
+        )
+
+        self.state = predicted_state
+        self.covariance = predicted_covariance
+
+        return self.state, self.covariance
+
+    def update(self, measurement_model, measurement):
+        """Update step using measurement model"""
+        # Calculate Kalman gain
+        H = measurement_model.jacobian(self.state)
+        R = measurement_model.noise_covariance
+
+        innovation_covariance = H @ self.covariance @ H.T + R
+        kalman_gain = self.covariance @ H.T @ np.linalg.inv(innovation_covariance)
+
+        # Update state and covariance
+        predicted_measurement = measurement_model.predict_measurement(self.state)
+        innovation = measurement - predicted_measurement
+
+        self.state = self.state + kalman_gain @ innovation
+        self.covariance = (np.eye(len(self.state)) - kalman_gain @ H) @ self.covariance
+
+        return self.state, self.covariance
+
+    def get_state_estimate(self):
+        """Get current state estimate with uncertainty"""
+        return {
+            'state': self.state.copy(),
+            'covariance': self.covariance.copy(),
+            'uncertainty': np.diag(self.covariance)
+        }
+
+    def reset(self, new_state=None, new_covariance=None):
+        """Reset filter to new state"""
+        if new_state is not None:
+            self.state = new_state
+        if new_covariance is not None:
+            self.covariance = new_covariance
+
+        self.state_history = [self.state.copy()]
+        self.covariance_history = [self.covariance.copy()]
+```
+
+## 14.2 Kalman Filter and Variants
+
+### 14.2.1 Extended Kalman Filter (EKF)
+
+For non-linear systems, the Extended Kalman Filter linearizes around the current estimate:
+
+```python
+class ExtendedKalmanFilter(BayesianFilter):
+    def __init__(self, initial_state, initial_covariance):
+        super().__init__(initial_state, initial_covariance)
+
+    def predict_nonlinear(self, motion_function, control_input, dt):
+        """Predict step for non-linear motion model"""
+        # Predict state using non-linear function
+        self.state = motion_function(self.state, control_input, dt)
+
+        # Linearize around current state
+        F = self._compute_jacobian(motion_function, self.state, control_input, dt)
+        Q = motion_function.process_noise_covariance
+
+        # Predict covariance
+        self.covariance = F @ self.covariance @ F.T + Q
+
+        return self.state, self.covariance
+
+    def update_nonlinear(self, measurement_function, measurement):
+        """Update step for non-linear measurement model"""
+        # Predict measurement
+        predicted_measurement = measurement_function(self.state)
+
+        # Linearize measurement function
+        H = self._compute_jacobian(measurement_function, self.state)
+        R = measurement_function.measurement_noise_covariance
+
+        # Kalman gain
+        S = H @ self.covariance @ H.T + R
+        K = self.covariance @ H.T @ np.linalg.inv(S)
+
+        # Update state and covariance
+        innovation = measurement - predicted_measurement
+        self.state = self.state + K @ innovation
+        self.covariance = (np.eye(len(self.state)) - K @ H) @ self.covariance
+
+        return self.state, self.covariance
+
+    def _compute_jacobian(self, function, state, *args):
+        """Compute Jacobian matrix using numerical differentiation"""
+        epsilon = 1e-6
+        n = len(state)
+        m = len(function(state, *args))
+
+        J = np.zeros((m, n))
+
+        for i in range(n):
+            # Perturb state
+            state_plus = state.copy()
+            state_plus[i] += epsilon
+
+            state_minus = state.copy()
+            state_minus[i] -= epsilon
+
+            # Compute function values
+            f_plus = function(state_plus, *args)
+            f_minus = function(state_minus, *args)
+
+            # Compute partial derivative
+            J[:, i] = (f_plus - f_minus) / (2 * epsilon)
+
+        return J
+
+class RobotMotionModel:
+    def __init__(self, process_noise):
+        self.process_noise = process_noise
+
+    def predict_state(self, state, control, dt):
+        """Non-linear motion model for differential drive robot"""
+        x, y, theta, v, omega = state
+        v_cmd, omega_cmd = control
+
+        # Add control noise
+        v_actual = v_cmd + np.random.normal(0, self.process_noise[0])
+        omega_actual = omega_cmd + np.random.normal(0, self.process_noise[1])
+
+        # Update velocity (with dynamics)
+        alpha = 0.1  # Smoothing factor
+        v = alpha * v_actual + (1 - alpha) * v
+        omega = alpha * omega_actual + (1 - alpha) * omega
+
+        # Update pose
+        if abs(omega) < 1e-6:
+            # Straight line motion
+            x += v * np.cos(theta) * dt
+            y += v * np.sin(theta) * dt
+        else:
+            # Circular motion
+            R = v / omega
+            x += R * (np.sin(theta + omega * dt) - np.sin(theta))
+            y += R * (-np.cos(theta + omega * dt) + np.cos(theta))
+            theta += omega * dt
+
+        return np.array([x, y, theta, v, omega])
+
+    def predict_covariance(self, covariance, control, dt):
+        """Predict covariance using linearized motion model"""
+        # State transition matrix
+        x, y, theta, v, omega = self.current_state
+
+        F = np.eye(5)
+        F[0, 2] = -v * np.sin(theta) * dt
+        F[0, 3] = np.cos(theta) * dt
+        F[1, 2] = v * np.cos(theta) * dt
+        F[1, 3] = np.sin(theta) * dt
+        F[2, 4] = dt
+
+        # Process noise covariance
+        Q = np.diag([
+            self.process_noise[2] * dt**2,  # Position noise
+            self.process_noise[2] * dt**2,
+            self.process_noise[3] * dt**2,  # Orientation noise
+            self.process_noise[0] * dt**2,  # Velocity noise
+            self.process_noise[1] * dt**2   # Angular velocity noise
+        ])
+
+        return F @ covariance @ F.T + Q
+```
+
+### 14.2.2 Unscented Kalman Filter (UKF)
+
+The Unscented Kalman Filter handles non-linearities without linearization:
+
+```python
+class UnscentedKalmanFilter(BayesianFilter):
+    def __init__(self, initial_state, initial_covariance, alpha=1e-3, beta=2, kappa=0):
+        super().__init__(initial_state, initial_covariance)
+        self.alpha = alpha
+        self.beta = beta
+        self.kappa = kappa
+        self.n = len(initial_state)
+
+        # Calculate weights
+        self.lambda_ = alpha**2 * (self.n + kappa) - self.n
+        self.weights_m, self.weights_c = self._calculate_weights()
+
+    def _calculate_weights(self):
+        """Calculate weights for sigma points"""
+        n = self.n
+        lambda_ = self.lambda_
+
+        # Mean weights
+        weights_m = np.zeros(2 * n + 1)
+        weights_m[0] = lambda_ / (n + lambda_)
+        weights_m[1:] = 0.5 / (n + lambda_)
+
+        # Covariance weights
+        weights_c = np.zeros(2 * n + 1)
+        weights_c[0] = lambda_ / (n + lambda_) + (1 - alpha**2 + beta)
+        weights_c[1:] = 0.5 / (n + lambda_)
+
+        return weights_m, weights_c
+
+    def generate_sigma_points(self, state, covariance):
+        """Generate sigma points"""
+        n = self.n
+        sigma_points = np.zeros((2 * n + 1, n))
+
+        # Calculate square root of covariance
+        sqrt_cov = np.linalg.cholesky((n + self.lambda_) * covariance).T
+
+        # First sigma point is the mean
+        sigma_points[0] = state
+
+        # Generate remaining sigma points
+        for i in range(n):
+            sigma_points[i + 1] = state + sqrt_cov[i]
+            sigma_points[i + n + 1] = state - sqrt_cov[i]
+
+        return sigma_points
+
+    def predict(self, motion_function, control, dt):
+        """UKF prediction step"""
+        # Generate sigma points
+        sigma_points = self.generate_sigma_points(self.state, self.covariance)
+
+        # Propagate sigma points through motion model
+        propagated_points = np.zeros_like(sigma_points)
+        for i, point in enumerate(sigma_points):
+            propagated_points[i] = motion_function(point, control, dt)
+
+        # Calculate predicted mean
+        self.state = np.sum(self.weights_m[:, np.newaxis] * propagated_points, axis=0)
+
+        # Calculate predicted covariance
+        centered_points = propagated_points - self.state
+        self.covariance = np.sum(
+            self.weights_c[:, np.newaxis, np.newaxis] *
+            np.einsum('ij,ik->ijk', centered_points, centered_points),
+            axis=0
+        )
+
+        # Add process noise
+        self.covariance += motion_function.process_noise_covariance
+
+        return self.state, self.covariance
+
+    def update(self, measurement_function, measurement):
+        """UKF update step"""
+        # Generate sigma points
+        sigma_points = self.generate_sigma_points(self.state, self.covariance)
+
+        # Propagate sigma points through measurement model
+        measurement_sigma_points = np.zeros((len(sigma_points), len(measurement)))
+        for i, point in enumerate(sigma_points):
+            measurement_sigma_points[i] = measurement_function(point)
+
+        # Predict measurement mean
+        predicted_measurement = np.sum(self.weights_m[:, np.newaxis] * measurement_sigma_points, axis=0)
+
+        # Calculate innovation covariance
+        centered_measurements = measurement_sigma_points - predicted_measurement
+        P_yy = np.sum(
+            self.weights_c[:, np.newaxis, np.newaxis] *
+            np.einsum('ij,ik->ijk', centered_measurements, centered_measurements),
+            axis=0
+        )
+        P_yy += measurement_function.measurement_noise_covariance
+
+        # Calculate cross-covariance
+        centered_states = sigma_points - self.state
+        P_xy = np.sum(
+            self.weights_c[:, np.newaxis, np.newaxis] *
+            np.einsum('ij,ik->ijk', centered_states, centered_measurements),
+            axis=0
+        )
+
+        # Kalman gain
+        K = P_xy @ np.linalg.inv(P_yy)
+
+        # Update state
+        innovation = measurement - predicted_measurement
+        self.state = self.state + K @ innovation
+
+        # Update covariance
+        self.covariance = self.covariance - K @ P_yy @ K.T
+
+        return self.state, self.covariance
+```
+
+## 14.3 Multi-Sensor Fusion
+
+### 14.3.1 Complementary Filter
+
+For simple orientation estimation using accelerometer and gyroscope:
+
+```python
+class ComplementaryFilter:
+    def __init__(self, alpha=0.98):
+        self.alpha = alpha  # Complementary filter gain
+        self.angle = 0.0
+        self.bias = 0.0
+        self.initialized = False
+
+    def update(self, accel_data, gyro_data, dt):
+        """Update orientation estimate"""
+        ax, ay, az = accel_data
+        gx, gy, gz = gyro_data
+
+        if not self.initialized:
+            # Initialize with accelerometer
+            self.angle = math.atan2(ay, az)
+            self.bias = 0.0
+            self.initialized = True
+            return self.angle
+
+        # Integrate gyroscope
+        angle_gyro = self.angle + (gz - self.bias) * dt
+
+        # Calculate angle from accelerometer
+        angle_accel = math.atan2(ay, az)
+
+        # Complementary filter
+        self.angle = self.alpha * angle_gyro + (1 - self.alpha) * angle_accel
+
+        # Estimate bias (assuming angle_accel is low-frequency)
+        self.bias = self.bias + 0.01 * (angle_gyro - angle_accel)
+
+        return self.angle
+
+class MadgwickFilter:
+    def __init__(self, beta=0.1):
+        self.beta = beta  # Filter gain parameter
+        self.q = np.array([1.0, 0.0, 0.0, 0.0])  # Quaternion [w, x, y, z]
+
+    def update(self, accel, gyro, mag=None, dt=0.01):
+        """Update orientation using Madgwick algorithm"""
+        ax, ay, az = accel
+        gx, gy, gz = gyro
+
+        # Normalize accelerometer
+        norm = np.sqrt(ax**2 + ay**2 + az**2)
+        if norm > 0:
+            ax, ay, az = ax/norm, ay/norm, az/norm
+
+        # Rate of change of quaternion from gyroscope
+        q_dot = 0.5 * self._quaternion_multiply(
+            self.q,
+            np.array([0, gx, gy, gz])
+        )
+
+        if mag is not None:
+            mx, my, mz = mag
+
+            # Normalize magnetometer
+            norm = np.sqrt(mx**2 + my**2 + mz**2)
+            if norm > 0:
+                mx, my, mz = mx/norm, my/norm, mz/norm
+
+            # Compute objective function and Jacobian
+            f = self._compute_objective_marg(accel, mag, self.q)
+            J = self._compute_jacobian_marg(accel, mag, self.q)
+
+            # Gradient descent step
+            step = J.T @ f
+            norm = np.linalg.norm(step)
+            if norm > 0:
+                step = step / norm
+                step *= self.beta * dt
+                q_dot -= step
+
+        # Integrate quaternion
+        self.q += q_dot * dt
+
+        # Normalize quaternion
+        self.q = self.q / np.linalg.norm(self.q)
+
+        return self.q
+
+    def _quaternion_multiply(self, q1, q2):
+        """Multiply two quaternions"""
+        w1, x1, y1, z1 = q1
+        w2, x2, y2, z2 = q2
+
+        return np.array([
+            w1*w2 - x1*x2 - y1*y2 - z1*z2,
+            w1*x2 + x1*w2 + y1*z2 - z1*y2,
+            w1*y2 - x1*z2 + y1*w2 + z1*x2,
+            w1*z2 + x1*y2 - y1*x2 + z1*w2
+        ])
+
+    def _compute_objective_marg(self, accel, mag, q):
+        """Compute objective function for Madgwick filter"""
+        ax, ay, az = accel
+        mx, my, mz = mag
+
+        # Quaternion components
+        q0, q1, q2, q3 = q
+
+        # Rotate accelerometer into earth frame
+        ax_earth = 2 * (q1*q3 - q0*q2)
+        ay_earth = 2 * (q0*q1 + q2*q3)
+        az_earth = q0**2 - q1**2 - q2**2 + q3**2
+
+        # Rotate magnetometer into earth frame
+        hx_earth = mx * (q0**2 + q1**2 - q2**2 - q3**2) + 2 * my * (q1*q2 - q0*q3) + 2 * mz * (q1*q3 + q0*q2)
+        hy_earth = 2 * mx * (q1*q2 + q0*q3) + my * (q0**2 - q1**2 + q2**2 - q3**2) + 2 * mz * (q2*q3 - q0*q1)
+        hz_earth = 2 * mx * (q1*q3 - q0*q2) + 2 * my * (q2*q3 + q0*q1) + mz * (q0**2 - q1**2 - q2**2 + q3**2)
+
+        # Objective function (measured - expected)
+        f = np.array([
+            ax_earth - ax,  # Should be 0 for gravity
+            ay_earth - ay,
+            az_earth - az,
+            hx_earth,       # Should align with north
+            hy_earth,
+            hz_earth - np.sqrt(hx_earth**2 + hy_earth**2)
+        ])
+
+        return f
+
+    def _compute_jacobian_marg(self, accel, mag, q):
+        """Compute Jacobian matrix for Madgwick filter"""
+        # Numerical differentiation
+        epsilon = 1e-6
+        J = np.zeros((6, 4))
+
+        f0 = self._compute_objective_marg(accel, mag, q)
+
+        for i in range(4):
+            q_plus = q.copy()
+            q_plus[i] += epsilon
+
+            f_plus = self._compute_objective_marg(accel, mag, q_plus)
+            J[:, i] = (f_plus - f0) / epsilon
+
+        return J
+```
+
+### 14.3.2 Particle Filter
+
+For highly non-linear, non-Gaussian estimation problems:
+
+```python
+class ParticleFilter:
+    def __init__(self, num_particles, state_dim, motion_model, measurement_model):
+        self.num_particles = num_particles
+        self.state_dim = state_dim
+        self.motion_model = motion_model
+        self.measurement_model = measurement_model
+
+        # Initialize particles
+        self.particles = np.zeros((num_particles, state_dim))
+        self.weights = np.ones(num_particles) / num_particles
+        self.effective_sample_size_threshold = num_particles / 2
+
+    def initialize_particles(self, mean, covariance):
+        """Initialize particles from Gaussian distribution"""
+        self.particles = np.random.multivariate_normal(
+            mean, covariance, self.num_particles
+        )
+        self.weights = np.ones(self.num_particles) / self.num_particles
+
+    def predict(self, control, dt):
+        """Predict step - propagate particles"""
+        for i in range(self.num_particles):
+            # Add process noise
+            noise = np.random.multivariate_normal(
+                np.zeros(self.state_dim),
+                self.motion_model.process_noise_covariance
+            )
+
+            # Propagate particle through motion model
+            self.particles[i] = self.motion_model.predict_state(
+                self.particles[i], control, dt
+            ) + noise
+
+    def update(self, measurement):
+        """Update step - weight particles based on measurement likelihood"""
+        for i in range(self.num_particles):
+            # Calculate measurement likelihood
+            predicted_measurement = self.measurement_model.predict_measurement(
+                self.particles[i]
+            )
+
+            likelihood = self.measurement_model.calculate_likelihood(
+                predicted_measurement, measurement
+            )
+
+            # Update weight
+            self.weights[i] *= likelihood
+
+        # Normalize weights
+        total_weight = np.sum(self.weights)
+        if total_weight > 0:
+            self.weights /= total_weight
+        else:
+            self.weights = np.ones(self.num_particles) / self.num_particles
+
+    def resample(self):
+        """Resample particles if effective sample size is low"""
+        effective_sample_size = 1.0 / np.sum(self.weights**2)
+
+        if effective_sample_size < self.effective_sample_size_threshold:
+            # Systematic resampling
+            cumsum_weights = np.cumsum(self.weights)
+            positions = (np.arange(self.num_particles) + np.random.uniform(0, 1)) / self.num_particles
+
+            indices = np.searchsorted(cumsum_weights, positions)
+            indices = np.clip(indices, 0, self.num_particles - 1)
+
+            self.particles = self.particles[indices]
+            self.weights = np.ones(self.num_particles) / self.num_particles
+
+    def estimate_state(self):
+        """Estimate state from particles"""
+        # Weighted mean
+        mean_state = np.average(self.particles, weights=self.weights, axis=0)
+
+        # Weighted covariance
+        centered_particles = self.particles - mean_state
+        covariance = np.average(
+            np.einsum('ij,ik->ijk', centered_particles, centered_particles),
+            weights=self.weights,
+            axis=0
+        )
+
+        return mean_state, covariance
+
+    def get_particle_cloud(self):
+        """Get all particles for visualization"""
+        return self.particles.copy(), self.weights.copy()
+
+class RobotParticleFilter(ParticleFilter):
+    def __init__(self, num_particles=1000):
+        # Robot state: [x, y, theta, v, omega]
+        motion_model = DifferentialDriveMotionModel()
+        measurement_model = RobotMeasurementModel()
+
+        super().__init__(num_particles, 5, motion_model, measurement_model)
+
+    def update_from_sensors(self, control, lidar_data, camera_data):
+        """Update filter from sensor measurements"""
+        # Predict step
+        self.predict(control, 0.1)  # 10Hz update rate
+
+        # Combine measurements
+        measurement = self._combine_measurements(lidar_data, camera_data)
+
+        # Update step
+        self.update(measurement)
+
+        # Resample if necessary
+        self.resample()
+
+        # Return estimated state
+        return self.estimate_state()
+
+    def _combine_measurements(self, lidar_data, camera_data):
+        """Combine multiple sensor measurements"""
+        # Simple combination - in practice, use more sophisticated fusion
+        combined_measurement = {
+            'landmark_observations': lidar_data.get('landmarks', []),
+            'object_detections': camera_data.get('objects', []),
+            'timestamp': time.time()
+        }
+
+        return combined_measurement
+
+class DifferentialDriveMotionModel:
+    def __init__(self):
+        # Process noise parameters
+        self.alpha1 = 0.1  # Rotation error
+        self.alpha2 = 0.1  # Translation error
+        self.alpha3 = 0.1  # Translation error
+        self.alpha4 = 0.1  # Rotation error
+
+        # Process noise covariance
+        self.process_noise_covariance = np.diag([
+            0.1**2,  # x position
+            0.1**2,  # y position
+            0.05**2, # theta
+            0.05**2, # velocity
+            0.05**2  # angular velocity
+        ])
+
+    def predict_state(self, state, control, dt):
+        """Differential drive motion model with noise"""
+        x, y, theta, v, omega = state
+        v_cmd, omega_cmd = control
+
+        # Add control noise
+        v_actual = v_cmd + np.random.normal(0, self.alpha1 * abs(v_cmd) + self.alpha2 * abs(omega_cmd))
+        omega_actual = omega_cmd + np.random.normal(0, self.alpha3 * abs(v_cmd) + self.alpha4 * abs(omega_cmd))
+
+        # Motion model
+        if abs(omega_actual) < 1e-6:
+            # Straight line motion
+            x_new = x + v_actual * np.cos(theta) * dt
+            y_new = y + v_actual * np.sin(theta) * dt
+            theta_new = theta
+        else:
+            # Circular motion
+            R = v_actual / omega_actual
+            x_new = x + R * (np.sin(theta + omega_actual * dt) - np.sin(theta))
+            y_new = y + R * (-np.cos(theta + omega_actual * dt) + np.cos(theta))
+            theta_new = theta + omega_actual * dt
+
+        # Velocity with dynamics
+        alpha = 0.1  # Smoothing factor
+        v_new = alpha * v_actual + (1 - alpha) * v
+        omega_new = alpha * omega_actual + (1 - alpha) * omega
+
+        return np.array([x_new, y_new, theta_new, v_new, omega_new])
+```
+
+## 14.4 Visual-Inertial Odometry
+
+### 14.4.1 Tightly-Coupled VIO
+
+Combining visual and inertial measurements at the feature level:
+
+```python
+class VisualInertialOdometry:
+    def __init__(self, camera_parameters, imu_parameters):
+        self.camera = CameraModel(camera_parameters)
+        self.imu = IMUModel(imu_parameters)
+
+        # State: [position, orientation (quaternion), velocity, biases]
+        self.state = np.zeros(16)  # [p, q, v, ba, bg]
+        self.covariance = np.eye(16) * 0.1
+
+        # Visual features
+        self.features = []
+        self.max_features = 100
+
+        # EKF for VIO
+        self.ekf = ExtendedKalmanFilter(self.state, self.covariance)
+
+        # Sliding window optimization
+        self.window_size = 10
+        self.keyframes = []
+        self.imu_measurements = []
+
+    def add_imu_measurement(self, measurement, timestamp):
+        """Add IMU measurement"""
+        # Pre-integrate IMU measurements
+        if len(self.imu_measurements) > 0:
+            self._preintegrate_imu(measurement, timestamp)
+        else:
+            self.imu_measurements.append({
+                'measurement': measurement,
+                'timestamp': timestamp,
+                'delta_state': np.zeros(9),  # [Δp, Δv, Δθ]
+                'jacobian': np.zeros((9, 12)),
+                'covariance': np.zeros((9, 9))
+            })
+
+    def process_image(self, image, timestamp):
+        """Process visual measurement"""
+        # Extract features
+        keypoints, descriptors = self._extract_features(image)
+
+        # Match with previous features
+        if len(self.features) > 0:
+            matches = self._match_features(descriptors)
+            self._update_with_visual_matches(matches, image, timestamp)
+
+        # Add new features
+        new_features = self._add_new_features(keypoints, descriptors, image, timestamp)
+
+        # Check for new keyframe
+        if self._should_create_keyframe(image, timestamp):
+            self._create_keyframe(image, timestamp)
+
+    def _preintegrate_imu(self, measurement, timestamp):
+        """Pre-integrate IMU measurements between frames"""
+        if len(self.imu_measurements) == 0:
+            return
+
+        last_imu = self.imu_measurements[-1]
+        dt = timestamp - last_imu['timestamp']
+
+        if dt <= 0:
+            return
+
+        # Get current bias estimates
+        ba = self.state[13:16]  # Accelerometer bias
+        bg = self.state[16:19]  # Gyroscope bias
+
+        # IMU measurement
+        acc = measurement['acceleration'] - ba
+        gyro = measurement['gyroscope'] - bg
+
+        # Current orientation estimate
+        q = self.state[3:7]  # Quaternion [w, x, y, z]
+
+        # Pre-integration
+        delta_state = last_imu['delta_state']
+
+        # Position update
+        delta_state[0:3] += last_imu['delta_state'][3:6] * dt + 0.5 * self._rotate_vector(q, acc) * dt**2
+
+        # Velocity update
+        delta_state[3:6] += self._rotate_vector(q, acc) * dt
+
+        # Orientation update (small angle approximation)
+        theta_increment = gyro * dt
+        delta_state[6:9] += theta_increment
+
+        # Update pre-integrated state
+        self.imu_measurements.append({
+            'measurement': measurement,
+            'timestamp': timestamp,
+            'delta_state': delta_state,
+            'jacobian': last_imu['jacobian'],
+            'covariance': last_imu['covariance']
+        })
+
+    def _rotate_vector(self, q, v):
+        """Rotate vector by quaternion"""
+        w, x, y, z = q
+        rotation_matrix = np.array([
+            [1-2*(y**2+z**2), 2*(x*y-w*z), 2*(x*z+w*y)],
+            [2*(x*y+w*z), 1-2*(x**2+z**2), 2*(y*z-w*x)],
+            [2*(x*z-w*y), 2*(y*z+w*x), 1-2*(x**2+y**2)]
+        ])
+
+        return rotation_matrix @ v
+
+    def _update_with_visual_matches(self, matches, image, timestamp):
+        """Update state with visual measurements"""
+        if len(matches) < 5:
+            return  # Not enough matches
+
+        # Get current state
+        position = self.state[0:3]
+        orientation = self.state[3:7]
+        velocity = self.state[7:10]
+
+        # Visual measurement function
+        def visual_measurement_function(state):
+            pos = state[0:3]
+            ori = state[3:7]
+
+            measurements = []
+            for match in matches:
+                feature_pos = self.features[match.queryIdx]['position']
+
+                # Project feature to image plane
+                pixel = self.camera.project_3d_to_2d(feature_pos, pos, ori)
+                measurements.append(pixel)
+
+            return np.array(measurements)
+
+        # Measurement noise
+        visual_noise = np.eye(len(matches) * 2) * 1.0  # 1 pixel standard deviation
+
+        # Predicted measurement
+        predicted = visual_measurement_function(self.state)
+
+        # Actual measurement
+        actual = np.array([
+            self.features[match.trainIdx]['pixel'] for match in matches
+        ]).flatten()
+
+        # Update using EKF
+        self.state, self.covariance = self.ekf.update_nonlinear(
+            visual_measurement_function, actual
+        )
+
+    def estimate_trajectory(self):
+        """Get current trajectory estimate"""
+        return {
+            'position': self.state[0:3].copy(),
+            'orientation': self.state[3:7].copy(),
+            'velocity': self.state[7:10].copy(),
+            'uncertainty': np.diag(self.covariance[:9, :9])
+        }
+
+class IMUModel:
+    def __init__(self, parameters):
+        self.gravity = parameters.get('gravity', 9.81)
+        self.noise_accelerometer = parameters.get('noise_accelerometer', 0.1)
+        self.noise_gyroscope = parameters.get('noise_gyroscope', 0.01)
+        self.bias_stability_accel = parameters.get('bias_stability_accel', 0.001)
+        self.bias_stability_gyro = parameters.get('bias_stability_gyro', 0.0001)
+
+    def propagate_state(self, state, measurement, dt):
+        """Propagate IMU state"""
+        x, y, z, vx, vy, vz, qw, qx, qy, qz = state
+        ax, ay, az, gx, gy, gz = measurement
+
+        # Remove gravity
+        ax -= 0  # Assuming IMU is gravity-aligned in world frame
+        ay -= 0
+        az -= self.gravity
+
+        # Update velocity
+        vx += ax * dt
+        vy += ay * dt
+        vz += az * dt
+
+        # Update position
+        x += vx * dt
+        y += vy * dt
+        z += vz * dt
+
+        # Update orientation (simplified)
+        # In practice, use quaternion integration
+        dw = 0.5 * (-qx * gx - qy * gy - qz * gz)
+        dx = 0.5 * (qw * gx + qy * gz - qz * gy)
+        dy = 0.5 * (qw * gy - qx * gz + qz * gx)
+        dz = 0.5 * (qw * gz + qx * gy - qy * gx)
+
+        qw += dw * dt
+        qx += dx * dt
+        qy += dy * dt
+        qz += dz * dt
+
+        # Normalize quaternion
+        norm = np.sqrt(qw**2 + qx**2 + qy**2 + qz**2)
+        if norm > 0:
+            qw, qx, qy, qz = qw/norm, qx/norm, qy/norm, qz/norm
+
+        return np.array([x, y, z, vx, vy, vz, qw, qx, qy, qz])
+```
+
+## Chapter Summary
+
+This chapter covered advanced sensor fusion and state estimation techniques for robotics:
+
+### Key Concepts Covered
+1. **Bayesian Filtering**: Mathematical foundation for recursive state estimation
+2. **Kalman Filter Family**: Linear, Extended, and Unscented Kalman Filters
+3. **Multi-Sensor Fusion**: Complementary filters and adaptive fusion techniques
+4. **Particle Filters**: Non-parametric estimation for highly non-linear systems
+5. **Visual-Inertial Odometry**: Tightly-coupled fusion of visual and inertial data
+6. **State Estimation**: Robust estimation under uncertainty and noise
+
+### Practical Implementations
+- Complete Extended Kalman Filter with Jacobian computation
+- Unscented Kalman Filter with sigma point generation
+- Complementary and Madgwick filters for orientation estimation
+- Particle filter for differential drive robot localization
+- Visual-Inertial Odometry with IMU pre-integration
+- Multi-modal sensor fusion architectures
+
+### Next Steps
+With sensor fusion expertise, you're ready for:
+- Chapter 15: SLAM, VSLAM, and Navigation
+- Chapter 16: Path Planning Algorithms
+- Part V: Embodied Intelligence & VLA
+
+---
+
+## Glossary Terms
+
+**Term**: **Kalman Gain**
+**Definition**: Matrix that determines how much to trust new measurements versus predicted state in Kalman filtering
+**Related**: **State Estimation**, **Bayesian Filtering**
+
+**Term**: **Sigma Points**
+**Definition**: Sample points used in Unscented Kalman Filter to capture mean and covariance of non-linear transformations
+**Related**: **Unscented Transform**, **UKF**
+
+**Term**: **Pre-integration**
+**Definition**: Technique to integrate high-frequency IMU measurements between visual updates in VIO
+**Related**: **Visual-Inertial Odometry**, **IMU Processing**
+
+**Term**: **Effective Sample Size**
+**Definition**: Metric indicating the diversity of particles in particle filter, used to determine when resampling is needed
+**Related**: **Particle Filter**, **Resampling**
+
+**Term**: **Complementary Filter**
+**Definition**: Filter that combines high-frequency and low-frequency sensor measurements using complementary filter gains
+**Related**: **Sensor Fusion**, **Orientation Estimation**
+
+---
+
+## Exercises
+
+### Exercise 14.1: Extended Kalman Filter
+Implement EKF for mobile robot:
+- Define non-linear motion model
+- Compute Jacobian matrices numerically
+- Handle GPS and odometry measurements
+- Visualize uncertainty ellipses
+
+### Exercise 14.2: Unscented Kalman Filter
+Create UKF for quadrotor attitude estimation:
+- Implement sigma point generation
+- Handle quaternion representation
+- Process accelerometer, gyroscope, magnetometer
+- Compare with EKF performance
+
+### Exercise 14.3: Particle Filter SLAM
+Build particle filter-based SLAM:
+- Implement FastSLAM algorithm
+- Handle data association uncertainty
+- Create efficient resampling strategy
+- Test in simulation environment
+
+### Exercise 14.4: Visual-Inertial Odometry
+Implement tightly-coupled VIO:
+- Pre-integrate IMU measurements
+- Track visual features with uncertainty
+- Optimize sliding window poses
+- Evaluate trajectory accuracy
+
+### Exercise 14.5: Multi-Sensor Fusion
+Create adaptive sensor fusion system:
+- Dynamically weight sensor measurements
+- Detect and handle sensor failures
+- Implement fault-tolerant estimation
+- Benchmark against ground truth

@@ -1,0 +1,16 @@
+.docItemCol {
+  max-width: none !important;
+}
+
+.docItemContainer {
+  max-width: none;
+}
+
+/* Hide default doc elements in book layout */
+.bookLayout .docItemCol,
+.bookLayout .docItemContainer,
+.bookLayout .article,
+.bookLayout .theme-doc-markdown {
+  max-width: none;
+  padding: 0;
+}
