@@ -1,5 +1,6 @@
 import React, { useState, useEffect, type ComponentProps } from 'react';
 import Navbar from '@theme-original/Navbar';
+import Link from '@docusaurus/Link';
 import SearchBar from '@theme/SearchBar';
 import ResponsiveMobileMenu from '../../components/ResponsiveMobileMenu';
 import { Menu } from 'lucide-react';
@@ -91,7 +92,7 @@ function CustomNavbar({ isMobileMenuOpen, toggleMobileMenu, isResponsiveMenuOpen
       <div className="nm-navbar-container">
         {/* Logo */}
         <div className="nm-navbar-logo">
-          <a href="/" className="nm-logo-link">
+          <Link to="/" className="nm-logo-link">
             <div className="nm-logo-icon">
               <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
                 <rect width="32" height="32" rx="8" fill="currentColor"/>
@@ -105,19 +106,19 @@ function CustomNavbar({ isMobileMenuOpen, toggleMobileMenu, isResponsiveMenuOpen
               <span className="nm-logo-title">Physical AI</span>
               <span className="nm-logo-subtitle">& Robotics</span>
             </div>
-          </a>
+          </Link>
         </div>
 
         {/* Desktop Navigation */}
         <div className="nm-navbar-links">
           {navItems.map((item) => (
-            <a
+            <Link
               key={item.label}
-              href={item.href}
+              to={item.href}
               className="nm-nav-link"
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </div>
 

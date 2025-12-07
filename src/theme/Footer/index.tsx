@@ -1,5 +1,6 @@
 import React, { type ComponentProps } from 'react';
 import Footer from '@theme-original/Footer';
+import Link from '@docusaurus/Link';
 import './styles.css';
 
 type FooterProps = ComponentProps<typeof Footer>;
@@ -48,11 +49,11 @@ function CustomFooter(): React.JSX.Element {
           <div className="nm-footer-section">
             <h4 className="nm-footer-heading">Resources</h4>
             <ul className="nm-footer-links">
-              <li><a href="/docs/part-1-foundations/chapter-1-what-is-physical-ai">Foundations</a></li>
-              <li><a href="/docs/part-2-ros/chapter-4-ros2-fundamentals">ROS & Navigation</a></li>
-              <li><a href="/docs/part-4-perception/chapter-13-computer-vision-robots">Computer Vision</a></li>
-              <li><a href="/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models">Machine Learning</a></li>
-              <li><a href="/docs/part-3-simulation/chapter-7-gazebo-physics-simulation">Simulation & Control</a></li>
+              <li><Link to="/docs/part-1-foundations/chapter-1-what-is-physical-ai">Foundations</Link></li>
+              <li><Link to="/docs/part-2-ros/chapter-4-ros2-fundamentals">ROS & Navigation</Link></li>
+              <li><Link to="/docs/part-4-perception/chapter-13-computer-vision-robots">Computer Vision</Link></li>
+              <li><Link to="/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models">Machine Learning</Link></li>
+              <li><Link to="/docs/part-3-simulation/chapter-7-gazebo-physics-simulation">Simulation & Control</Link></li>
             </ul>
           </div>
 
@@ -60,11 +61,11 @@ function CustomFooter(): React.JSX.Element {
           <div className="nm-footer-section">
             <h4 className="nm-footer-heading">Learning Paths</h4>
             <ul className="nm-footer-links">
-              <li><a href="/beginner">Beginner Track</a></li>
-              <li><a href="/intermediate">Intermediate Track</a></li>
-              <li><a href="/advanced">Advanced Track</a></li>
-              <li><a href="/projects">Hands-on Projects</a></li>
-              <li><a href="/certification">Certification</a></li>
+              <li><Link to="/beginner">Beginner Track</Link></li>
+              <li><Link to="/intermediate">Intermediate Track</Link></li>
+              <li><Link to="/advanced">Advanced Track</Link></li>
+              <li><Link to="/projects">Hands-on Projects</Link></li>
+              <li><Link to="/certification">Certification</Link></li>
             </ul>
           </div>
 
@@ -75,8 +76,8 @@ function CustomFooter(): React.JSX.Element {
               <li><a href="https://github.com/your-username/ai-native-textbook">GitHub</a></li>
               <li><a href="https://discord.gg/your-server">Discord</a></li>
               <li><a href="https://forum.example.com">Forum</a></li>
-              <li><a href="/contributors">Contributors</a></li>
-              <li><a href="/blog">Blog</a></li>
+              <li><Link to="/contributors">Contributors</Link></li>
+              <li><Link to="/blog">Blog</Link></li>
             </ul>
           </div>
 
@@ -122,11 +123,11 @@ function CustomFooter(): React.JSX.Element {
             </span>
           </div>
           <div className="nm-footer-bottom-right">
-            <a href="/privacy" className="nm-footer-link">Privacy Policy</a>
+            <Link to="/privacy" className="nm-footer-link">Privacy Policy</Link>
             <span className="nm-footer-separator">•</span>
-            <a href="/terms" className="nm-footer-link">Terms of Service</a>
+            <Link to="/terms" className="nm-footer-link">Terms of Service</Link>
             <span className="nm-footer-separator">•</span>
-            <a href="/code-of-conduct" className="nm-footer-link">Code of Conduct</a>
+            <Link to="/code-of-conduct" className="nm-footer-link">Code of Conduct</Link>
           </div>
         </div>
       </div>
