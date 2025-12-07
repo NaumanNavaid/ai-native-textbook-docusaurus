@@ -65,12 +65,14 @@ const bookStructure = [
 
 export default function BookSidebar(): React.JSX.Element {
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+  // Remove baseUrl for consistent matching
+  const cleanPath = currentPath.replace(/^\/ai-native-textbook-docusaurus/, '');
   const [expandedParts, setExpandedParts] = useState<Set<number>>(new Set());
 
   // Auto-expand the part containing the current page
   useEffect(() => {
-    const activePart = bookStructure.find(part => 
-      part.chapters.some(chapter => currentPath.endsWith(chapter.slug))
+    const activePart = bookStructure.find(part =>
+      part.chapters.some(chapter => cleanPath.endsWith(chapter.slug))
     );
     
     if (activePart) {
@@ -118,7 +120,7 @@ export default function BookSidebar(): React.JSX.Element {
 
         {bookStructure.map((part) => {
           const isExpanded = expandedParts.has(part.part);
-          const isActivePart = part.chapters.some(chapter => currentPath.endsWith(chapter.slug));
+          const isActivePart = part.chapters.some(chapter => cleanPath.endsWith(chapter.slug));
           
           return (
             <div key={part.part} className={clsx(styles.partSection, isActivePart && styles.partSectionActive)}>
@@ -143,7 +145,7 @@ export default function BookSidebar(): React.JSX.Element {
               {isExpanded && (
                 <div className={styles.chaptersList}>
                   {part.chapters.map((chapter) => {
-                    const isActive = currentPath.endsWith(chapter.slug);
+                    const isActive = cleanPath.endsWith(chapter.slug);
                     return (
                       <Link
                         key={chapter.num}

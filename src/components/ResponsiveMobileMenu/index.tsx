@@ -22,14 +22,17 @@ export default function ResponsiveMobileMenu({
   const { pageType, contextualNav, isBookPage } = usePageDetection();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
+  // Remove baseUrl from pathname for consistent checking
+  const cleanPath = location.pathname.replace(/^\/ai-native-textbook-docusaurus/, '');
+
   // Check if we're on a chapter page (book layout)
-  const isChapterPage = location.pathname.includes('/docs/part-') &&
-                       (location.pathname.includes('chapter-') ||
-                        location.pathname.includes('/part-1-') ||
-                        location.pathname.includes('/part-2-') ||
-                        location.pathname.includes('/part-3-') ||
-                        location.pathname.includes('/part-4-') ||
-                        location.pathname.includes('/part-5-'));
+  const isChapterPage = cleanPath.includes('/docs/part-') &&
+                       (cleanPath.includes('chapter-') ||
+                        cleanPath.includes('/part-1-') ||
+                        cleanPath.includes('/part-2-') ||
+                        cleanPath.includes('/part-3-') ||
+                        cleanPath.includes('/part-4-') ||
+                        cleanPath.includes('/part-5-'));
 
   // Auto-expand current category
   useEffect(() => {
