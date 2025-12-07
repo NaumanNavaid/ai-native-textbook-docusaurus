@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import clsx from 'clsx';
 import styles from './styles.module.css';
-import { BookOpen, Cpu, Zap, Globe, Brain, CircuitBoard } from 'lucide-react';
+import { BookOpen, Cpu, Zap, Globe, Brain, CircuitBoard, ChevronRight, ChevronDown } from 'lucide-react';
 
 const bookStructure = [
   {
@@ -65,6 +65,30 @@ const bookStructure = [
 
 export default function BookSidebar(): React.JSX.Element {
   const currentPath = typeof window !== 'undefined' ? window.location.pathname : '';
+  const [expandedParts, setExpandedParts] = useState<Set<number>>(new Set());
+
+  // Auto-expand the part containing the current page
+  useEffect(() => {
+    const activePart = bookStructure.find(part => 
+      part.chapters.some(chapter => currentPath.endsWith(chapter.slug))
+    );
+    
+    if (activePart) {
+      setExpandedParts(prev => new Set(prev).add(activePart.part));
+    }
+  }, [currentPath]);
+
+  const togglePart = (partNum: number) => {
+    setExpandedParts(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(partNum)) {
+        newSet.delete(partNum);
+      } else {
+        newSet.add(partNum);
+      }
+      return newSet;
+    });
+  };
 
   return (
     <nav className={styles.bookSidebarNav}>
@@ -92,34 +116,53 @@ export default function BookSidebar(): React.JSX.Element {
           </div>
         </div>
 
-        {bookStructure.map((part) => (
-          <div key={part.part} className={styles.partSection}>
-            <div className={styles.partHeader}>
-              <span className={styles.partIcon}>{part.icon}</span>
-              <span className={styles.partTitle}>
-                Part {part.part}: {part.title}
-              </span>
+        {bookStructure.map((part) => {
+          const isExpanded = expandedParts.has(part.part);
+          const isActivePart = part.chapters.some(chapter => currentPath.endsWith(chapter.slug));
+          
+          return (
+            <div key={part.part} className={clsx(styles.partSection, isActivePart && styles.partSectionActive)}>
+              <button 
+                className={styles.partHeader}
+                onClick={() => togglePart(part.part)}
+                aria-expanded={isExpanded}
+              >
+                <div className={styles.partHeaderContent}>
+                  <span className={styles.partIcon}>{part.icon}</span>
+                  <span className={styles.partTitle}>
+                    Part {part.part}: {part.title}
+                  </span>
+                </div>
+                {isExpanded ? (
+                  <ChevronDown className="w-4 h-4 opacity-50" />
+                ) : (
+                  <ChevronRight className="w-4 h-4 opacity-50" />
+                )}
+              </button>
+              
+              {isExpanded && (
+                <div className={styles.chaptersList}>
+                  {part.chapters.map((chapter) => {
+                    const isActive = currentPath.endsWith(chapter.slug);
+                    return (
+                      <Link
+                        key={chapter.num}
+                        to={chapter.slug}
+                        className={clsx(
+                          styles.chapterLink,
+                          isActive && styles.chapterLinkActive
+                        )}
+                      >
+                        <span className={styles.chapterNumber}>{chapter.num}.</span>
+                        <span className={styles.chapterTitle}>{chapter.title}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-            <div className={styles.chaptersList}>
-              {part.chapters.map((chapter) => {
-                const isActive = currentPath.endsWith(chapter.slug);
-                return (
-                  <Link
-                    key={chapter.num}
-                    to={chapter.slug}
-                    className={clsx(
-                      styles.chapterLink,
-                      isActive && styles.chapterLinkActive
-                    )}
-                  >
-                    <span className={styles.chapterNumber}>{chapter.num}.</span>
-                    <span className={styles.chapterTitle}>{chapter.title}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </nav>
   );

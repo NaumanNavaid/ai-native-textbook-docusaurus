@@ -425,3 +425,70 @@
 .bookLayout :global(.table-of-contents) {
   display: none !important;
 }
+
+/* Book Breadcrumbs */
+.bookBreadcrumbs {
+  padding: 0.75rem 0 1.5rem 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+}
+
+.breadcrumbList {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.breadcrumbItem {
+  display: flex;
+  align-items: center;
+  color: #e0e0e0;
+}
+
+.breadcrumbLink {
+  color: #00d9ff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumbLink:hover {
+  color: #ffffff;
+}
+
+.breadcrumbCurrent {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.breadcrumbSeparator {
+  margin: 0 0.75rem;
+  color: #666;
+}
+
+/* Mobile breadcrumbs */
+@media (max-width: 768px) {
+  .bookBreadcrumbs {
+    padding: 0.5rem 0 1rem 0;
+    margin-bottom: 0.75rem;
+  }
+
+  .breadcrumbList {
+    font-size: 0.75rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .breadcrumbList::-webkit-scrollbar {
+    display: none;
+  }
+
+  .breadcrumbSeparator {
+    margin: 0 0.5rem;
+  }
+}

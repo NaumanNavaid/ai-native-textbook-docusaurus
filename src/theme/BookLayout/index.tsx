@@ -5,7 +5,8 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import BookSidebar from './BookSidebar';
 import BookFooter from './BookFooter';
 import BookHeader from './BookHeader';
-import MobileSidebar from '../../components/MobileSidebar';
+import BookBreadcrumbs from './BookBreadcrumbs';
+import ResponsiveMobileMenu from '../../components/ResponsiveMobileMenu';
 import styles from './styles.module.css';
 
 export default function BookLayout({children}): React.JSX.Element {
@@ -25,12 +26,11 @@ export default function BookLayout({children}): React.JSX.Element {
     <div className={styles.bookLayout}>
       <BookHeader onToggleSidebar={() => setIsMobileSidebarOpen(true)} />
       
-      <MobileSidebar 
-        isOpen={isMobileSidebarOpen} 
-        onClose={() => setIsMobileSidebarOpen(false)} 
-      >
-        <BookSidebar />
-      </MobileSidebar>
+      <ResponsiveMobileMenu
+        isOpen={isMobileSidebarOpen}
+        onClose={() => setIsMobileSidebarOpen(false)}
+        className="book-mobile-menu"
+      />
 
       <div className={styles.bookContainer}>
         {/* Desktop Sidebar - hidden on mobile via CSS */}
@@ -40,6 +40,7 @@ export default function BookLayout({children}): React.JSX.Element {
 
         <main className={styles.bookMain}>
           <div className={styles.bookContent}>
+            <BookBreadcrumbs />
             {children}
           </div>
         </main>

@@ -748,6 +748,94 @@ body.book-layout-active footer:not(.nm-custom-footer):not(.bookFooter) {
   display: none !important;
 }
 
+/* Book mobile menu specific styles */
+.book-mobile-menu.responsive-menu-container {
+  background-color: #0b0b0c;
+  border-right: 1px solid rgba(0, 217, 255, 0.1);
+  z-index: 10000;
+}
+
+.book-mobile-menu .responsive-menu-backdrop {
+  z-index: 9999;
+}
+
+.book-mobile-menu .responsive-menu-header {
+  background-color: #0b0b0c;
+  border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+}
+
+.book-mobile-menu .responsive-menu-title {
+  color: #00d9ff;
+}
+
+.book-mobile-menu .nav-link {
+  color: #ffffff;
+  border-radius: 6px;
+  margin: 0.25rem 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.book-mobile-menu .nav-link:hover {
+  background-color: rgba(0, 217, 255, 0.1);
+  color: #00d9ff;
+}
+
+.book-mobile-menu .nav-link.active {
+  background-color: rgba(0, 217, 255, 0.2);
+  color: #00d9ff;
+  font-weight: 600;
+}
+
+.book-mobile-menu .nav-category {
+  color: #e0e0e0;
+  margin: 0.25rem 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.book-mobile-menu .nav-category:hover {
+  background-color: rgba(0, 217, 255, 0.05);
+}
+
+.book-mobile-menu .nav-category.expanded {
+  background-color: rgba(0, 217, 255, 0.1);
+  color: #00d9ff;
+}
+
+.book-mobile-menu .nav-category-label {
+  font-weight: 600;
+  font-family: var(--ifm-font-family-monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+}
+
+.book-mobile-menu .nav-children {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  margin: 0.25rem 0;
+}
+
+.book-mobile-menu .nav-item-depth-1 .nav-link {
+  padding-left: 2.75rem;
+  font-size: 0.9rem;
+}
+
+.book-mobile-menu .nav-link-icon {
+  color: #00d9ff;
+  margin-right: 0.75rem;
+}
+
+.book-mobile-menu .nav-category-chevron {
+  color: #00d9ff;
+  transition: transform 0.2s ease;
+}
+
+.book-mobile-menu .nav-category-chevron.expanded {
+  transform: rotate(90deg);
+}
+
 /* Animation utilities */
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(10px); }

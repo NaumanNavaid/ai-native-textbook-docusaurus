@@ -18,7 +18,7 @@ export default function ResponsiveMobileMenu({
   className = '',
 }: ResponsiveMobileMenuProps): React.JSX.Element {
   const location = useLocation();
-  const { pageType, contextualNav } = usePageDetection();
+  const { pageType, contextualNav, isBookPage } = usePageDetection();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
   // Auto-expand current category
@@ -184,7 +184,7 @@ export default function ResponsiveMobileMenu({
               <div className="responsive-menu-title">
                 <Menu className="w-5 h-5" />
                 <span>
-                  {pageType === 'docs' ? 'Documentation' : 'Menu'}
+                  {isBookPage ? 'Book Contents' : pageType === 'docs' ? 'Documentation' : 'Menu'}
                 </span>
                 <button
                   className="responsive-menu-close-button"
