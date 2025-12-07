@@ -1,0 +1,1126 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-part-4-perception/chapter-13-computer-vision-robots" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Computer Vision for Robots | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Computer Vision for Robots | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="13.1 Computer Vision Fundamentals"><meta data-rh="true" property="og:description" content="13.1 Computer Vision Fundamentals"><link data-rh="true" rel="icon" href="/ai-native-textbook-docusaurus/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots" hreflang="en"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Computer Vision for Robots","item":"https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"}]}</script><link rel="alternate" type="application/rss+xml" href="/ai-native-textbook-docusaurus/blog/rss.xml" title="Physical AI &amp; Humanoid Robotics RSS Feed">
+<link rel="alternate" type="application/atom+xml" href="/ai-native-textbook-docusaurus/blog/atom.xml" title="Physical AI &amp; Humanoid Robotics Atom Feed"><link rel="stylesheet" href="/ai-native-textbook-docusaurus/assets/css/styles.6e378bed.css">
+<script src="/ai-native-textbook-docusaurus/assets/js/runtime~main.5e3ab4fa.js" defer="defer"></script>
+<script src="/ai-native-textbook-docusaurus/assets/js/main.17a86997.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav class="nm-custom-navbar"><div class="nm-navbar-container"><div class="nm-navbar-logo"><a class="nm-logo-link" href="/ai-native-textbook-docusaurus/"><div class="nm-logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="currentColor"></rect><path d="M8 16C8 11.5817 11.5817 8 16 8C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24C11.5817 24 8 20.4183 8 16Z" fill="var(--ifm-background-color)"></path><path d="M12 16L16 12L20 16M16 12V20" stroke="var(--ifm-color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="nm-logo-text"><span class="nm-logo-title">Physical AI</span><span class="nm-logo-subtitle">&amp; Robotics</span></div></a></div><div class="nm-navbar-links"><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/">Home</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/about">About</a></div><div class="nm-navbar-actions"><div class="nm-search-container" style="margin-right:1rem"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div><button class="nm-action-button color-mode-toggle" aria-label="Toggle dark mode"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button><a href="https://github.com/NaumanNavaid/hackathon-1" class="nm-action-button" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><button class="nm-mobile-menu-toggle" aria-label="Toggle mobile menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu w-6 h-6" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button></div></div></nav><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/ai-native-textbook-docusaurus/"><b class="navbar__title text--truncate">Physical AI &amp; Robotics</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/ai-native-textbook-docusaurus/">Home</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai"><span title="Part 1: Foundations" class="categoryLinkLabel_W154">Part 1: Foundations</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals"><span title="Part 2: ROS Fundamentals" class="categoryLinkLabel_W154">Part 2: ROS Fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation"><span title="Part 3: Simulation &amp; Digital Twins" class="categoryLinkLabel_W154">Part 3: Simulation &amp; Digital Twins</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"><span title="Part 4: Perception &amp; State Estimation" class="categoryLinkLabel_W154">Part 4: Perception &amp; State Estimation</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"><span title="Computer Vision for Robots" class="linkLabel_WmDU">Computer Vision for Robots</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-14-sensor-fusion-state-estimation"><span title="Sensor Fusion and State Estimation" class="linkLabel_WmDU">Sensor Fusion and State Estimation</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-15-slam-vslam-navigation"><span title="SLAM, VSLAM, and Navigation" class="linkLabel_WmDU">SLAM, VSLAM, and Navigation</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-16-path-planning-algorithms"><span title="Path Planning Algorithms" class="linkLabel_WmDU">Path Planning Algorithms</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models"><span title="Part 5: Embodied Intelligence" class="categoryLinkLabel_W154">Part 5: Embodied Intelligence</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/ai-native-textbook-docusaurus/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Part 4: Perception &amp; State Estimation</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Computer Vision for Robots</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="chapter-13-computer-vision-for-robots">Chapter 13: Computer Vision for Robots</h1></header>
+<h2 id="131-computer-vision-fundamentals">13.1 Computer Vision Fundamentals</h2>
+<h3 id="1311-vision-in-robotics">13.1.1 Vision in Robotics</h3>
+<p>Computer vision enables robots to perceive, understand, and interact with their environment through visual information. Unlike human vision, robotic vision systems must extract quantitatively precise information for decision-making and control.</p>
+<admonition type="info"><p>Robotic computer vision differs from general computer vision in its emphasis on real-time performance, 3D spatial understanding, and action-oriented perception. While general CV focuses on image interpretation, robotic CV must convert visual information into actionable control signals.</p></admonition>
+<h3 id="1312-image-formation-and-camera-models">13.1.2 Image Formation and Camera Models</h3>
+<p>Understanding how cameras capture the physical world is fundamental:</p>
+<h4 id="pinhole-camera-model">Pinhole Camera Model</h4>
+<p>The pinhole camera model provides the mathematical foundation for understanding image formation:</p>
+<span class="katex-error" title="ParseError: KaTeX parse error: Can&#x27;t use function &#x27;$&#x27; in math mode at position 33: …y = f * (Y / Z)$̲$
+
+Where:
+- …" style="color:#cc0000">x = f * (X / Z)
+y = f * (Y / Z)$$
+
+Where:
+- (x, y) = Image coordinates
+- (X, Y, Z) = World coordinates
+- f = Focal length
+
+```python
+class PinholeCamera:
+    def __init__(self, focal_length, image_width, image_height):
+        self.focal_length = focal_length
+        self.image_width = image_width
+        self.image_height = image_height
+
+        # Camera intrinsic matrix
+        self.intrinsic_matrix = np.array([
+            [focal_length, 0, image_width / 2],
+            [0, focal_length, image_height / 2],
+            [0, 0, 1]
+        ])
+
+        # Camera extrinsic matrix (position and orientation)
+        self.extrinsic_matrix = np.eye(4)
+
+    def world_to_pixel(self, world_point):
+        &quot;&quot;&quot;Convert world coordinates to pixel coordinates&quot;&quot;&quot;
+        # Convert world point to homogeneous coordinates
+        world_homo = np.append(world_point, 1)
+
+        # Apply extrinsic transformation (world to camera)
+        camera_point = self.extrinsic_matrix @ world_homo
+        camera_point = camera_point[:3]
+
+        # Apply intrinsic projection (camera to image)
+        image_point_homo = self.intrinsic_matrix @ camera_point
+        image_point = image_point_homo / image_point_homo[2]
+
+        # Convert to pixel coordinates
+        pixel_x = int(image_point[0])
+        pixel_y = int(image_point[1])
+
+        return pixel_x, pixel_y
+
+    def pixel_to_ray(self, pixel_x, pixel_y):
+        &quot;&quot;&quot;Convert pixel coordinates to camera ray&quot;&quot;&quot;
+        # Convert pixel to normalized coordinates
+        x = (pixel_x - self.intrinsic_matrix[0, 2]) / self.intrinsic_matrix[0, 0]
+        y = (pixel_y - self.intrinsic_matrix[1, 2]) / self.intrinsic_matrix[1, 1]
+
+        # Create ray in camera coordinates
+        ray_direction = np.array([x, y, 1.0])
+        ray_direction = ray_direction / np.linalg.norm(ray_direction)
+
+        # Transform to world coordinates
+        rotation = self.extrinsic_matrix[:3, :3]
+        translation = self.extrinsic_matrix[:3, 3]
+
+        world_origin = translation
+        world_direction = rotation @ ray_direction
+
+        return world_origin, world_direction
+
+    def project_3d_points(self, points_3d):
+        &quot;&quot;&quot;Project 3D points to image plane&quot;&quot;&quot;
+        pixels = []
+        depths = []
+
+        for point in points_3d:
+            pixel_x, pixel_y = self.world_to_pixel(point)
+            pixels.append([pixel_x, pixel_y])
+
+            # Calculate depth
+            camera_point = self.extrinsic_matrix @ np.append(point, 1)
+            depths.append(camera_point[2])
+
+        return np.array(pixels), np.array(depths)
+```
+
+#### Lens Distortion Correction
+Real cameras exhibit lens distortion that must be corrected:
+
+```python
+class LensDistortionModel:
+    def __init__(self, k1=0.0, k2=0.0, k3=0.0, p1=0.0, p2=0.0):
+        # Radial distortion coefficients
+        self.k1 = k1
+        self.k2 = k2
+        self.k3 = k3
+
+        # Tangential distortion coefficients
+        self.p1 = p1
+        self.p2 = p2
+
+    def distort_point(self, x, y):
+        &quot;&quot;&quot;Apply lens distortion to normalized coordinates&quot;&quot;&quot;
+        r_squared = x**2 + y**2
+
+        # Radial distortion
+        radial_factor = 1 + self.k1 * r_squared + self.k2 * r_squared**2 + self.k3 * r_squared**3
+        x_distorted = x * radial_factor
+        y_distorted = y * radial_factor
+
+        # Tangential distortion
+        x_distorted += 2 * self.p1 * x * y + self.p2 * (r_squared + 2 * x**2)
+        y_distorted += self.p1 * (r_squared + 2 * y**2) + 2 * self.p2 * x * y
+
+        return x_distorted, y_distorted
+
+    def undistort_point(self, x_distorted, y_distorted, iterations=10):
+        &quot;&quot;&quot;Remove lens distortion using iterative method&quot;&quot;&quot;
+        x, y = x_distorted, y_distorted
+
+        for _ in range(iterations):
+            # Calculate distortion at current estimate
+            x_d, y_d = self.distort_point(x, y)
+
+            # Update estimate
+            x = x + (x_distorted - x_d)
+            y = y + (y_distorted - y_d)
+
+        return x, y
+
+    def undistort_image(self, image):
+        &quot;&quot;&quot;Undistort entire image&quot;&quot;&quot;
+        height, width = image.shape[:2]
+        undistorted = np.zeros_like(image)
+
+        # Create coordinate grids
+        y_coords, x_coords = np.mgrid[0:height, 0:width]
+
+        # Convert to normalized coordinates
+        cx, cy = width // 2, height // 2
+        fx = fy = max(width, height)  # Approximate focal length
+
+        x_norm = (x_coords - cx) / fx
+        y_norm = (y_coords - cy) / fy
+
+        # Undistort coordinates
+        for i in range(height):
+            for j in range(width):
+                x_undist, y_undist = self.undistort_point(x_norm[i, j], y_norm[i, j])
+
+                # Convert back to pixel coordinates
+                px = int(x_undist * fx + cx)
+                py = int(y_undist * fy + cy)
+
+                # Check bounds
+                if 0 &lt;= px &lt; width and 0 &lt;= py &lt; height:
+                    undistorted[i, j] = image[py, px]
+
+        return undistorted
+```
+
+## 13.2 Image Processing and Feature Extraction
+
+### 13.2.1 Preprocessing Techniques
+
+Image preprocessing prepares raw visual data for higher-level analysis:
+
+```python
+class ImagePreprocessor:
+    def __init__(self):
+        self.gaussian_kernel = None
+        self.sobel_x = None
+        self.sobel_y = None
+
+    def preprocess_pipeline(self, image, operations=None):
+        &quot;&quot;&quot;Apply preprocessing pipeline&quot;&quot;&quot;
+        if operations is None:
+            operations = [&#x27;denoise&#x27;, &#x27;normalize&#x27;, &#x27;sharpen&#x27;]
+
+        processed = image.copy()
+
+        for operation in operations:
+            if operation == &#x27;denoise&#x27;:
+                processed = self.denoise(processed)
+            elif operation == &#x27;normalize&#x27;:
+                processed = self.normalize(processed)
+            elif operation == &#x27;sharpen&#x27;:
+                processed = self.sharpen(processed)
+            elif operation == &#x27;histogram_equalization&#x27;:
+                processed = self.histogram_equalization(processed)
+            elif operation == &#x27;contrast_enhancement&#x27;:
+                processed = self.enhance_contrast(processed)
+
+        return processed
+
+    def denoise(self, image):
+        &quot;&quot;&quot;Apply Gaussian denoising&quot;&quot;&quot;
+        # Create Gaussian kernel
+        if self.gaussian_kernel is None:
+            size = 5
+            sigma = 1.0
+            self.gaussian_kernel = self._create_gaussian_kernel(size, sigma)
+
+        # Apply convolution
+        return self._convolve(image, self.gaussian_kernel)
+
+    def _create_gaussian_kernel(self, size, sigma):
+        &quot;&quot;&quot;Create Gaussian kernel&quot;&quot;&quot;
+        kernel = np.zeros((size, size))
+        center = size // 2
+
+        for i in range(size):
+            for j in range(size):
+                x, y = i - center, j - center
+                kernel[i, j] = np.exp(-(x**2 + y**2) / (2 * sigma**2))
+
+        return kernel / kernel.sum()
+
+    def edge_detection(self, image, method=&#x27;canny&#x27;, **kwargs):
+        &quot;&quot;&quot;Detect edges in image&quot;&quot;&quot;
+        if method == &#x27;sobel&#x27;:
+            return self._sobel_edge_detection(image)
+        elif method == &#x27;canny&#x27;:
+            return self._canny_edge_detection(image, **kwargs)
+        elif method == &#x27;laplacian&#x27;:
+            return self._laplacian_edge_detection(image)
+
+    def _canny_edge_detection(self, image, low_threshold=50, high_threshold=150):
+        &quot;&quot;&quot;Canny edge detection implementation&quot;&quot;&quot;
+        # Convert to grayscale if needed
+        if len(image.shape) == 3:
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        else:
+            gray = image
+
+        # Gaussian blur
+        blurred = cv2.GaussianBlur(gray, (5, 5), 1.4)
+
+        # Gradient calculation using Sobel
+        grad_x = cv2.Sobel(blurred, cv2.CV_64F, 1, 0, ksize=3)
+        grad_y = cv2.Sobel(blurred, cv2.CV_64F, 0, 1, ksize=3)
+
+        gradient_magnitude = np.sqrt(grad_x**2 + grad_y**2)
+        gradient_direction = np.arctan2(grad_y, grad_x)
+
+        # Non-maximum suppression
+        suppressed = self._non_maximum_suppression(gradient_magnitude, gradient_direction)
+
+        # Double thresholding
+        strong_edges = (suppressed &gt; high_threshold)
+        weak_edges = (suppressed &gt;= low_threshold) &amp; (suppressed &lt;= high_threshold)
+
+        # Edge tracking by hysteresis
+        edges = self._edge_tracking(strong_edges, weak_edges)
+
+        return edges.astype(np.uint8) * 255
+
+    def _non_maximum_suppression(self, magnitude, direction):
+        &quot;&quot;&quot;Non-maximum suppression for edge thinning&quot;&quot;&quot;
+        suppressed = np.zeros_like(magnitude)
+        angle = np.rad2deg(direction) % 180
+
+        for i in range(1, magnitude.shape[0] - 1):
+            for j in range(1, magnitude.shape[1] - 1):
+                # Determine gradient direction
+                if (0 &lt;= angle[i, j] &lt; 22.5) or (157.5 &lt;= angle[i, j] &lt;= 180):
+                    q, r = magnitude[i, j + 1], magnitude[i, j - 1]
+                elif 22.5 &lt;= angle[i, j] &lt; 67.5:
+                    q, r = magnitude[i + 1, j - 1], magnitude[i - 1, j + 1]
+                elif 67.5 &lt;= angle[i, j] &lt; 112.5:
+                    q, r = magnitude[i + 1, j], magnitude[i - 1, j]
+                elif 112.5 &lt;= angle[i, j] &lt; 157.5:
+                    q, r = magnitude[i - 1, j - 1], magnitude[i + 1, j + 1]
+
+                # Suppress non-maximum pixels
+                if (magnitude[i, j] &gt;= q) and (magnitude[i, j] &gt;= r):
+                    suppressed[i, j] = magnitude[i, j]
+
+        return suppressed
+```
+
+### 13.2.2 Feature Detection and Description
+
+Extracting stable features is crucial for visual odometry and object recognition:
+
+```python
+class FeatureExtractor:
+    def __init__(self):
+        self.feature_detectors = {
+            &#x27;harris&#x27;: self._harris_corner_detector,
+            &#x27;shi_tomasi&#x27;: self._shi_tomasi_corner_detector,
+            &#x27;sift&#x27;: self._sift_detector,
+            &#x27;orb&#x27;: self._orb_detector,
+            &#x27;surf&#x27;: self._surf_detector
+        }
+
+    def extract_features(self, image, method=&#x27;orb&#x27;, max_features=500):
+        &quot;&quot;&quot;Extract features from image&quot;&quot;&quot;
+        if method not in self.feature_detectors:
+            raise ValueError(f&quot;Unsupported feature detection method: {method}&quot;)
+
+        keypoints, descriptors = self.feature_detectors[method](image, max_features)
+
+        return keypoints, descriptors
+
+    def _orb_detector(self, image, max_features):
+        &quot;&quot;&quot;ORB feature detector implementation&quot;&quot;&quot;
+        import cv2
+
+        # Initialize ORB detector
+        orb = cv2.ORB_create(nfeatures=max_features)
+
+        # Find keypoints and compute descriptors
+        keypoints, descriptors = orb.detectAndCompute(image, None)
+
+        return keypoints, descriptors
+
+    def _harris_corner_detector(self, image, max_features):
+        &quot;&quot;&quot;Harris corner detector&quot;&quot;&quot;
+        import cv2
+
+        # Convert to grayscale
+        if len(image.shape) == 3:
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        else:
+            gray = image
+
+        # Harris corner detection
+        corners = cv2.goodFeaturesToTrack(
+            gray,
+            maxCorners=max_features,
+            qualityLevel=0.01,
+            minDistance=10,
+            blockSize=3
+        )
+
+        # Convert to keypoints
+        keypoints = []
+        if corners is not None:
+            for corner in corners:
+                x, y = corner.ravel()
+                kp = cv2.KeyPoint(x, y, 1)
+                keypoints.append(kp)
+
+        # Extract simple descriptors (patch around each keypoint)
+        descriptors = []
+        patch_size = 9
+
+        for kp in keypoints:
+            x, y = int(kp.pt[0]), int(kp.pt[1])
+
+            # Extract patch
+            patch = self._extract_patch(gray, x, y, patch_size)
+            descriptor = patch.flatten()
+            descriptors.append(descriptor)
+
+        return keypoints, np.array(descriptors) if descriptors else None
+
+    def match_features(self, desc1, desc2, method=&#x27;bfm&#x27;, ratio_threshold=0.75):
+        &quot;&quot;&quot;Match features between two descriptor sets&quot;&quot;&quot;
+        if desc1 is None or desc2 is None:
+            return []
+
+        if method == &#x27;bfm&#x27;:
+            return self._brute_force_matcher(desc1, desc2, ratio_threshold)
+        elif method == &#x27;flann&#x27;:
+            return self._flann_matcher(desc1, desc2, ratio_threshold)
+
+    def _brute_force_matcher(self, desc1, desc2, ratio_threshold):
+        &quot;&quot;&quot;Brute force feature matching&quot;&quot;&quot;
+        import cv2
+
+        # Create BFMatcher
+        bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
+
+        # Match descriptors
+        matches = bf.knnMatch(desc1, desc2, k=2)
+
+        # Apply ratio test
+        good_matches = []
+        for match_pair in matches:
+            if len(match_pair) == 2:
+                m, n = match_pair
+                if m.distance &lt; ratio_threshold * n.distance:
+                    good_matches.append(m)
+
+        return good_matches
+
+class VisualOdometry:
+    def __init__(self, camera_parameters):
+        self.camera = PinholeCamera(
+            camera_parameters[&#x27;focal_length&#x27;],
+            camera_parameters[&#x27;image_width&#x27;],
+            camera_parameters[&#x27;image_height&#x27;]
+        )
+        self.feature_extractor = FeatureExtractor()
+        self.prev_image = None
+        self.prev_keypoints = None
+        self.prev_descriptors = None
+        self.pose = np.eye(4)  # Initial pose
+
+    def estimate_motion(self, current_image):
+        &quot;&quot;&quot;Estimate camera motion from consecutive images&quot;&quot;&quot;
+        if self.prev_image is None:
+            # First frame
+            self.prev_image = current_image
+            self.prev_keypoints, self.prev_descriptors = self.feature_extractor.extract_features(current_image)
+            return self.pose
+
+        # Extract features from current frame
+        curr_keypoints, curr_descriptors = self.feature_extractor.extract_features(current_image)
+
+        # Match features
+        matches = self.feature_extractor.match_features(
+            self.prev_descriptors,
+            curr_descriptors
+        )
+
+        if len(matches) &lt; 10:  # Not enough matches
+            return self.pose
+
+        # Extract matched keypoints
+        prev_pts = np.array([self.prev_keypoints[m.queryIdx].pt for m in matches])
+        curr_pts = np.array([curr_keypoints[m.trainIdx].pt for m in matches])
+
+        # Estimate motion using Essential matrix
+        E, mask = cv2.findEssentialMat(prev_pts, curr_pts, self.camera.intrinsic_matrix, method=cv2.RANSAC)
+
+        # Recover relative pose
+        _, R, t, mask = cv2.recoverPose(E, prev_pts, curr_pts, self.camera.intrinsic_matrix)
+
+        # Update pose
+        T = np.eye(4)
+        T[:3, :3] = R
+        T[:3, 3] = t.flatten()
+
+        self.pose = self.pose @ T
+
+        # Update previous frame
+        self.prev_image = current_image
+        self.prev_keypoints = curr_keypoints
+        self.prev_descriptors = curr_descriptors
+
+        return self.pose
+```
+
+## 13.3 Object Detection and Recognition
+
+### 13.3.1 Deep Learning for Object Detection
+
+Modern object detection uses deep neural networks:
+
+```python
+class YOLODetector:
+    def __init__(self, config_path, weights_path, class_names):
+        self.config_path = config_path
+        self.weights_path = weights_path
+        self.class_names = class_names
+        self.net = None
+        self.load_model()
+
+    def load_model(self):
+        &quot;&quot;&quot;Load YOLO model&quot;&quot;&quot;
+        import cv2
+        import numpy as np
+
+        # Load network
+        self.net = cv2.dnn.readNetFromDarknet(self.config_path, self.weights_path)
+
+        # Use GPU if available
+        if cv2.cuda.getCudaEnabledDeviceCount() &gt; 0:
+            self.net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+            self.net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+
+    def detect_objects(self, image, confidence_threshold=0.5, nms_threshold=0.4):
+        &quot;&quot;&quot;Detect objects in image&quot;&quot;&quot;
+        # Get output layer names
+        layer_names = self.net.getLayerNames()
+        output_layers = [layer_names[i[0] - 1] for i in self.net.getUnconnectedOutLayers()]
+
+        # Prepare image
+        blob = cv2.dnn.blobFromImage(
+            image,
+            1/255.0,
+            (416, 416),
+            swapRB=True,
+            crop=False
+        )
+
+        # Forward pass
+        self.net.setInput(blob)
+        outputs = self.net.forward(output_layers)
+
+        # Process detections
+        boxes = []
+        confidences = []
+        class_ids = []
+
+        for output in outputs:
+            for detection in output:
+                scores = detection[5:]
+                class_id = np.argmax(scores)
+                confidence = scores[class_id]
+
+                if confidence &gt; confidence_threshold:
+                    # Object detected
+                    center_x = int(detection[0] * image.shape[1])
+                    center_y = int(detection[1] * image.shape[0])
+                    width = int(detection[2] * image.shape[1])
+                    height = int(detection[3] * image.shape[0])
+
+                    # Rectangle coordinates
+                    x = int(center_x - width / 2)
+                    y = int(center_y - height / 2)
+
+                    boxes.append([x, y, width, height])
+                    confidences.append(float(confidence))
+                    class_ids.append(class_id)
+
+        # Apply Non-Maximum Suppression
+        indices = cv2.dnn.NMSBoxes(
+            boxes,
+            confidences,
+            confidence_threshold,
+            nms_threshold
+        )
+
+        detections = []
+        if len(indices) &gt; 0:
+            for i in indices.flatten():
+                x, y, w, h = boxes[i]
+                confidence = confidences[i]
+                class_id = class_ids[i]
+                class_name = self.class_names[class_id]
+
+                detection = {
+                    &#x27;bbox&#x27;: [x, y, x + w, y + h],
+                    &#x27;confidence&#x27;: confidence,
+                    &#x27;class_id&#x27;: class_id,
+                    &#x27;class_name&#x27;: class_name
+                }
+                detections.append(detection)
+
+        return detections
+
+class ObjectTracker:
+    def __init__(self, max_disappeared=50, max_distance=50):
+        self.next_object_id = 0
+        self.objects = {}
+        self.disappeared = {}
+        self.max_disappeared = max_disappeared
+        self.max_distance = max_distance
+
+    def register(self, centroid):
+        &quot;&quot;&quot;Register new object&quot;&quot;&quot;
+        self.objects[self.next_object_id] = {
+            &#x27;centroid&#x27;: centroid,
+            &#x27;bbox&#x27;: None,
+            &#x27;history&#x27;: [centroid],
+            &#x27;class_name&#x27;: None
+        }
+        self.disappeared[self.next_object_id] = 0
+        self.next_object_id += 1
+
+    def deregister(self, object_id):
+        &quot;&quot;&quot;Deregister object&quot;&quot;&quot;
+        del self.objects[object_id]
+        del self.disappeared[object_id]
+
+    def update(self, detections):
+        &quot;&quot;&quot;Update tracking with new detections&quot;&quot;&quot;
+        if len(detections) == 0:
+            # Mark all existing objects as disappeared
+            for object_id in list(self.disappeared.keys()):
+                self.disappeared[object_id] += 1
+
+                if self.disappeared[object_id] &gt; self.max_disappeared:
+                    self.deregister(object_id)
+
+            return self.objects
+
+        # Initialize new centroids
+        input_centroids = np.zeros((len(detections), 2), dtype=&quot;int&quot;)
+        input_bboxes = []
+
+        for (i, detection) in enumerate(detections):
+            x1, y1, x2, y2 = detection[&#x27;bbox&#x27;]
+            cX = int((x1 + x2) / 2.0)
+            cY = int((y1 + y2) / 2.0)
+            input_centroids[i] = (cX, cY)
+            input_bboxes.append(detection[&#x27;bbox&#x27;])
+
+        # If no objects currently tracked, register all detections
+        if len(self.objects) == 0:
+            for i in range(len(input_centroids)):
+                self.register(input_centroids[i])
+
+        else:
+            # Get current object centroids
+            object_centroids = list(
+                obj[&#x27;centroid&#x27;] for obj in self.objects.values()
+            )
+
+            # Compute distance between each pair
+            D = dist.cdist(np.array(object_centroids), input_centroids)
+
+            # Find minimum distance for each object
+            rows = D.min(axis=1).argsort()
+            cols = D.argmin(axis=1)[rows]
+
+            # Keep track of used row and column indices
+            used_row_idxs = set()
+            used_col_idxs = set()
+
+            # Loop over the combination of the (row, column) index tuples
+            for (row, col) in zip(rows, cols):
+                # If we have already examined either the row or column, ignore it
+                if row in used_row_idxs or col in used_col_idxs:
+                    continue
+
+                # If distance is greater than maximum distance, do not associate
+                if D[row, col] &gt; self.max_distance:
+                    continue
+
+                # Get object ID
+                object_id = list(self.objects.keys())[row]
+
+                # Update object centroid and bbox
+                self.objects[object_id][&#x27;centroid&#x27;] = input_centroids[col]
+                self.objects[object_id][&#x27;bbox&#x27;] = input_bboxes[col]
+                self.objects[object_id][&#x27;history&#x27;].append(input_centroids[col])
+
+                # Reset disappeared counter
+                self.disappeared[object_id] = 0
+
+                # Mark as used
+                used_row_idxs.add(row)
+                used_col_idxs.add(col)
+
+            # Compute unused row and column indices
+            unused_row_idxs = set(range(0, D.shape[0])).difference(used_row_idxs)
+            unused_col_idxs = set(range(0, D.shape[1])).difference(used_col_idxs)
+
+            # If objects disappeared &gt; disappeared threshold, deregister them
+            if D.shape[0] &gt;= D.shape[1]:
+                for row in unused_row_idxs:
+                    object_id = list(self.objects.keys())[row]
+                    self.disappeared[object_id] += 1
+
+                    if self.disappeared[object_id] &gt; self.max_disappeared:
+                        self.deregister(object_id)
+
+            # Register new objects as needed
+            for col in unused_col_idxs:
+                self.register(input_centroids[col])
+
+        return self.objects
+```
+
+### 13.3.2 Semantic Segmentation
+
+Pixel-level understanding of the scene:
+
+```python
+class SemanticSegmentationNet:
+    def __init__(self, model_path, num_classes):
+        self.model_path = model_path
+        self.num_classes = num_classes
+        self.model = None
+        self.device = torch.device(&#x27;cuda&#x27; if torch.cuda.is_available() else &#x27;cpu&#x27;)
+        self.load_model()
+
+    def load_model(self):
+        &quot;&quot;&quot;Load segmentation model&quot;&quot;&quot;
+        import torch
+        import torch.nn as nn
+
+        # Define model architecture (example: DeepLabV3)
+        self.model = models.segmentation.deeplabv3_resnet101(pretrained=False)
+        self.model.classifier[4] = nn.Conv2d(256, self.num_classes, kernel_size=1)
+        self.model.load_state_dict(torch.load(self.model_path, map_location=self.device))
+        self.model.to(self.device)
+        self.model.eval()
+
+    def predict(self, image):
+        &quot;&quot;&quot;Perform semantic segmentation&quot;&quot;&quot;
+        import torch
+        import torchvision.transforms as transforms
+
+        # Preprocess image
+        transform = transforms.Compose([
+            transforms.ToPILImage(),
+            transforms.Resize((512, 512)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        ])
+
+        input_tensor = transform(image).unsqueeze(0).to(self.device)
+
+        # Predict
+        with torch.no_grad():
+            output = self.model(input_tensor)
+            predictions = output[&#x27;out&#x27;][0]
+
+        # Get segmentation mask
+        segmentation_mask = predictions.argmax(0).cpu().numpy()
+
+        return segmentation_mask
+
+    def visualize_segmentation(self, image, segmentation_mask, class_colors):
+        &quot;&quot;&quot;Visualize segmentation results&quot;&quot;&quot;
+        import cv2
+        import numpy as np
+
+        # Resize mask to original image size
+        mask_resized = cv2.resize(segmentation_mask, (image.shape[1], image.shape[0]), interpolation=cv2.NEAREST)
+
+        # Create colored segmentation
+        colored_mask = np.zeros((image.shape[0], image.shape[1], 3), dtype=np.uint8)
+
+        for class_id, color in class_colors.items():
+            colored_mask[mask_resized == class_id] = color
+
+        # Blend with original image
+        alpha = 0.5
+        result = cv2.addWeighted(image, 1 - alpha, colored_mask, alpha, 0)
+
+        return result
+```
+
+## 13.4 Visual SLAM
+
+### 13.4.1 SLAM Fundamentals
+
+Simultaneous Localization and Mapping (SLAM) estimates camera pose while building a map:
+
+```python
+class VisualSLAM:
+    def __init__(self, camera_parameters):
+        self.camera = PinholeCamera(
+            camera_parameters[&#x27;focal_length&#x27;],
+            camera_parameters[&#x27;image_width&#x27;],
+            camera_parameters[&#x27;image_height&#x27;]
+        )
+        self.feature_extractor = FeatureExtractor()
+        self.matcher = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=False)
+
+        # Map data structures
+        self.map_points = []
+        self.keyframes = []
+        self.current_pose = np.eye(4)
+
+        # SLAM parameters
+        self.min_matches = 10
+        self.min_triangulation_angle = 1.0  # degrees
+        self.reprojection_threshold = 3.0  # pixels
+
+    def process_frame(self, image, timestamp):
+        &quot;&quot;&quot;Process new frame for SLAM&quot;&quot;&quot;
+        # Detect features
+        keypoints, descriptors = self.feature_extractor.extract_features(image, &#x27;orb&#x27;, 1000)
+
+        if not self.keyframes:
+            # First frame - initialize map
+            self._initialize_map(image, keypoints, descriptors, timestamp)
+            return self.current_pose, self.map_points
+
+        # Match with last keyframe
+        last_keyframe = self.keyframes[-1]
+        matches = self._match_features(last_keyframe[&#x27;descriptors&#x27;], descriptors)
+
+        if len(matches) &lt; self.min_matches:
+            # Tracking lost - relocalize
+            return self._relocalize(image, keypoints, descriptors)
+
+        # Estimate pose
+        pose, inliers = self._estimate_pose(
+            last_keyframe[&#x27;keypoints&#x27;],
+            keypoints,
+            matches
+        )
+
+        if pose is None:
+            return self._relocalize(image, keypoints, descriptors)
+
+        self.current_pose = pose
+
+        # Triangulate new map points
+        new_map_points = self._triangulate_points(
+            last_keyframe[&#x27;keypoints&#x27;],
+            keypoints,
+            matches,
+            last_keyframe[&#x27;pose&#x27;],
+            pose,
+            inliers
+        )
+
+        self.map_points.extend(new_map_points)
+
+        # Check if new keyframe is needed
+        if self._should_add_keyframe(image, keypoints, pose):
+            self._add_keyframe(image, keypoints, descriptors, pose, timestamp)
+
+        # Bundle adjustment (simplified)
+        if len(self.keyframes) % 10 == 0:
+            self._local_bundle_adjustment()
+
+        return self.current_pose, self.map_points
+
+    def _initialize_map(self, image, keypoints, descriptors, timestamp):
+        &quot;&quot;&quot;Initialize map with first frame&quot;&quot;&quot;
+        # Create initial keyframe at origin
+        initial_pose = np.eye(4)
+
+        self.keyframes.append({
+            &#x27;image&#x27;: image.copy(),
+            &#x27;keypoints&#x27;: keypoints,
+            &#x27;descriptors&#x27;: descriptors,
+            &#x27;pose&#x27;: initial_pose,
+            &#x27;timestamp&#x27;: timestamp
+        })
+
+        self.current_pose = initial_pose
+
+    def _match_features(self, desc1, desc2, ratio_threshold=0.75):
+        &quot;&quot;&quot;Match features between two sets of descriptors&quot;&quot;&quot;
+        matches = self.matcher.knnMatch(desc1, desc2, k=2)
+
+        good_matches = []
+        for match_pair in matches:
+            if len(match_pair) == 2:
+                m, n = match_pair
+                if m.distance &lt; ratio_threshold * n.distance:
+                    good_matches.append(m)
+
+        return good_matches
+
+    def _estimate_pose(self, kp1, kp2, matches):
+        &quot;&quot;&quot;Estimate camera pose using PnP&quot;&quot;&quot;
+        if len(matches) &lt; 4:
+            return None, None
+
+        # Extract matched keypoints
+        obj_points = []
+        img_points = []
+
+        for match in matches:
+            # Get corresponding 3D point if available
+            pt3d = self._get_3d_point_for_match(match)
+            if pt3d is not None:
+                obj_points.append(pt3d)
+                img_points.append(kp2[match.trainIdx].pt)
+
+        if len(obj_points) &lt; 4:
+            return None, None
+
+        # Convert to numpy arrays
+        obj_points = np.array(obj_points, dtype=np.float32)
+        img_points = np.array(img_points, dtype=np.float32)
+
+        # Solve PnP
+        success, rvec, tvec, inliers = cv2.solvePnPRansac(
+            obj_points,
+            img_points,
+            self.camera.intrinsic_matrix,
+            None,
+            iterationsCount=1000,
+            reprojectionError=self.reprojection_threshold,
+            confidence=0.99
+        )
+
+        if success:
+            # Convert rotation vector to matrix
+            R, _ = cv2.Rodrigues(rvec)
+
+            # Create pose matrix
+            pose = np.eye(4)
+            pose[:3, :3] = R
+            pose[:3, 3] = tvec.flatten()
+
+            return pose, inliers
+
+        return None, None
+
+    def _triangulate_points(self, kp1, kp2, matches, pose1, pose2, inliers):
+        &quot;&quot;&quot;Triangulate 3D points from matched keypoints&quot;&quot;&quot;
+        if inliers is not None:
+            matches = [matches[i] for i in inliers.flatten()]
+
+        new_points = []
+
+        for match in matches:
+            # Get corresponding keypoints
+            pt1 = np.array(kp1[match.queryIdx].pt)
+            pt2 = np.array(kp2[match.trainIdx].pt)
+
+            # Triangulate
+            point_3d = self._triangulate_point(pt1, pt2, pose1, pose2)
+
+            if point_3d is not None:
+                new_points.append({
+                    &#x27;position&#x27;: point_3d,
+                    &#x27;observations&#x27;: [
+                        {
+                            &#x27;keyframe_id&#x27;: len(self.keyframes) - 1,
+                            &#x27;keypoint_idx&#x27;: match.queryIdx,
+                            &#x27;pixel_coord&#x27;: pt1
+                        },
+                        {
+                            &#x27;keyframe_id&#x27;: len(self.keyframes),  # Current frame
+                            &#x27;keypoint_idx&#x27;: match.trainIdx,
+                            &#x27;pixel_coord&#x27;: pt2
+                        }
+                    ]
+                })
+
+        return new_points
+
+    def _triangulate_point(self, pt1, pt2, pose1, pose2):
+        &quot;&quot;&quot;Triangulate a single 3D point&quot;&quot;&quot;
+        # Camera matrices
+        P1 = self.camera.intrinsic_matrix @ pose1[:3, :]
+        P2 = self.camera.intrinsic_matrix @ pose2[:3, :]
+
+        # DLT triangulation
+        A = np.zeros((4, 4))
+
+        for i in range(2):
+            A[i, :] = pt1[i] * P1[2, :] - P1[i, :]
+            A[i + 2, :] = pt2[i] * P2[2, :] - P2[i, :]
+
+        # Solve using SVD
+        _, _, Vt = np.linalg.svd(A)
+        X = Vt[-1, :]
+
+        # Convert from homogeneous to 3D
+        if X[3] != 0:
+            X = X[:3] / X[3]
+
+            # Check triangulation angle
+            ray1 = pose1[:3, 3] - X
+            ray2 = pose2[:3, 3] - X
+
+            cos_angle = np.dot(ray1, ray2) / (np.linalg.norm(ray1) * np.linalg.norm(ray2))
+            angle = np.arccos(np.clip(cos_angle, -1, 1))
+
+            if angle &gt; np.radians(self.min_triangulation_angle):
+                # Check reprojection error
+                error1 = self._calculate_reprojection_error(X, pt1, P1)
+                error2 = self._calculate_reprojection_error(X, pt2, P2)
+
+                if error1 &lt; self.reprojection_threshold and error2 &lt; self.reprojection_threshold:
+                    return X
+
+        return None
+
+    def _calculate_reprojection_error(self, point_3d, point_2d, P):
+        &quot;&quot;&quot;Calculate reprojection error&quot;&quot;&quot;
+        # Project 3D point to image
+        projected = P @ np.append(point_3d, 1)
+        projected = projected[:2] / projected[2]
+
+        # Calculate error
+        error = np.linalg.norm(projected - point_2d)
+        return error
+
+    def _local_bundle_adjustment(self):
+        &quot;&quot;&quot;Perform local bundle adjustment&quot;&quot;&quot;
+        # This is a simplified version
+        # In practice, use g2o or Ceres Solver for full BA
+
+        recent_keyframes = self.keyframes[-10:]  # Last 10 keyframes
+
+        print(f&quot;Performing local bundle adjustment on {len(recent_keyframes)} keyframes&quot;)
+
+        # Update poses using recent observations
+        for keyframe in recent_keyframes:
+            # Simple pose refinement based on 3D-2D correspondences
+            refined_pose = self._refine_pose(keyframe)
+            keyframe[&#x27;pose&#x27;] = refined_pose
+
+    def _refine_pose(self, keyframe):
+        &quot;&quot;&quot;Refine keyframe pose&quot;&quot;&quot;
+        # Get 3D-2D correspondences
+        obj_points = []
+        img_points = []
+
+        for map_point in self.map_points:
+            for obs in map_point[&#x27;observations&#x27;]:
+                if obs[&#x27;keyframe_id&#x27;] == keyframe[&#x27;timestamp&#x27;]:
+                    obj_points.append(map_point[&#x27;position&#x27;])
+                    img_points.append(obs[&#x27;pixel_coord&#x27;])
+
+        if len(obj_points) &gt;= 6:
+            obj_points = np.array(obj_points, dtype=np.float32)
+            img_points = np.array(img_points, dtype=np.float32)
+
+            # Refine pose
+            success, rvec, tvec = cv2.solvePnP(
+                obj_points,
+                img_points,
+                self.camera.intrinsic_matrix,
+                None,
+                flags=cv2.SOLVEPNP_ITERATIVE
+            )
+
+            if success:
+                R, _ = cv2.Rodrigues(rvec)
+                pose = np.eye(4)
+                pose[:3, :3] = R
+                pose[:3, 3] = tvec.flatten()
+
+                return pose
+
+        return keyframe[&#x27;pose&#x27;]
+```
+
+## Chapter Summary
+
+This chapter covered comprehensive computer vision techniques for robotic applications:
+
+### Key Concepts Covered
+1. **Image Formation**: Pinhole camera model and lens distortion correction
+2. **Image Processing**: Preprocessing, edge detection, and feature extraction
+3. **Object Detection**: YOLO-based detection with tracking capabilities
+4. **Semantic Segmentation**: Pixel-level scene understanding
+5. **Visual SLAM**: Simultaneous localization and mapping
+6. **Feature Matching**: Robust feature detection and matching algorithms
+
+### Practical Implementations
+- Complete camera model with distortion correction
+- ORB feature extractor with descriptor matching
+- Visual odometry using essential matrix decomposition
+- YOLO object detector with multi-object tracking
+- Semantic segmentation with DeepLabV3
+- Complete Visual SLAM pipeline with bundle adjustment
+
+### Next Steps
+With computer vision mastery, you&#x27;re ready for:
+- Chapter 14: Sensor Fusion and State Estimation
+- Chapter 15: SLAM, VSLAM, and Navigation
+- Chapter 16: Path Planning Algorithms
+
+---
+
+## Glossary Terms
+
+**Term**: **Pinhole Camera Model**
+**Definition**: Mathematical model describing how 3D points in the world are projected onto a 2D image plane through a single point (the pinhole)
+**Related**: **Camera Calibration**, **Extrinsic Parameters**
+
+**Term**: **Essential Matrix**
+**Definition**: 3x3 matrix that relates corresponding points in two images taken by cameras with known intrinsic parameters
+**Related**: **Fundamental Matrix**, **Five-Point Algorithm**
+
+**Term**: **Non-Maximum Suppression**
+**Definition**: Algorithm used in edge detection to thin edges by keeping only local maxima in gradient magnitude
+**Related**: **Edge Detection**, **Canny Operator**
+
+**Term**: **Visual Odometry**
+**Definition**: Process of estimating camera pose motion by analyzing sequential images and tracking feature movements
+**Related**: **SLAM**, **Structure from Motion**
+
+**Term**: **Bundle Adjustment**
+**Definition**: Optimization technique that simultaneously refines 3D structure and camera poses to minimize reprojection error
+**Related**: **SLAM**, **Photogrammetry**
+
+---
+
+## Exercises
+
+### Exercise 13.1: Camera Calibration
+Implement camera calibration system:
+- Capture calibration pattern images
+- Detect chessboard corners
+- Calculate intrinsic and extrinsic parameters
+- Validate calibration accuracy
+
+### Exercise 13.2: Feature Detection Pipeline
+Build complete feature detection system:
+- Implement Harris corner detector
+- Add SIFT feature extraction
+- Create robust feature matching
+- Test with different image conditions
+
+### Exercise 13.3: Object Detection System
+Create object detection and tracking:
+- Train YOLO model for custom objects
+- Implement multi-object tracking
+- Handle occlusions and disappearances
+- Evaluate detection performance
+
+### Exercise 13.4: Visual SLAM Implementation
+Build basic visual SLAM system:
+- Implement feature-based SLAM
+- Add loop closure detection
+- Create map visualization
+- Test in real environments
+
+### Exercise 13.5: Semantic Segmentation
+Develop semantic segmentation for robotics:
+- Implement pixel-wise classification
+- Create class-specific color mapping
+- Integrate with navigation system
+- Evaluate segmentation accuracy</span></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus/tree/main/docs/part-4-perception/chapter-13-computer-vision-robots.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-12-digital-twin-development"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Digital Twin Development</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-14-sensor-fusion-state-estimation"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Sensor Fusion and State Estimation</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#131-computer-vision-fundamentals" class="table-of-contents__link toc-highlight">13.1 Computer Vision Fundamentals</a><ul><li><a href="#1311-vision-in-robotics" class="table-of-contents__link toc-highlight">13.1.1 Vision in Robotics</a></li><li><a href="#1312-image-formation-and-camera-models" class="table-of-contents__link toc-highlight">13.1.2 Image Formation and Camera Models</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="nm-custom-footer" data-testid="custom-footer"><div class="nm-footer-container"><div class="nm-footer-grid"><div class="nm-footer-brand"><div class="nm-footer-logo"><h3>Physical AI &amp; Robotics</h3><p>An AI-Native Engineering Textbook</p></div><p class="nm-footer-description">Master the convergence of artificial intelligence and physical robotics through comprehensive, hands-on learning experiences.</p><div class="nm-footer-stats"><div class="nm-stat"><div class="nm-stat-number">1000+</div><div class="nm-stat-label">Pages</div></div><div class="nm-stat"><div class="nm-stat-number">50+</div><div class="nm-stat-label">Exercises</div></div><div class="nm-stat"><div class="nm-stat-number">24/7</div><div class="nm-stat-label">Access</div></div></div></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Resources</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai">Foundations</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals">ROS &amp; Navigation</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots">Computer Vision</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models">Machine Learning</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation">Simulation &amp; Control</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Learning Paths</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/beginner">Beginner Track</a></li><li><a href="/ai-native-textbook-docusaurus/intermediate">Intermediate Track</a></li><li><a href="/ai-native-textbook-docusaurus/advanced">Advanced Track</a></li><li><a href="/ai-native-textbook-docusaurus/projects">Hands-on Projects</a></li><li><a href="/ai-native-textbook-docusaurus/certification">Certification</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Community</h4><ul class="nm-footer-links"><li><a href="https://github.com/your-username/ai-native-textbook">GitHub</a></li><li><a href="https://discord.gg/your-server">Discord</a></li><li><a href="https://forum.example.com">Forum</a></li><li><a href="/ai-native-textbook-docusaurus/contributors">Contributors</a></li><li><a href="/ai-native-textbook-docusaurus/blog">Blog</a></li></ul></div><div class="nm-footer-section nm-footer-newsletter"><h4 class="nm-footer-heading">Stay Updated</h4><p class="nm-footer-subtext">Get the latest updates and exclusive content</p><div class="nm-newsletter-form"><input type="email" placeholder="Enter your email" class="nm-newsletter-input"><button type="button" class="nm-newsletter-button">Subscribe</button></div><div class="nm-footer-social"><a href="https://github.com" class="nm-social-link" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><a href="https://twitter.com" class="nm-social-link" aria-label="Twitter"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg></a><a href="https://linkedin.com" class="nm-social-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></a></div></div></div><div class="nm-footer-bottom"><div class="nm-footer-bottom-left"><span class="nm-footer-copyright">© <!-- -->2025<!-- --> AI-Native Textbook. All rights reserved. Created by SNN Studio.</span></div><div class="nm-footer-bottom-right"><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/privacy">Privacy Policy</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/terms">Terms of Service</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/code-of-conduct">Code of Conduct</a></div></div></div></footer><div class="chat-widget"><button class="chat-widget-button" aria-label="Open chat"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button></div></div>
+</body>
+</html>

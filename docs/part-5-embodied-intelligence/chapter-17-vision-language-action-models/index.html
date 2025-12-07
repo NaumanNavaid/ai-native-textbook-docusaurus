@@ -1,0 +1,1081 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-part-5-embodied-intelligence/chapter-17-vision-language-action-models" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Chapter 17: Vision-Language-Action Models | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Chapter 17: Vision-Language-Action Models | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Foundation models for robotics that bridge perception, language understanding, and motor control"><meta data-rh="true" property="og:description" content="Foundation models for robotics that bridge perception, language understanding, and motor control"><link data-rh="true" rel="icon" href="/ai-native-textbook-docusaurus/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models" hreflang="en"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Chapter 17: Vision-Language-Action Models","item":"https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models"}]}</script><link rel="alternate" type="application/rss+xml" href="/ai-native-textbook-docusaurus/blog/rss.xml" title="Physical AI &amp; Humanoid Robotics RSS Feed">
+<link rel="alternate" type="application/atom+xml" href="/ai-native-textbook-docusaurus/blog/atom.xml" title="Physical AI &amp; Humanoid Robotics Atom Feed"><link rel="stylesheet" href="/ai-native-textbook-docusaurus/assets/css/styles.6e378bed.css">
+<script src="/ai-native-textbook-docusaurus/assets/js/runtime~main.5e3ab4fa.js" defer="defer"></script>
+<script src="/ai-native-textbook-docusaurus/assets/js/main.17a86997.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav class="nm-custom-navbar"><div class="nm-navbar-container"><div class="nm-navbar-logo"><a class="nm-logo-link" href="/ai-native-textbook-docusaurus/"><div class="nm-logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="currentColor"></rect><path d="M8 16C8 11.5817 11.5817 8 16 8C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24C11.5817 24 8 20.4183 8 16Z" fill="var(--ifm-background-color)"></path><path d="M12 16L16 12L20 16M16 12V20" stroke="var(--ifm-color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="nm-logo-text"><span class="nm-logo-title">Physical AI</span><span class="nm-logo-subtitle">&amp; Robotics</span></div></a></div><div class="nm-navbar-links"><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/">Home</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/about">About</a></div><div class="nm-navbar-actions"><div class="nm-search-container" style="margin-right:1rem"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div><button class="nm-action-button color-mode-toggle" aria-label="Toggle dark mode"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button><a href="https://github.com/NaumanNavaid/hackathon-1" class="nm-action-button" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><button class="nm-mobile-menu-toggle" aria-label="Toggle mobile menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu w-6 h-6" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button></div></div></nav><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/ai-native-textbook-docusaurus/"><b class="navbar__title text--truncate">Physical AI &amp; Robotics</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/ai-native-textbook-docusaurus/">Home</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai"><span title="Part 1: Foundations" class="categoryLinkLabel_W154">Part 1: Foundations</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals"><span title="Part 2: ROS Fundamentals" class="categoryLinkLabel_W154">Part 2: ROS Fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation"><span title="Part 3: Simulation &amp; Digital Twins" class="categoryLinkLabel_W154">Part 3: Simulation &amp; Digital Twins</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"><span title="Part 4: Perception &amp; State Estimation" class="categoryLinkLabel_W154">Part 4: Perception &amp; State Estimation</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models"><span title="Part 5: Embodied Intelligence" class="categoryLinkLabel_W154">Part 5: Embodied Intelligence</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models"><span title="Chapter 17: Vision-Language-Action Models" class="linkLabel_WmDU">Chapter 17: Vision-Language-Action Models</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-18-voice-to-action-pipelines-whisper"><span title="Chapter 18: Voice-to-Action Pipelines (Whisper)" class="linkLabel_WmDU">Chapter 18: Voice-to-Action Pipelines (Whisper)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-19-cognitive-planning-with-gpt"><span title="Chapter 19: Cognitive Planning with GPT" class="linkLabel_WmDU">Chapter 19: Cognitive Planning with GPT</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-20-the-autonomous-humanoid"><span title="Chapter 20: The Autonomous Humanoid" class="linkLabel_WmDU">Chapter 20: The Autonomous Humanoid</span></a></li></ul></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/ai-native-textbook-docusaurus/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Part 5: Embodied Intelligence</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Chapter 17: Vision-Language-Action Models</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="chapter-17-vision-language-action-models">Chapter 17: Vision-Language-Action Models</h1></header>
+<h2 id="171-introduction-to-embodied-ai">17.1 Introduction to Embodied AI</h2>
+<p>The convergence of computer vision, natural language processing, and robotics has given rise to <strong>Vision-Language-Action (VLA) models</strong>—a new class of foundation models that can perceive visual scenes, understand language instructions, and generate appropriate actions in physical environments. These models represent a paradigm shift from traditional robotic control architectures toward more unified, end-to-end learnable systems.</p>
+<h3 id="1711-the-emergence-of-vla-models">17.1.1 The Emergence of VLA Models</h3>
+<pre><code class="language-mermaid">graph BT
+    A[Perception] --&gt; B[Vision Encoders]
+    C[Language] --&gt; D[Language Models]
+    E[Action] --&gt; F[Policy Networks]
+
+    B --&gt; G[VLA Foundation Model]
+    D --&gt; G
+    F --&gt; G
+
+    G --&gt; H[Robot Actions]
+    G --&gt; I[Task Execution]
+
+    style G fill:#e1f5fe
+</code></pre>
+<p><strong>Historical Context:</strong></p>
+<ul>
+<li><strong>2018-2020</strong>: Early attempts at multimodal learning (CLIP, ALIGN)</li>
+<li><strong>2021-2022</strong>: First large-scale VLA models (PaLM-E, RT-1)</li>
+<li><strong>2023</strong>: Scaling laws for robotics, embodied foundation models</li>
+<li><strong>2024-2025</strong>: Real-world deployment and cognitive architectures</li>
+</ul>
+<h3 id="1712-key-advantages-of-vla-models">17.1.2 Key Advantages of VLA Models</h3>
+<p><strong>1. Unified Representation Learning</strong></p>
+<ul>
+<li>Single model learns joint representation of vision, language, and action</li>
+<li>Eliminates need for separate perception, planning, and control modules</li>
+<li>Enables zero-shot generalization to new tasks and environments</li>
+</ul>
+<p><strong>2. Semantic Understanding</strong></p>
+<ul>
+<li>Natural language instruction following</li>
+<li>Grounded language understanding in physical contexts</li>
+<li>Commonsense reasoning about object affordances and interactions</li>
+</ul>
+<p><strong>3. Sample Efficiency</strong></p>
+<ul>
+<li>Transfer learning from large-scale internet data</li>
+<li>Few-shot and zero-shot adaptation to new robots</li>
+<li>Improved generalization compared to task-specific models</li>
+</ul>
+<h3 id="1713-challenges-in-vla-development">17.1.3 Challenges in VLA Development</h3>
+<p><strong>Technical Challenges:</strong></p>
+<ul>
+<li><strong>Multimodal Fusion</strong>: Effectively combining vision, language, and action modalities</li>
+<li><strong>Temporal Understanding</strong>: Modeling sequential decision-making and long-term planning</li>
+<li><strong>Embodiment Gap</strong>: Bridging simulation-to-reality and cross-robot transfer</li>
+<li><strong>Safety and Reliability</strong>: Ensuring predictable behavior in complex environments</li>
+</ul>
+<p><strong>Data Challenges:</strong></p>
+<ul>
+<li><strong>Scarcity</strong>: Limited availability of large-scale robot demonstration datasets</li>
+<li><strong>Diversity</strong>: Need for coverage across tasks, environments, and robot embodiments</li>
+<li><strong>Quality</strong>: Ensuring data cleanliness and relevance for downstream tasks</li>
+</ul>
+<h2 id="172-multimodal-foundation-models">17.2 Multimodal Foundation Models</h2>
+<h3 id="1721-vision-language-pretraining">17.2.1 Vision-Language Pretraining</h3>
+<p>Vision-language models serve as the perceptual foundation for VLA systems, providing rich understanding of visual scenes and semantic context.</p>
+<p><strong>Key Architectures:</strong></p>
+<pre><code class="language-python">class VisionLanguageEncoder:
+    def __init__(self, vision_model, language_model):
+        self.vision_encoder = vision_model  # ViT, ConvNeXt, or CLIP-ViT
+        self.language_encoder = language_model  # LLaMA, GPT, or T5
+        self.projector = nn.Linear(vision_dim, text_dim)
+        self.fusion_layer = CrossAttentionLayer()
+
+    def forward(self, images, text):
+        # Encode visual and textual inputs
+        vision_features = self.vision_encoder(images)
+        text_features = self.language_encoder(text)
+
+        # Project to common embedding space
+        vision_proj = self.projector(vision_features)
+
+        # Cross-modal attention
+        fused_features = self.fusion_layer(
+            query=text_features,
+            key=vision_proj,
+            value=vision_proj
+        )
+
+        return fused_features
+</code></pre>
+<p><strong>Pretraining Objectives:</strong></p>
+<ol>
+<li>
+<p><strong>Image-Text Contrastive Learning</strong></p>
+<pre><code class="language-python">def contrastive_loss(image_features, text_features, temperature=0.07):
+    # Normalize embeddings
+    image_features = F.normalize(image_features, dim=-1)
+    text_features = F.normalize(text_features, dim=-1)
+
+    # Compute similarity matrix
+    logits = torch.matmul(image_features, text_features.T) / temperature
+
+    # Symmetric loss
+    labels = torch.arange(logits.shape[0])
+    loss_i2t = F.cross_entropy(logits, labels)
+    loss_t2i = F.cross_entropy(logits.T, labels)
+
+    return (loss_i2t + loss_t2i) / 2
+</code></pre>
+</li>
+<li>
+<p><strong>Masked Language Modeling with Vision Grounding</strong></p>
+</li>
+<li>
+<p><strong>Image-Text Matching</strong></p>
+</li>
+<li>
+<p><strong>Visual Question Answering</strong></p>
+</li>
+</ol>
+<h3 id="1722-action-conditioning-and-control">17.2.2 Action Conditioning and Control</h3>
+<p>VLA models extend vision-language understanding with action generation capabilities, creating end-to-end systems that can execute tasks based on visual observations and language instructions.</p>
+<p><strong>Action Prediction Heads:</strong></p>
+<pre><code class="language-python">class VLAHead(nn.Module):
+    def __init__(self, hidden_dim, action_dim):
+        super().__init__()
+        self.action_head = nn.Sequential(
+            nn.Linear(hidden_dim, hidden_dim * 2),
+            nn.ReLU(),
+            nn.Dropout(0.1),
+            nn.Linear(hidden_dim * 2, action_dim)
+        )
+
+        # Multi-head prediction for different time horizons
+        self.short_term_head = nn.Linear(hidden_dim, action_dim)  # 1 step
+        self.medium_term_head = nn.Linear(hidden_dim, action_dim)  # 10 steps
+        self.long_term_head = nn.Linear(hidden_dim, action_dim)   # 100 steps
+
+    def forward(self, features):
+        return {
+            &#x27;immediate&#x27;: self.short_term_head(features),
+            &#x27;near_future&#x27;: self.medium_term_head(features),
+            &#x27;long_term&#x27;: self.long_term_head(features)
+        }
+</code></pre>
+<p><strong>Action Space Representations:</strong></p>
+<ol>
+<li><strong>End-Effector Poses</strong>: 6D pose (position + orientation)</li>
+<li><strong>Joint Angles</strong>: Robot-specific joint configurations</li>
+<li><strong>Velocity Commands</strong>: Linear and angular velocities</li>
+<li><strong>High-Level Primitives</strong>: Grasp, place, push, etc.</li>
+<li><strong>Language Actions</strong>: Natural language action descriptions</li>
+</ol>
+<h3 id="1723-cross-modal-attention-mechanisms">17.2.3 Cross-Modal Attention Mechanisms</h3>
+<p>Cross-modal attention is the core mechanism enabling effective fusion of vision, language, and action information.</p>
+<p><strong>Attention Patterns:</strong></p>
+<pre><code class="language-python">class CrossModalAttention(nn.Module):
+    def __init__(self, d_model, n_heads):
+        super().__init__()
+        self.d_model = d_model
+        self.n_heads = n_heads
+        self.d_k = d_model // n_heads
+
+        self.w_q = nn.Linear(d_model, d_model)
+        self.w_k = nn.Linear(d_model, d_model)
+        self.w_v = nn.Linear(d_model, d_model)
+        self.w_o = nn.Linear(d_model, d_model)
+
+    def forward(self, query, key, value, mask=None):
+        batch_size = query.size(0)
+
+        # Linear projections
+        Q = self.w_q(query).view(batch_size, -1, self.n_heads, self.d_k).transpose(1, 2)
+        K = self.w_k(key).view(batch_size, -1, self.n_heads, self.d_k).transpose(1, 2)
+        V = self.w_v(value).view(batch_size, -1, self.n_heads, self.d_k).transpose(1, 2)
+
+        # Scaled dot-product attention
+        scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(self.d_k)
+
+        if mask is not None:
+            scores = scores.masked_fill(mask == 0, -1e9)
+
+        attention = F.softmax(scores, dim=-1)
+        context = torch.matmul(attention, V)
+
+        # Concatenate heads
+        context = context.transpose(1, 2).contiguous().view(
+            batch_size, -1, self.d_model
+        )
+
+        return self.w_o(context)
+</code></pre>
+<p><strong>Attention Patterns in VLA:</strong></p>
+<ul>
+<li><strong>Vision→Language</strong>: Visual grounding of language concepts</li>
+<li><strong>Language→Vision</strong>: Attention guided by linguistic cues</li>
+<li><strong>Action→Vision</strong>: Attention to task-relevant visual features</li>
+<li><strong>Language→Action</strong>: Action selection based on language instructions</li>
+</ul>
+<h2 id="173-training-methodologies">17.3 Training Methodologies</h2>
+<h3 id="1731-large-scale-data-collection">17.3.1 Large-Scale Data Collection</h3>
+<p>Training VLA models requires diverse and large-scale datasets covering various robots, tasks, and environments.</p>
+<p><strong>Data Sources:</strong></p>
+<ol>
+<li>
+<p><strong>Web-Scale Video Datasets</strong></p>
+<ul>
+<li>Ego4D: First-person perspective videos</li>
+<li>HowTo100M: Instructional videos with weak supervision</li>
+<li>EPIC-KITCHENS: Daily activities in kitchen environments</li>
+<li>VLOG: Vlogs with natural language narration</li>
+</ul>
+</li>
+<li>
+<p><strong>Robot Demonstration Datasets</strong></p>
+<ul>
+<li>RT-1 Dataset: 130k episodes across 700+ tasks</li>
+<li>Bridge Data: Everyday household manipulation tasks</li>
+<li>CALVIN: Language-conditioned manipulation</li>
+<li>Fractal: Robot trajectories with language annotations</li>
+</ul>
+</li>
+<li>
+<p><strong>Synthetic Data Generation</strong></p>
+<pre><code class="language-python">class SyntheticDataGenerator:
+    def __init__(self, simulator, task_templates):
+        self.sim = simulator
+        self.templates = task_template
+
+    def generate_episode(self, task_spec):
+        # Parse task specification
+        actions = self.parse_task(task_spec)
+
+        # Execute in simulation
+        observations = []
+        for action in actions:
+            obs = self.sim.step(action)
+            observations.append(obs)
+
+        # Generate language description
+        description = self.generate_description(task_spec, actions)
+
+        return {
+            &#x27;observations&#x27;: observations,
+            &#x27;actions&#x27;: actions,
+            &#x27;language&#x27;: description,
+            &#x27;task&#x27;: task_spec
+        }
+</code></pre>
+</li>
+</ol>
+<p><strong>Data Augmentation Strategies:</strong></p>
+<ul>
+<li><strong>Geometric</strong>: Random crops, rotations, flips</li>
+<li><strong>Photometric</strong>: Color jitter, brightness, contrast changes</li>
+<li><strong>Temporal</strong>: Speed variations, action smoothing</li>
+<li><strong>Domain Randomization</strong>: Texture, lighting, physics parameters</li>
+</ul>
+<h3 id="1732-multi-task-learning-objectives">17.3.2 Multi-Task Learning Objectives</h3>
+<p>VLA models are trained with a combination of objectives to develop comprehensive understanding and action capabilities.</p>
+<p><strong>Primary Objectives:</strong></p>
+<ol>
+<li>
+<p><strong>Action Prediction Loss</strong></p>
+<pre><code class="language-python">def action_prediction_loss(pred_actions, gt_actions, action_mask):
+    # MSE for continuous actions
+    mse_loss = F.mse_loss(pred_actions, gt_actions, reduction=&#x27;none&#x27;)
+
+    # Apply mask for valid action timesteps
+    masked_loss = mse_loss * action_mask.unsqueeze(-1)
+
+    return masked_loss.sum() / action_mask.sum()
+</code></pre>
+</li>
+<li>
+<p><strong>Language Understanding Loss</strong></p>
+<pre><code class="language-python">def language_understanding_loss(model, images, instructions, actions):
+    # Predict actions from vision + language
+    pred_actions = model(images, instructions)
+
+    # Contrastive alignment
+    vision_lang_emb = model.encode_vision_lang(images, instructions)
+    action_emb = model.encode_actions(actions)
+
+    contrastive_loss = InfoNCELoss(vision_lang_emb, action_emb)
+
+    return action_prediction_loss(pred_actions, actions) + contrastive_loss
+</code></pre>
+</li>
+<li>
+<p><strong>Multimodal Contrastive Learning</strong></p>
+</li>
+<li>
+<p><strong>Task Classification Loss</strong></p>
+</li>
+<li>
+<p><strong>Success Prediction Loss</strong></p>
+</li>
+</ol>
+<p><strong>Curriculum Learning Strategy:</strong></p>
+<pre><code class="language-python">class CurriculumScheduler:
+    def __init__(self, total_steps):
+        self.total_steps = total_steps
+        self.current_step = 0
+
+    def get_task_weights(self, step):
+        # Start with simple tasks, progress to complex ones
+        progress = step / self.total_steps
+
+        weights = {
+            &#x27;reaching&#x27;: max(0, 1 - progress),
+            &#x27;grasping&#x27;: min(1, progress * 2),
+            &#x27;manipulation&#x27;: max(0, (progress - 0.5) * 2),
+            &#x27;tool_use&#x27;: max(0, (progress - 0.7) * 3)
+        }
+
+        return weights
+</code></pre>
+<h3 id="1733-fine-tuning-and-adaptation">17.3.3 Fine-Tuning and Adaptation</h3>
+<p>Pretrained VLA models require careful adaptation for specific robots and tasks.</p>
+<p><strong>Adapter Layers:</strong></p>
+<pre><code class="language-python">class RobotAdapter(nn.Module):
+    def __init__(self, base_model, robot_specific_dim):
+        super().__init__()
+        self.base_model = base_model
+        self.adapter = nn.Sequential(
+            nn.Linear(base_model.hidden_dim, 64),
+            nn.ReLU(),
+            nn.Linear(64, robot_specific_dim)
+        )
+
+    def forward(self, x, robot_id):
+        base_features = self.base_model(x)
+        adapted_features = self.adapter(base_features)
+
+        return adapted_features
+</code></pre>
+<p><strong>Few-Shot Adaptation:</strong></p>
+<pre><code class="language-python">def few_shot_adaptation(model, support_set, query_set, n_way, k_shot):
+    # Meta-learning approach for rapid adaptation
+
+    # Extract features from support set
+    support_features = []
+    support_labels = []
+
+    for task, examples in support_set.items():
+        for example in examples:
+            feat = model.encode(example[&#x27;image&#x27;], example[&#x27;instruction&#x27;])
+            support_features.append(feat)
+            support_labels.append(task)
+
+    # Build prototype vectors
+    prototypes = {}
+    for task in set(support_labels):
+        task_feats = [f for f, l in zip(support_features, support_labels) if l == task]
+        prototypes[task] = torch.stack(task_feats).mean(0)
+
+    # Classify query examples
+    predictions = []
+    for example in query_set:
+        feat = model.encode(example[&#x27;image&#x27;], example[&#x27;instruction&#x27;])
+
+        # Compute distances to prototypes
+        distances = {
+            task: torch.dist(feat, proto)
+            for task, proto in prototypes.items()
+        }
+
+        predicted_task = min(distances, key=distances.get)
+        predictions.append(predicted_task)
+
+    return predictions
+</code></pre>
+<h2 id="174-robot-specific-vla-models">17.4 Robot-Specific VLA Models</h2>
+<h3 id="1741-rt-series-google-robotics-transformer">17.4.1 RT-Series: Google Robotics Transformer</h3>
+<p>The RT-series represents a landmark achievement in scaling VLA models for real-world robotics applications.</p>
+<p><strong>RT-1 Architecture:</strong></p>
+<pre><code class="language-python">class RT1(nn.Module):
+    def __init__(self, vit_config, transformer_config, action_dim):
+        super().__init__()
+
+        # Vision encoder (EfficientNet-B3)
+        self.image_encoder = EfficientNet.from_name(&#x27;efficientnet-b3&#x27;)
+        self.image_processor = ImageProcessor()
+
+        # Tokenizer for instructions
+        self.tokenizer = AutoTokenizer.from_pretrained(&#x27;t5-small&#x27;)
+        self.text_encoder = T5EncoderModel.from_pretrained(&#x27;t5-small&#x27;)
+
+        # Action tokenizer
+        self.action_tokenizer = ActionTokenizer(action_dim)
+
+        # Transformer decoder
+        self.transformer = TransformerDecoder(
+            d_model=512,
+            nhead=8,
+            num_layers=8,
+            dim_feedforward=2048
+        )
+
+        # Output projection
+        self.action_head = nn.Linear(512, action_tokenizer.vocab_size)
+
+    def forward(self, image, instruction):
+        # Process image
+        image_features = self.image_processor(image)
+        image_emb = self.image_encoder(image_features)
+
+        # Process instruction
+        text_inputs = self.tokenizer(
+            instruction,
+            return_tensors=&#x27;pt&#x27;,
+            padding=True,
+            truncation=True
+        )
+        text_emb = self.text_encoder(text_inputs.input_ids).last_hidden_state
+
+        # Combine image and text embeddings
+        combined_emb = torch.cat([image_emb, text_emb], dim=1)
+
+        # Generate action tokens
+        action_tokens = self.transformer(combined_emb)
+        action_logits = self.action_head(action_tokens)
+
+        return action_logits
+</code></pre>
+<p><strong>RT-1 Training Pipeline:</strong></p>
+<pre><code class="language-python">class RT1TrainingPipeline:
+    def __init__(self, model, config):
+        self.model = model
+        self.config = config
+        self.optimizer = torch.optim.AdamW(
+            model.parameters(),
+            lr=config.learning_rate,
+            weight_decay=config.weight_decay
+        )
+
+    def train_step(self, batch):
+        images = batch[&#x27;images&#x27;]
+        instructions = batch[&#x27;instructions&#x27;]
+        actions = batch[&#x27;actions&#x27;]
+
+        # Forward pass
+        action_logits = self.model(images, instructions)
+
+        # Compute loss
+        action_tokens = self.model.action_tokenizer(actions)
+        loss = F.cross_entropy(
+            action_logits.view(-1, action_logits.size(-1)),
+            action_tokens.view(-1)
+        )
+
+        # Backward pass
+        self.optimizer.zero_grad()
+        loss.backward()
+        self.optimizer.step()
+
+        return loss.item()
+</code></pre>
+<h3 id="1742-palm-e-embodied-language-model">17.4.2 PaLM-E: Embodied Language Model</h3>
+<p>PaLM-E extends large language models with embodied capabilities by incorporating continuous sensor observations directly into the language model.</p>
+<p><strong>PaLM-E Architecture:</strong></p>
+<pre><code class="language-python">class PaLME(nn.Module):
+    def __init__(self, llm_config, vision_encoder_config):
+        super().__init__()
+
+        # Large language model backbone (PaLM)
+        self.llm = PaLMModel(**llm_config)
+
+        # Vision encoder for encoding images/video
+        self.vision_encoder = VisionTransformer(**vision_encoder_config)
+
+        # Sensor encoders for proprioception
+        self.joint_encoder = nn.Linear(num_joints, embed_dim)
+        self.force_encoder = nn.Linear(num_force_sensors, embed_dim)
+
+        # Projectors to align modalities with language embedding space
+        self.vision_projector = nn.Linear(vision_dim, embed_dim)
+        self.sensor_projector = nn.Linear(sensor_dim, embed_dim)
+
+    def embed_multimodal_input(self, text, images, sensors):
+        # Get text embeddings
+        text_emb = self.llm.embed_text(text)
+
+        # Process and project visual input
+        if images is not None:
+            vision_emb = self.vision_encoder(images)
+            vision_proj = self.vision_projector(vision_emb)
+            text_emb = torch.cat([text_emb, vision_proj], dim=1)
+
+        # Process and project sensor data
+        if sensors is not None:
+            sensor_emb = torch.cat([
+                self.joint_encoder(sensors[&#x27;joint_positions&#x27;]),
+                self.force_encoder(sensors[&#x27;force_torque&#x27;])
+            ], dim=-1)
+            sensor_proj = self.sensor_projector(sensor_emb)
+            text_emb = torch.cat([text_emb, sensor_proj], dim=1)
+
+        return text_emb
+
+    def forward(self, text, images=None, sensors=None):
+        # Embed multimodal input
+        embeddings = self.embed_multimodal_input(text, images, sensors)
+
+        # Pass through language model
+        outputs = self.llm(inputs_embeds=embeddings)
+
+        return outputs
+</code></pre>
+<h3 id="1743-octo-generalist-robot-policy">17.4.3 Octo: Generalist Robot Policy</h3>
+<p>Octo represents a step toward truly generalist robot policies that can handle diverse robots and tasks through a unified model.</p>
+<p><strong>Octo Architecture Features:</strong></p>
+<ol>
+<li><strong>Transformer-based backbone with multi-modal fusion</strong></li>
+<li><strong>Robot-agnostic action spaces</strong></li>
+<li><strong>Task-conditioned policy generation</strong></li>
+<li><strong>Multi-task training on 800+ datasets</strong></li>
+</ol>
+<pre><code class="language-python">class OctoModel(nn.Module):
+    def __init__(self, config):
+        super().__init__()
+
+        # Multi-modal encoder
+        self.vision_encoder = VisionTransformer(config.vision)
+        self proprioception_encoder = MLP(config.proprioception)
+        self.task_encoder = TransformerEncoder(config.task)
+
+        # Fusion transformer
+        self.fusion_transformer = TransformerDecoder(config.fusion)
+
+        # Robot-specific action heads
+        self.action_heads = nn.ModuleDict({
+            &#x27;bimanual&#x27;: BimanualActionHead(config.action_dim),
+            &#x27;mobile_base&#x27;: MobileBaseActionHead(config.action_dim),
+            &#x27;arm_gripper&#x27;: ArmGripperActionHead(config.action_dim)
+        })
+
+        # Robot embedding
+        self.robot_embedding = nn.Embedding(num_robots, config.embed_dim)
+
+    def forward(self, observations, task, robot_type):
+        # Encode different observation modalities
+        vision_features = self.vision_encoder(observations[&#x27;images&#x27;])
+        proprio_features = self.proprioception_encoder(observations[&#x27;proprio&#x27;])
+        task_features = self.task_encoder(task)
+
+        # Add robot-specific embedding
+        robot_emb = self.robot_embedding(robot_type)
+
+        # Fuse all modalities
+        fused_features = self.fusion_transformer(
+            vision_features,
+            proprio_features,
+            task_features,
+            robot_emb
+        )
+
+        # Generate robot-specific actions
+        actions = self.action_heads[robot_type](fused_features)
+
+        return actions
+</code></pre>
+<h2 id="175-real-world-applications">17.5 Real-World Applications</h2>
+<h3 id="1751-household-assistance">17.5.1 Household Assistance</h3>
+<p>VLA models enable robots to perform complex household tasks through natural language understanding and visual perception.</p>
+<p><strong>Task Execution Pipeline:</strong></p>
+<pre><code class="language-python">class HouseholdAssistant:
+    def __init__(self, vla_model, perception_system, manipulation_system):
+        self.vla_model = vla_model
+        self.perception = perception_system
+        self.manipulation = manipulation_system
+
+    def execute_task(self, instruction, environment):
+        # Parse and understand the instruction
+        task_understanding = self.vla_model.parse_instruction(instruction)
+
+        # Observe the environment
+        observation = self.perception.observe(environment)
+
+        # Plan the task sequence
+        task_plan = self.vla_model.plan_task(
+            instruction,
+            observation,
+            task_understanding
+        )
+
+        # Execute the plan
+        for subtask in task_plan.subtasks:
+            # Generate actions for each subtask
+            actions = self.vla_model.generate_actions(
+                subtask,
+                observation
+            )
+
+            # Execute actions
+            for action in actions:
+                self.manipulation.execute(action)
+
+                # Update observation
+                observation = self.perception.observe(environment)
+
+                # Verify progress
+                if self.verify_subtask_completion(subtask, observation):
+                    break
+
+        return True
+</code></pre>
+<p><strong>Common Household Tasks:</strong></p>
+<ul>
+<li><strong>Object Manipulation</strong>: Pick, place, organize items</li>
+<li><strong>Kitchen Tasks</strong>: Set table, prepare simple meals, clean up</li>
+<li><strong>Cleaning</strong>: Vacuum, wipe surfaces, organize spaces</li>
+<li><strong>Laundry</strong>: Sort, wash, fold clothes</li>
+<li><strong>Assistance</strong>: Retrieve items, help with mobility</li>
+</ul>
+<h3 id="1752-industrial-automation">17.5.2 Industrial Automation</h3>
+<p>In industrial settings, VLA models enable flexible automation that can adapt to new tasks and products with minimal reprogramming.</p>
+<p><strong>Assembly Line Application:</strong></p>
+<pre><code class="language-python">class IndustrialVLAController:
+    def __init__(self, vla_model, safety_monitor):
+        self.vla_model = vla_model
+        self.safety = safety_monitor
+
+    def handle_assembly_task(self, task_description, workspace_state):
+        # Safety check before execution
+        if not self.safety.check_workspace(workspace_state):
+            raise SafetyException(&quot;Workspace not safe for operation&quot;)
+
+        # Generate assembly plan
+        assembly_plan = self.vla_model.generate_assembly_plan(
+            task_description,
+            workspace_state
+        )
+
+        # Execute assembly with monitoring
+        for step in assembly_plan.steps:
+            # Generate actions
+            actions = self.vla_model.generate_step_actions(step)
+
+            # Execute with safety monitoring
+            for action in actions:
+                if self.safety.is_action_safe(action, workspace_state):
+                    self.robot.execute(action)
+                    workspace_state = self.perception.update_state()
+                else:
+                    self.handle_safety_violation(action, workspace_state)
+
+        return True
+</code></pre>
+<h3 id="1753-healthcare-and-assistance">17.5.3 Healthcare and Assistance</h3>
+<p>VLA models in healthcare must handle additional constraints including safety, privacy, and patient comfort.</p>
+<p><strong>Healthcare Assistance System:</strong></p>
+<pre><code class="language-python">class HealthcareAssistant:
+    def __init__(self, vla_model, patient_monitor):
+        self.vla_model = vla_model
+        self.monitor = patient_monitor
+
+    def assist_patient(self, request, patient_state):
+        # Check patient condition
+        vital_signs = self.monitor.get_vital_signs()
+
+        # Modify actions based on patient state
+        if vital_signs[&#x27;stress_level&#x27;] &gt; threshold:
+            # Gentle, slower movements
+            action_modifier = &#x27;gentle&#x27;
+        else:
+            action_modifier = &#x27;normal&#x27;
+
+        # Generate assistance actions
+        actions = self.vla_model.generate_assistance_actions(
+            request,
+            patient_state,
+            action_modifier
+        )
+
+        # Execute with continuous monitoring
+        for action in actions:
+            self.monitor.check_patient_comfort()
+
+            if self.monitor.is_safe_to_proceed():
+                self.execute_action(action)
+            else:
+                self.stop_and_assess()
+
+        return True
+</code></pre>
+<h2 id="176-evaluation-and-benchmarks">17.6 Evaluation and Benchmarks</h2>
+<h3 id="1761-standardized-evaluation-protocols">17.6.1 Standardized Evaluation Protocols</h3>
+<p><strong>Calvin Benchmark:</strong></p>
+<pre><code class="language-python">class CalvinEvaluator:
+    def __init__(self, environment, tasks):
+        self.env = environment
+        self.tasks = tasks
+
+    def evaluate_agent(self, agent, num_episodes=100):
+        results = {}
+
+        for task_name, task_spec in self.tasks.items():
+            task_success = []
+            task_efficiency = []
+
+            for episode in range(num_episodes):
+                # Reset environment
+                obs = self.env.reset(task=task_spec)
+
+                # Track episode metrics
+                steps = 0
+                max_steps = 500
+                success = False
+
+                while steps &lt; max_steps:
+                    # Agent action
+                    action = agent.act(obs, task_spec.instruction)
+
+                    # Environment step
+                    obs, reward, done, info = self.env.step(action)
+                    steps += 1
+
+                    if done:
+                        success = info[&#x27;success&#x27;]
+                        break
+
+                task_success.append(success)
+                task_efficiency.append(steps / max_steps)
+
+            results[task_name] = {
+                &#x27;success_rate&#x27;: np.mean(task_success),
+                &#x27;efficiency&#x27;: 1 - np.mean(task_efficiency)
+            }
+
+        return results
+</code></pre>
+<p><strong>Metrics for VLA Evaluation:</strong></p>
+<ol>
+<li><strong>Task Success Rate</strong>: Percentage of successfully completed tasks</li>
+<li><strong>Sample Efficiency</strong>: Number of demonstrations needed for good performance</li>
+<li><strong>Generalization</strong>: Performance on unseen tasks/environments</li>
+<li><strong>Robustness</strong>: Performance under perturbations and noise</li>
+<li><strong>Safety</strong>: Frequency of unsafe actions or collisions</li>
+<li><strong>Language Understanding</strong>: Correct interpretation of instructions</li>
+</ol>
+<h3 id="1762-real-world-evaluation-challenges">17.6.2 Real-World Evaluation Challenges</h3>
+<p><strong>Simulation-to-Reality Gap:</strong></p>
+<pre><code class="language-python">class Sim2RealEvaluator:
+    def __init__(self, sim_env, real_env):
+        self.sim_env = sim_env
+        self.real_env = real_env
+
+    def evaluate_domain_gap(self, agent, tasks):
+        sim_results = {}
+        real_results = {}
+
+        for task in tasks:
+            # Evaluate in simulation
+            sim_perf = self.evaluate_in_environment(agent, task, self.sim_env)
+            sim_results[task] = sim_perf
+
+            # Evaluate on real robot
+            real_perf = self.evaluate_in_environment(agent, task, self.real_env)
+            real_results[task] = real_perf
+
+        # Compute domain gap
+        domain_gap = {}
+        for task in tasks:
+            gap = abs(sim_results[task] - real_results[task])
+            domain_gap[task] = gap
+
+        return {
+            &#x27;simulation&#x27;: sim_results,
+            &#x27;real&#x27;: real_results,
+            &#x27;gap&#x27;: domain_gap,
+            &#x27;average_gap&#x27;: np.mean(list(domain_gap.values()))
+        }
+</code></pre>
+<h3 id="1763-human-evaluation">17.6.3 Human Evaluation</h3>
+<p><strong>Human Preference Scoring:</strong></p>
+<pre><code class="language-python">class HumanPreferenceEvaluator:
+    def __init__(self, evaluation_criteria):
+        self.criteria = evaluation_criteria
+
+    def collect_preferences(self, demonstrations, human_evaluators):
+        preferences = []
+
+        for evaluator in human_evaluators:
+            for demo_pair in demonstrations:
+                # Present two demonstrations to evaluator
+                demo1, demo2 = demo_pair
+
+                # Collect preference
+                preference = evaluator.compare_demonstrations(demo1, demo2)
+
+                preferences.append({
+                    &#x27;evaluator&#x27;: evaluator.id,
+                    &#x27;demo1_id&#x27;: demo1.id,
+                    &#x27;demo2_id&#x27;: demo2.id,
+                    &#x27;preference&#x27;: preference,  # 1, 2, or tie
+                    &#x27;reasoning&#x27;: evaluator.get_reasoning()
+                })
+
+        return self.compute_elo_ratings(preferences)
+</code></pre>
+<h2 id="177-challenges-and-limitations">17.7 Challenges and Limitations</h2>
+<h3 id="1771-technical-challenges">17.7.1 Technical Challenges</h3>
+<p><strong>1. Scalability vs. Specialization Trade-off</strong></p>
+<ul>
+<li>Large models generalize well but may be suboptimal for specific tasks</li>
+<li>Task-specific fine-tuning can reduce generalization capabilities</li>
+<li>Computational requirements for inference on edge devices</li>
+</ul>
+<p><strong>2. Long-Horizon Planning</strong></p>
+<ul>
+<li>Difficulty maintaining coherent behavior over extended sequences</li>
+<li>Accumulation of errors in long action sequences</li>
+<li>Memory limitations for complex multi-step tasks</li>
+</ul>
+<p><strong>3. Real-Time Constraints</strong></p>
+<ul>
+<li>Latency requirements for interactive tasks</li>
+<li>Trade-offs between model size and inference speed</li>
+<li>Hardware limitations on robotic platforms</li>
+</ul>
+<h3 id="1772-safety-and-reliability">17.7.2 Safety and Reliability</h3>
+<p><strong>Safety Monitoring Framework:</strong></p>
+<pre><code class="language-python">class VLASafetyMonitor:
+    def __init__(self, safety_constraints):
+        self.constraints = safety_constraints
+        self.risk_assessor = RiskAssessor()
+
+    def monitor_action(self, action, state, context):
+        # Check immediate safety
+        if self.violates_constraints(action, state):
+            return SafetyStatus.UNSAFE, &quot;Constraint violation&quot;
+
+        # Assess risk level
+        risk_score = self.risk_assessor.assess_risk(action, state, context)
+
+        if risk_score &gt; self.thresholds.high:
+            return SafetyStatus.HIGH_RISK, f&quot;Risk score: {risk_score}&quot;
+        elif risk_score &gt; self.thresholds.medium:
+            return SafetyStatus.MEDIUM_RISK, f&quot;Risk score: {risk_score}&quot;
+        else:
+            return SafetyStatus.SAFE, f&quot;Risk score: {risk_score}&quot;
+
+    def suggest_modification(self, action, state):
+        # Suggest safer alternative
+        alternative = self.generate_safe_alternative(action, state)
+        return alternative
+</code></pre>
+<h3 id="1773-data-and-distribution-shift">17.7.3 Data and Distribution Shift</h3>
+<p><strong>Domain Adaptation Strategies:</strong></p>
+<pre><code class="language-python">class DomainAdaptationModule:
+    def __init__(self, source_model, adaptation_method):
+        self.model = source_model
+        self.method = adaptation_method
+
+    def adapt_to_domain(self, target_data):
+        if self.method == &#x27;fine_tuning&#x27;:
+            return self.fine_tune(target_data)
+        elif self.method == &#x27;few_shot&#x27;:
+            return self.few_shot_adaptation(target_data)
+        elif self.method == &#x27;domain_adversarial&#x27;:
+            return self.domain_adversarial_training(target_data)
+
+    def detect_domain_shift(self, new_data):
+        # Statistical tests for distribution shift
+        source_features = self.model.encode(self.source_data)
+        target_features = self.model.encode(new_data)
+
+        # Compute KL divergence
+        shift_score = self.compute_kl_divergence(
+            source_features, target_features
+        )
+
+        return shift_score &gt; self.shift_threshold
+</code></pre>
+<h2 id="178-future-directions">17.8 Future Directions</h2>
+<h3 id="1781-cognitive-architectures">17.8.1 Cognitive Architectures</h3>
+<p><strong>Hierarchical VLA Systems:</strong></p>
+<pre><code class="language-python">class CognitiveVLA:
+    def __init__(self):
+        # Low-level reactive controller
+        self.reactive_controller = VLAReactiveController()
+
+        # Mid-level deliberative planner
+        self.deliberative_planner = VLADeliberativePlanner()
+
+        # High-level reasoning system
+        self.reasoning_system = VLAReasoningSystem()
+
+        # Memory system
+        self.episodic_memory = EpisodicMemory()
+        self.semantic_memory = SemanticMemory()
+
+    def process_instruction(self, instruction, context):
+        # High-level understanding
+        task_representation = self.reasoning_system.parse_and_plan(
+            instruction, context, self.semantic_memory
+        )
+
+        # Retrieve relevant experiences
+        relevant_episodes = self.episodic_memory.retrieve(task_representation)
+
+        # Generate detailed plan
+        detailed_plan = self.deliberative_planner.plan(
+            task_representation,
+            relevant_episodes
+        )
+
+        # Execute with reactive control
+        for subtask in detailed_plan.subtasks:
+            self.execute_subtask(subtask)
+
+            # Store experience
+            self.episodic_memory.store(subtask, context, outcome)
+</code></pre>
+<h3 id="1782-multimodal-foundation-models">17.8.2 Multimodal Foundation Models</h3>
+<p><strong>3D Vision and Action Integration:</strong></p>
+<pre><code class="language-python">class MultimodalFoundationModel:
+    def __init__(self):
+        # 2D vision encoder
+        self.vision_2d = VisionTransformer2D()
+
+        # 3D vision encoder
+        self.vision_3d = VisionTransformer3D()
+
+        # Audio encoder for ambient sounds
+        self.audio_encoder = AudioTransformer()
+
+        # Tactile encoder for touch sensing
+        self.tactile_encoder = TactileTransformer()
+
+        # Unified multimodal transformer
+        self.unified_transformer = UnifiedMultimodalTransformer()
+
+    def forward(self, observations):
+        # Encode all modalities
+        features_2d = self.vision_2d(observations[&#x27;rgb&#x27;])
+        features_3d = self.vision_3d(observations[&#x27;point_cloud&#x27;])
+        features_audio = self.audio_encoder(observations[&#x27;audio&#x27;])
+        features_tactile = self.tactile_encoder(observations[&#x27;tactile&#x27;])
+
+        # Fuse modalities
+        unified_features = self.unified_transformer(
+            vision_2d=features_2d,
+            vision_3d=features_3d,
+            audio=features_audio,
+            tactile=features_tactile
+        )
+
+        # Generate actions
+        actions = self.action_head(unified_features)
+
+        return actions
+</code></pre>
+<h3 id="1783-embodied-simulation-training">17.8.3 Embodied Simulation Training</h3>
+<p><strong>Large-Scale Simulation Training:</strong></p>
+<pre><code class="language-python">class EmbodiedSimulationTrainer:
+    def __init__(self, simulation_framework):
+        self.sim_framework = simulation_framework
+        self.curriculum = EmbodiedCurriculum()
+
+    def train_vla_model(self, model, config):
+        for stage in self.curriculum.stages:
+            # Create simulation environments
+            environments = self.sim_framework.create_environments(
+                stage.config
+            )
+
+            # Train on diverse tasks
+            for epoch in range(stage.epochs):
+                for env in environments:
+                    # Sample task
+                    task = self.curriculum.sample_task(stage, env)
+
+                    # Execute and collect data
+                    trajectory = self.execute_task(model, env, task)
+
+                    # Update model
+                    loss = self.update_model(model, trajectory)
+
+                    # Evaluate progress
+                    if epoch % config.eval_interval == 0:
+                        self.evaluate_model(model, stage.test_tasks)
+
+        return model
+</code></pre>
+<h3 id="1784-human-robot-collaboration">17.8.4 Human-Robot Collaboration</h3>
+<p><strong>Collaborative VLA Systems:</strong></p>
+<pre><code class="language-python">class CollaborativeVLA:
+    def __init__(self, vla_model, human_interface):
+        self.vla = vla_model
+        self.human_interface = human_interface
+        self.collaboration_memory = CollaborationMemory()
+
+    def collaborative_task_execution(self, task_description, human_partner):
+        # Establish shared understanding
+        shared_plan = self.establish_shared_plan(
+            task_description, human_partner
+        )
+
+        # Execute with human in the loop
+        while not shared_plan.completed():
+            # Robot proposes action
+            robot_action = self.vla.propose_action(
+                current_state, shared_plan
+            )
+
+            # Human review and feedback
+            human_feedback = self.human_interface.get_feedback(
+                robot_action, human_partner
+            )
+
+            if human_feedback.approved:
+                # Execute action
+                self.execute_action(robot_action)
+            else:
+                # Incorporate human correction
+                self.incorporate_feedback(human_feedback)
+
+            # Update shared understanding
+            shared_plan.update_progress()
+
+        return True
+</code></pre>
+<h2 id="179-conclusion">17.9 Conclusion</h2>
+<p>Vision-Language-Action models represent a fundamental shift in how we approach robotic intelligence, unifying perception, understanding, and action in a single learned system. As these models continue to scale and improve, they promise to unlock new capabilities in household assistance, industrial automation, healthcare, and beyond.</p>
+<p>The journey toward truly embodied AI is still in its early stages, but the rapid progress in VLA models suggests a future where robots can understand natural language instructions, perceive their environments richly, and execute complex tasks with the flexibility and adaptability that humans naturally possess.</p>
+<h3 id="key-takeaways">Key Takeaways:</h3>
+<ol>
+<li><strong>VLA models unify vision, language, and action</strong> in end-to-end learnable systems</li>
+<li><strong>Large-scale pretraining</strong> on diverse datasets enables generalization to new tasks</li>
+<li><strong>Robot-specific adaptations</strong> are necessary for real-world deployment</li>
+<li><strong>Safety and reliability</strong> remain critical challenges for practical applications</li>
+<li><strong>Cognitive architectures</strong> promise to address long-horizon planning and reasoning</li>
+<li><strong>Human-robot collaboration</strong> will be essential for widespread adoption</li>
+</ol>
+<p>The next decade will likely see VLA models becoming increasingly sophisticated, moving from single-task systems to truly generalist robots that can learn and adapt throughout their operational lifetimes.</p>
+<h2 id="further-reading">Further Reading</h2>
+<ul>
+<li>&quot;RT-1: Robotics Transformer for Real-World Control&quot; (Brohan et al., 2022)</li>
+<li>&quot;PaLM-E: An Embodied Multimodal Language Model&quot; (Driess et al., 2023)</li>
+<li>&quot;Octo: A Generalist Robot Policy&quot; (Team et al., 2023)</li>
+<li>&quot;Foundation Models for Embodied AI&quot; (Achiam et al., 2023)</li>
+<li>&quot;Scaling Laws for Robotics&quot; (Baker et al., 2022)</li>
+</ul>
+<h2 id="exercises">Exercises</h2>
+<h3 id="exercise-1-vla-architecture-design">Exercise 1: VLA Architecture Design</h3>
+<p>Design a VLA model for a specific robot application (e.g., warehouse logistics, healthcare assistance). Detail:</p>
+<ul>
+<li>Required input modalities</li>
+<li>Architecture components</li>
+<li>Training data requirements</li>
+<li>Evaluation metrics</li>
+</ul>
+<h3 id="exercise-2-multimodal-fusion">Exercise 2: Multimodal Fusion</h3>
+<p>Implement and compare different fusion strategies for combining vision and language features:</p>
+<ul>
+<li>Early fusion</li>
+<li>Late fusion</li>
+<li>Cross-modal attention</li>
+<li>Transformer-based fusion</li>
+</ul>
+<h3 id="exercise-3-safety-analysis">Exercise 3: Safety Analysis</h3>
+<p>Analyze potential failure modes of VLA systems in safety-critical applications and propose mitigation strategies.</p>
+<h3 id="exercise-4-real-world-adaptation">Exercise 4: Real-World Adaptation</h3>
+<p>Design a domain adaptation pipeline for transferring a VLA model from simulation to a real robot platform.</p>
+<h3 id="exercise-5-evaluation-protocol">Exercise 5: Evaluation Protocol</h3>
+<p>Develop a comprehensive evaluation protocol for VLA models, including both automated metrics and human evaluation procedures.</p></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus/tree/main/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-16-path-planning-algorithms"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Path Planning Algorithms</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-18-voice-to-action-pipelines-whisper"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Chapter 18: Voice-to-Action Pipelines (Whisper)</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#171-introduction-to-embodied-ai" class="table-of-contents__link toc-highlight">17.1 Introduction to Embodied AI</a><ul><li><a href="#1711-the-emergence-of-vla-models" class="table-of-contents__link toc-highlight">17.1.1 The Emergence of VLA Models</a></li><li><a href="#1712-key-advantages-of-vla-models" class="table-of-contents__link toc-highlight">17.1.2 Key Advantages of VLA Models</a></li><li><a href="#1713-challenges-in-vla-development" class="table-of-contents__link toc-highlight">17.1.3 Challenges in VLA Development</a></li></ul></li><li><a href="#172-multimodal-foundation-models" class="table-of-contents__link toc-highlight">17.2 Multimodal Foundation Models</a><ul><li><a href="#1721-vision-language-pretraining" class="table-of-contents__link toc-highlight">17.2.1 Vision-Language Pretraining</a></li><li><a href="#1722-action-conditioning-and-control" class="table-of-contents__link toc-highlight">17.2.2 Action Conditioning and Control</a></li><li><a href="#1723-cross-modal-attention-mechanisms" class="table-of-contents__link toc-highlight">17.2.3 Cross-Modal Attention Mechanisms</a></li></ul></li><li><a href="#173-training-methodologies" class="table-of-contents__link toc-highlight">17.3 Training Methodologies</a><ul><li><a href="#1731-large-scale-data-collection" class="table-of-contents__link toc-highlight">17.3.1 Large-Scale Data Collection</a></li><li><a href="#1732-multi-task-learning-objectives" class="table-of-contents__link toc-highlight">17.3.2 Multi-Task Learning Objectives</a></li><li><a href="#1733-fine-tuning-and-adaptation" class="table-of-contents__link toc-highlight">17.3.3 Fine-Tuning and Adaptation</a></li></ul></li><li><a href="#174-robot-specific-vla-models" class="table-of-contents__link toc-highlight">17.4 Robot-Specific VLA Models</a><ul><li><a href="#1741-rt-series-google-robotics-transformer" class="table-of-contents__link toc-highlight">17.4.1 RT-Series: Google Robotics Transformer</a></li><li><a href="#1742-palm-e-embodied-language-model" class="table-of-contents__link toc-highlight">17.4.2 PaLM-E: Embodied Language Model</a></li><li><a href="#1743-octo-generalist-robot-policy" class="table-of-contents__link toc-highlight">17.4.3 Octo: Generalist Robot Policy</a></li></ul></li><li><a href="#175-real-world-applications" class="table-of-contents__link toc-highlight">17.5 Real-World Applications</a><ul><li><a href="#1751-household-assistance" class="table-of-contents__link toc-highlight">17.5.1 Household Assistance</a></li><li><a href="#1752-industrial-automation" class="table-of-contents__link toc-highlight">17.5.2 Industrial Automation</a></li><li><a href="#1753-healthcare-and-assistance" class="table-of-contents__link toc-highlight">17.5.3 Healthcare and Assistance</a></li></ul></li><li><a href="#176-evaluation-and-benchmarks" class="table-of-contents__link toc-highlight">17.6 Evaluation and Benchmarks</a><ul><li><a href="#1761-standardized-evaluation-protocols" class="table-of-contents__link toc-highlight">17.6.1 Standardized Evaluation Protocols</a></li><li><a href="#1762-real-world-evaluation-challenges" class="table-of-contents__link toc-highlight">17.6.2 Real-World Evaluation Challenges</a></li><li><a href="#1763-human-evaluation" class="table-of-contents__link toc-highlight">17.6.3 Human Evaluation</a></li></ul></li><li><a href="#177-challenges-and-limitations" class="table-of-contents__link toc-highlight">17.7 Challenges and Limitations</a><ul><li><a href="#1771-technical-challenges" class="table-of-contents__link toc-highlight">17.7.1 Technical Challenges</a></li><li><a href="#1772-safety-and-reliability" class="table-of-contents__link toc-highlight">17.7.2 Safety and Reliability</a></li><li><a href="#1773-data-and-distribution-shift" class="table-of-contents__link toc-highlight">17.7.3 Data and Distribution Shift</a></li></ul></li><li><a href="#178-future-directions" class="table-of-contents__link toc-highlight">17.8 Future Directions</a><ul><li><a href="#1781-cognitive-architectures" class="table-of-contents__link toc-highlight">17.8.1 Cognitive Architectures</a></li><li><a href="#1782-multimodal-foundation-models" class="table-of-contents__link toc-highlight">17.8.2 Multimodal Foundation Models</a></li><li><a href="#1783-embodied-simulation-training" class="table-of-contents__link toc-highlight">17.8.3 Embodied Simulation Training</a></li><li><a href="#1784-human-robot-collaboration" class="table-of-contents__link toc-highlight">17.8.4 Human-Robot Collaboration</a></li></ul></li><li><a href="#179-conclusion" class="table-of-contents__link toc-highlight">17.9 Conclusion</a><ul><li><a href="#key-takeaways" class="table-of-contents__link toc-highlight">Key Takeaways:</a></li></ul></li><li><a href="#further-reading" class="table-of-contents__link toc-highlight">Further Reading</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a><ul><li><a href="#exercise-1-vla-architecture-design" class="table-of-contents__link toc-highlight">Exercise 1: VLA Architecture Design</a></li><li><a href="#exercise-2-multimodal-fusion" class="table-of-contents__link toc-highlight">Exercise 2: Multimodal Fusion</a></li><li><a href="#exercise-3-safety-analysis" class="table-of-contents__link toc-highlight">Exercise 3: Safety Analysis</a></li><li><a href="#exercise-4-real-world-adaptation" class="table-of-contents__link toc-highlight">Exercise 4: Real-World Adaptation</a></li><li><a href="#exercise-5-evaluation-protocol" class="table-of-contents__link toc-highlight">Exercise 5: Evaluation Protocol</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="nm-custom-footer" data-testid="custom-footer"><div class="nm-footer-container"><div class="nm-footer-grid"><div class="nm-footer-brand"><div class="nm-footer-logo"><h3>Physical AI &amp; Robotics</h3><p>An AI-Native Engineering Textbook</p></div><p class="nm-footer-description">Master the convergence of artificial intelligence and physical robotics through comprehensive, hands-on learning experiences.</p><div class="nm-footer-stats"><div class="nm-stat"><div class="nm-stat-number">1000+</div><div class="nm-stat-label">Pages</div></div><div class="nm-stat"><div class="nm-stat-number">50+</div><div class="nm-stat-label">Exercises</div></div><div class="nm-stat"><div class="nm-stat-number">24/7</div><div class="nm-stat-label">Access</div></div></div></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Resources</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai">Foundations</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals">ROS &amp; Navigation</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots">Computer Vision</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models">Machine Learning</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation">Simulation &amp; Control</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Learning Paths</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/beginner">Beginner Track</a></li><li><a href="/ai-native-textbook-docusaurus/intermediate">Intermediate Track</a></li><li><a href="/ai-native-textbook-docusaurus/advanced">Advanced Track</a></li><li><a href="/ai-native-textbook-docusaurus/projects">Hands-on Projects</a></li><li><a href="/ai-native-textbook-docusaurus/certification">Certification</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Community</h4><ul class="nm-footer-links"><li><a href="https://github.com/your-username/ai-native-textbook">GitHub</a></li><li><a href="https://discord.gg/your-server">Discord</a></li><li><a href="https://forum.example.com">Forum</a></li><li><a href="/ai-native-textbook-docusaurus/contributors">Contributors</a></li><li><a href="/ai-native-textbook-docusaurus/blog">Blog</a></li></ul></div><div class="nm-footer-section nm-footer-newsletter"><h4 class="nm-footer-heading">Stay Updated</h4><p class="nm-footer-subtext">Get the latest updates and exclusive content</p><div class="nm-newsletter-form"><input type="email" placeholder="Enter your email" class="nm-newsletter-input"><button type="button" class="nm-newsletter-button">Subscribe</button></div><div class="nm-footer-social"><a href="https://github.com" class="nm-social-link" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><a href="https://twitter.com" class="nm-social-link" aria-label="Twitter"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg></a><a href="https://linkedin.com" class="nm-social-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></a></div></div></div><div class="nm-footer-bottom"><div class="nm-footer-bottom-left"><span class="nm-footer-copyright">© <!-- -->2025<!-- --> AI-Native Textbook. All rights reserved. Created by SNN Studio.</span></div><div class="nm-footer-bottom-right"><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/privacy">Privacy Policy</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/terms">Terms of Service</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/code-of-conduct">Code of Conduct</a></div></div></div></footer><div class="chat-widget"><button class="chat-widget-button" aria-label="Open chat"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button></div></div>
+</body>
+</html>

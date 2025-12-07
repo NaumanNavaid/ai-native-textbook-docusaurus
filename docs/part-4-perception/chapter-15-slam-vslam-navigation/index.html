@@ -1,0 +1,1162 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-part-4-perception/chapter-15-slam-vslam-navigation" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">SLAM, VSLAM, and Navigation | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-15-slam-vslam-navigation"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="SLAM, VSLAM, and Navigation | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="15.1 SLAM Fundamentals"><meta data-rh="true" property="og:description" content="15.1 SLAM Fundamentals"><link data-rh="true" rel="icon" href="/ai-native-textbook-docusaurus/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-15-slam-vslam-navigation"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-15-slam-vslam-navigation" hreflang="en"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-15-slam-vslam-navigation" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"SLAM, VSLAM, and Navigation","item":"https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-15-slam-vslam-navigation"}]}</script><link rel="alternate" type="application/rss+xml" href="/ai-native-textbook-docusaurus/blog/rss.xml" title="Physical AI &amp; Humanoid Robotics RSS Feed">
+<link rel="alternate" type="application/atom+xml" href="/ai-native-textbook-docusaurus/blog/atom.xml" title="Physical AI &amp; Humanoid Robotics Atom Feed"><link rel="stylesheet" href="/ai-native-textbook-docusaurus/assets/css/styles.6e378bed.css">
+<script src="/ai-native-textbook-docusaurus/assets/js/runtime~main.5e3ab4fa.js" defer="defer"></script>
+<script src="/ai-native-textbook-docusaurus/assets/js/main.17a86997.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav class="nm-custom-navbar"><div class="nm-navbar-container"><div class="nm-navbar-logo"><a class="nm-logo-link" href="/ai-native-textbook-docusaurus/"><div class="nm-logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="currentColor"></rect><path d="M8 16C8 11.5817 11.5817 8 16 8C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24C11.5817 24 8 20.4183 8 16Z" fill="var(--ifm-background-color)"></path><path d="M12 16L16 12L20 16M16 12V20" stroke="var(--ifm-color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="nm-logo-text"><span class="nm-logo-title">Physical AI</span><span class="nm-logo-subtitle">&amp; Robotics</span></div></a></div><div class="nm-navbar-links"><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/">Home</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/about">About</a></div><div class="nm-navbar-actions"><div class="nm-search-container" style="margin-right:1rem"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div><button class="nm-action-button color-mode-toggle" aria-label="Toggle dark mode"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button><a href="https://github.com/NaumanNavaid/hackathon-1" class="nm-action-button" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><button class="nm-mobile-menu-toggle" aria-label="Toggle mobile menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu w-6 h-6" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button></div></div></nav><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/ai-native-textbook-docusaurus/"><b class="navbar__title text--truncate">Physical AI &amp; Robotics</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/ai-native-textbook-docusaurus/">Home</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai"><span title="Part 1: Foundations" class="categoryLinkLabel_W154">Part 1: Foundations</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals"><span title="Part 2: ROS Fundamentals" class="categoryLinkLabel_W154">Part 2: ROS Fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation"><span title="Part 3: Simulation &amp; Digital Twins" class="categoryLinkLabel_W154">Part 3: Simulation &amp; Digital Twins</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"><span title="Part 4: Perception &amp; State Estimation" class="categoryLinkLabel_W154">Part 4: Perception &amp; State Estimation</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"><span title="Computer Vision for Robots" class="linkLabel_WmDU">Computer Vision for Robots</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-14-sensor-fusion-state-estimation"><span title="Sensor Fusion and State Estimation" class="linkLabel_WmDU">Sensor Fusion and State Estimation</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-15-slam-vslam-navigation"><span title="SLAM, VSLAM, and Navigation" class="linkLabel_WmDU">SLAM, VSLAM, and Navigation</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-16-path-planning-algorithms"><span title="Path Planning Algorithms" class="linkLabel_WmDU">Path Planning Algorithms</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models"><span title="Part 5: Embodied Intelligence" class="categoryLinkLabel_W154">Part 5: Embodied Intelligence</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/ai-native-textbook-docusaurus/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Part 4: Perception &amp; State Estimation</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">SLAM, VSLAM, and Navigation</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="chapter-15-slam-vslam-and-navigation">Chapter 15: SLAM, VSLAM, and Navigation</h1></header>
+<h2 id="151-slam-fundamentals">15.1 SLAM Fundamentals</h2>
+<h3 id="1511-the-slam-problem">15.1.1 The SLAM Problem</h3>
+<p>Simultaneous Localization and Mapping (SLAM) is one of the fundamental challenges in robotics. The robot must build a map of an unknown environment while simultaneously estimating its position within that map.</p>
+<admonition type="info"><p>SLAM addresses the chicken-and-egg problem: to build a map, you need to know your position; to know your position, you need a map. The solution lies in the probabilistic framework that estimates both pose and map simultaneously while maintaining uncertainty estimates.</p></admonition>
+<h3 id="1512-slam-mathematical-framework">15.1.2 SLAM Mathematical Framework</h3>
+<p>The SLAM problem can be formulated as a Bayesian estimation problem:</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>p</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mrow><mn>1</mn><mo>:</mo><mi>t</mi></mrow></msub><mo separator="true">,</mo><mi>m</mi><mi mathvariant="normal">∣</mi><msub><mi>z</mi><mrow><mn>1</mn><mo>:</mo><mi>t</mi></mrow></msub><mo separator="true">,</mo><msub><mi>u</mi><mrow><mn>1</mn><mo>:</mo><mi>t</mi></mrow></msub><mo stretchy="false">)</mo><mo>=</mo><mi>η</mi><mo>⋅</mo><mi>p</mi><mo stretchy="false">(</mo><msub><mi>z</mi><mi>t</mi></msub><mi mathvariant="normal">∣</mi><msub><mi>x</mi><mi>t</mi></msub><mo separator="true">,</mo><mi>m</mi><mo stretchy="false">)</mo><mo>⋅</mo><mo>∫</mo><mi>p</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>t</mi></msub><mi mathvariant="normal">∣</mi><msub><mi>x</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo separator="true">,</mo><msub><mi>u</mi><mi>t</mi></msub><mo stretchy="false">)</mo><mo>⋅</mo><mi>p</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mrow><mn>1</mn><mo>:</mo><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo separator="true">,</mo><mi>m</mi><mi mathvariant="normal">∣</mi><msub><mi>z</mi><mrow><mn>1</mn><mo>:</mo><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo separator="true">,</mo><msub><mi>u</mi><mrow><mn>1</mn><mo>:</mo><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false">)</mo><mi>d</mi><msub><mi>x</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">p(x_{1:t}, m | z_{1:t}, u_{1:t}) = \eta \cdot p(z_t | x_t, m) \cdot \int p(x_t | x_{t-1}, u_t) \cdot p(x_{1:t-1}, m | z_{1:t-1}, u_{1:t-1}) dx_{t-1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">:</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord mathnormal">m</span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.04398em">z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em"><span style="top:-2.55em;margin-left:-0.044em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">:</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">:</span><span class="mord mathnormal mtight">t</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em"></span></span><span class="base"><span class="strut" style="height:0.6389em;vertical-align:-0.1944em"></span><span class="mord mathnormal" style="margin-right:0.03588em">η</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.04398em">z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em"><span style="top:-2.55em;margin-left:-0.044em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord mathnormal">m</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em"></span></span><span class="base"><span class="strut" style="height:2.2222em;vertical-align:-0.8622em"></span><span class="mop op-symbol large-op" style="margin-right:0.44445em;position:relative;top:-0.0011em">∫</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em"><span></span></span></span></span></span></span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2806em"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">t</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em"></span><span class="mord mathnormal">p</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">:</span><span class="mord mathnormal mtight">t</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord mathnormal">m</span><span class="mord">∣</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.04398em">z</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em"><span style="top:-2.55em;margin-left:-0.044em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">:</span><span class="mord mathnormal mtight">t</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em"><span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord"><span class="mord mathnormal">u</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span><span class="mrel mtight">:</span><span class="mord mathnormal mtight">t</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord mathnormal">d</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em"><span class="pstrut" style="height:2.7em"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2083em"><span></span></span></span></span></span></span></span></span></span></span>
+<p>Where:</p>
+<ul>
+<li><code>x_{1:t}</code> = Robot poses over time</li>
+<li><code>m</code> = Map (landmarks or occupancy grid)</li>
+<li><code>z_{1:t}</code> = Measurements over time</li>
+<li><code>u_{1:t}</code> = Controls over time</li>
+</ul>
+<pre><code class="language-python">class SLAMFramework:
+    def __init__(self, initial_pose, map_parameters):
+        self.robot_pose = initial_pose
+        self.map = Map(map_parameters)
+        self.landmarks = []
+        self.trajectory = [initial_pose.copy()]
+        self.uncertainty = np.eye(3) * 0.1  # Initial pose uncertainty
+
+    def predict(self, control, dt):
+        &quot;&quot;&quot;Predict robot pose using motion model&quot;&quot;&quot;
+        # Update pose using control input
+        self.robot_pose = self.motion_model(self.robot_pose, control, dt)
+
+        # Propagate uncertainty
+        self.uncertainty = self.propagate_uncertainty(control, dt)
+
+        return self.robot_pose.copy(), self.uncertainty.copy()
+
+    def update(self, measurements):
+        &quot;&quot;&quot;Update pose and map with new measurements&quot;&quot;&quot;
+        # Data association - match measurements to landmarks
+        associations = self.data_association(measurements)
+
+        for measurement, landmark_id in associations:
+            if landmark_id == &#x27;new&#x27;:
+                # Initialize new landmark
+                self.initialize_landmark(measurement)
+            else:
+                # Update existing landmark and robot pose
+                self.update_with_known_landmark(measurement, landmark_id)
+
+        # Store trajectory
+        self.trajectory.append(self.robot_pose.copy())
+
+    def motion_model(self, pose, control, dt):
+        &quot;&quot;&quot;Differential drive motion model&quot;&quot;&quot;
+        x, y, theta = pose
+        v, omega = control
+
+        # Add control noise
+        v_noisy = v + np.random.normal(0, 0.1)
+        omega_noisy = omega + np.random.normal(0, 0.1)
+
+        # Update pose
+        if abs(omega_noisy) &lt; 1e-6:
+            # Straight line motion
+            x_new = x + v_noisy * np.cos(theta) * dt
+            y_new = y + v_noisy * np.sin(theta) * dt
+            theta_new = theta
+        else:
+            # Circular motion
+            R = v_noisy / omega_noisy
+            x_new = x + R * (np.sin(theta + omega_noisy * dt) - np.sin(theta))
+            y_new = y + R * (-np.cos(theta + omega_noisy * dt) + np.cos(theta))
+            theta_new = theta + omega_noisy * dt
+
+        return np.array([x_new, y_new, theta_new])
+
+    def data_association(self, measurements):
+        &quot;&quot;&quot;Associate measurements with known landmarks&quot;&quot;&quot;
+        associations = []
+
+        for measurement in measurements:
+            best_landmark = None
+            best_distance = float(&#x27;inf&#x27;)
+
+            # Find nearest landmark
+            for i, landmark in enumerate(self.landmarks):
+                predicted_measurement = self.predict_measurement(landmark)
+                distance = np.linalg.norm(measurement - predicted_measurement)
+
+                if distance &lt; best_distance and distance &lt; 2.0:  # Association threshold
+                    best_distance = distance
+                    best_landmark = i
+
+            if best_landmark is not None:
+                associations.append((measurement, best_landmark))
+            else:
+                associations.append((measurement, &#x27;new&#x27;))
+
+        return associations
+
+    def predict_measurement(self, landmark):
+        &quot;&quot;&quot;Predict measurement from landmark position&quot;&quot;&quot;
+        dx = landmark[&#x27;position&#x27;][0] - self.robot_pose[0]
+        dy = landmark[&#x27;position&#x27;][1] - self.robot_pose[1]
+        distance = np.sqrt(dx**2 + dy**2)
+
+        # Bearing to landmark
+        bearing = np.arctan2(dy, dx) - self.robot_pose[2]
+
+        return np.array([distance, bearing])
+</code></pre>
+<h2 id="152-extended-kalman-filter-slam">15.2 Extended Kalman Filter SLAM</h2>
+<h3 id="1521-ekf-slam-implementation">15.2.1 EKF-SLAM Implementation</h3>
+<p>Extended Kalman Filter SLAM maintains joint state of robot pose and landmark positions:</p>
+<pre><code class="language-python">class EKFSLAM:
+    def __init__(self, initial_pose, initial_covariance):
+        # State: [x, y, theta, l1_x, l1_y, l2_x, l2_y, ...]
+        self.state = np.zeros(3)
+        self.state[:3] = initial_pose
+
+        # Covariance matrix
+        self.covariance = np.eye(3) * 0.1
+        self.initial_covariance = initial_covariance
+
+        # Process and measurement noise
+        self.Q = np.diag([0.1, 0.1, 0.01])  # Process noise
+        self.R = np.diag([0.5, 0.1])  # Measurement noise (range, bearing)
+
+        # Landmarks
+        self.landmarks = []
+        self.next_landmark_id = 0
+
+        # Data association parameters
+        self.gating_threshold = 3.0  # Mahalanobis distance threshold
+
+    def predict(self, control, dt):
+        &quot;&quot;&quot;Predict robot pose and covariance&quot;&quot;&quot;
+        # Extract robot pose
+        pose = self.state[:3]
+
+        # Predict new pose
+        new_pose = self.motion_model(pose, control, dt)
+        self.state[:3] = new_pose
+
+        # Jacobian of motion model
+        F = self.motion_jacobian(pose, control, dt)
+
+        # Augment Jacobian for landmarks (identity)
+        n_landmarks = len(self.landmarks)
+        F_full = np.eye(3 + 2*n_landmarks)
+        F_full[:3, :3] = F
+
+        # Update covariance
+        Q_full = np.eye(3 + 2*n_landmarks)
+        Q_full[:3, :3] = self.Q
+
+        self.covariance = F_full @ self.covariance @ F_full.T + Q_full
+
+    def update(self, measurements):
+        &quot;&quot;&quot;Update with new measurements&quot;&quot;&quot;
+        # Data association
+        associations = self.associate_observations(measurements)
+
+        for meas, landmark_id in associations:
+            if landmark_id == &#x27;new&#x27;:
+                # Initialize new landmark
+                self.initialize_landmark(meas)
+            else:
+                # Update with known landmark
+                self.update_landmark(meas, landmark_id)
+
+    def associate_observations(self, measurements):
+        &quot;&quot;&quot;Associate measurements with landmarks using gating&quot;&quot;&quot;
+        associations = []
+        used_landmarks = set()
+
+        for meas in measurements:
+            best_match = None
+            best_nis = float(&#x27;inf&#x27;)
+
+            # Check against all landmarks
+            for i, landmark in enumerate(self.landmarks):
+                if i in used_landmarks:
+                    continue
+
+                # Get landmark state index
+                landmark_state_idx = 3 + 2*i
+
+                # Predict measurement
+                z_pred = self.predict_landmark_measurement(landmark_state_idx)
+
+                # Innovation covariance
+                H = self.measurement_jacobian(landmark_state_idx)
+                S = H @ self.covariance[landmark_state_idx:landmark_state_idx+2,
+                                          landmark_state_idx:landmark_state_idx+2] @ H.T + self.R
+
+                # Normalized innovation squared
+                innovation = meas - z_pred
+                nis = innovation.T @ np.linalg.inv(S) @ innovation
+
+                # Gating
+                if nis &lt; self.gating_threshold and nis &lt; best_nis:
+                    best_nis = nis
+                    best_match = i
+
+            if best_match is not None:
+                associations.append((meas, best_match))
+                used_landmarks.add(best_match)
+            else:
+                associations.append((meas, &#x27;new&#x27;))
+
+        return associations
+
+    def predict_landmark_measurement(self, landmark_idx):
+        &quot;&quot;&quot;Predict measurement for landmark&quot;&quot;&quot;
+        # Landmark position
+        lx = self.state[landmark_idx]
+        ly = self.state[landmark_idx + 1]
+
+        # Robot pose
+        x, y, theta = self.state[:3]
+
+        # Relative position
+        dx = lx - x
+        dy = ly - y
+
+        # Range and bearing
+        range_pred = np.sqrt(dx**2 + dy**2)
+        bearing_pred = np.arctan2(dy, dx) - theta
+
+        return np.array([range_pred, bearing_pred])
+
+    def measurement_jacobian(self, landmark_idx):
+        &quot;&quot;&quot;Jacobian of measurement function&quot;&quot;&quot;
+        # Landmark position
+        lx = self.state[landmark_idx]
+        ly = self.state[landmark_idx + 1]
+
+        # Robot pose
+        x, y, theta = self.state[:3]
+
+        # Relative position
+        dx = lx - x
+        dy = ly - y
+        dist = np.sqrt(dx**2 + dy**2)
+
+        # Jacobian w.r.t robot pose
+        H_robot = np.zeros((2, 3))
+        H_robot[0, 0] = -dx / dist  # ∂range/∂x
+        H_robot[0, 1] = -dy / dist  # ∂range/∂y
+        H_robot[1, 0] = -dy / (dist**2)  # ∂bearing/∂x
+        H_robot[1, 1] =  dx / (dist**2)   # ∂bearing/∂y
+        H_robot[1, 2] = -1              # ∂bearing/∂θ
+
+        # Jacobian w.r.t landmark position
+        H_landmark = np.zeros((2, 2))
+        H_landmark[0, 0] = dx / dist   # ∂range/∂lx
+        H_landmark[0, 1] = dy / dist   # ∂range/∂ly
+        H_landmark[1, 0] = -dy / (dist**2)  # ∂bearing/∂lx
+        H_landmark[1, 1] = dx / (dist**2)   # ∂bearing/∂ly
+
+        # Full Jacobian
+        state_size = len(self.state)
+        H_full = np.zeros((2, state_size))
+        H_full[:, :3] = H_robot
+        H_full[:, landmark_idx:landmark_idx+2] = H_landmark
+
+        return H_full
+
+    def update_landmark(self, measurement, landmark_id):
+        &quot;&quot;&quot;Update landmark and robot pose using EKF&quot;&quot;&quot;
+        landmark_idx = 3 + 2 * landmark_id
+
+        # Predict measurement
+        z_pred = self.predict_landmark_measurement(landmark_idx)
+
+        # Jacobian
+        H = self.measurement_jacobian(landmark_idx)
+
+        # Innovation and covariance
+        innovation = measurement - z_pred
+        S = H @ self.covariance @ H.T + self.R
+
+        # Kalman gain
+        K = self.covariance @ H.T @ np.linalg.inv(S)
+
+        # State update
+        self.state += K @ innovation
+
+        # Covariance update
+        I_KH = np.eye(len(self.state)) - K @ H
+        self.covariance = I_KH @ self.covariance @ I_KH.T + K @ self.R @ K.T
+
+    def initialize_landmark(self, measurement):
+        &quot;&quot;&quot;Initialize new landmark from measurement&quot;&quot;&quot;
+        # Robot pose
+        x, y, theta = self.state[:3]
+
+        # Landmark position in world frame
+        range_obs, bearing_obs = measurement
+
+        lx = x + range_obs * np.cos(bearing_obs + theta)
+        ly = y + range_obs * np.sin(bearing_obs + theta)
+
+        # Add to state
+        self.state = np.append(self.state, [lx, ly])
+
+        # Augment covariance
+        n = len(self.state) - 2
+        new_covariance = np.eye(n + 2)
+        new_covariance[:n, :n] = self.covariance
+
+        # Initial landmark uncertainty
+        new_covariance[n:n+2, n:n+2] = self.initial_covariance
+
+        # Cross-covariances
+        G = self.landmark_initialization_jacobian(range_obs, bearing_obs, theta)
+        new_covariance[:3, n:n+2] = G.T
+        new_covariance[n:n+2, :3] = G
+
+        self.covariance = new_covariance
+        self.landmarks.append({
+            &#x27;id&#x27;: self.next_landmark_id,
+            &#x27;position&#x27;: np.array([lx, ly]),
+            &#x27;observations&#x27;: 1
+        })
+
+        self.next_landmark_id += 1
+</code></pre>
+<h2 id="153-visual-slam-vslam">15.3 Visual SLAM (VSLAM)</h2>
+<h3 id="1531-feature-based-vslam">15.3.1 Feature-Based VSLAM</h3>
+<p>Visual SLAM uses visual features from camera images:</p>
+<pre><code class="language-python">class VisualSLAM:
+    def __init__(self, camera_parameters):
+        self.camera = PinholeCamera(camera_parameters)
+        self.feature_detector = ORBDetector()
+        self.feature_matcher = BFMatcher()
+
+        # Keyframes and map points
+        self.keyframes = []
+        self.map_points = []
+        self.current_pose = np.eye(4)
+
+        # Tracking state
+        self.tracking_state = &#x27;NOT_INITIALIZED&#x27;
+        self.min_matches_for_tracking = 15
+        self.min_matches_for_keyframe = 50
+
+        # Loop closure detection
+        self.loop_closure_detector = LoopClosureDetector()
+        self.loop_closure_threshold = 0.75
+
+    def process_frame(self, image, timestamp):
+        &quot;&quot;&quot;Process new camera frame&quot;&quot;&quot;
+        # Extract features
+        keypoints, descriptors = self.feature_detector.detect_and_compute(image)
+
+        if self.tracking_state == &#x27;NOT_INITIALIZED&#x27;:
+            # Initialize map with first frame
+            self.initialize_map(image, keypoints, descriptors, timestamp)
+            self.tracking_state = &#x27;OK&#x27;
+            return self.current_pose
+
+        # Track current frame
+        tracked = self.track_frame(keypoints, descriptors, image, timestamp)
+
+        if not tracked:
+            # Tracking lost - try to relocalize
+            self.relocalize(image, keypoints, descriptors)
+            self.tracking_state = &#x27;LOST&#x27;
+
+        # Check for loop closure
+        if self.tracking_state == &#x27;OK&#x27;:
+            loop_closure = self.detect_loop_closure(image, keypoints, descriptors)
+            if loop_closure:
+                self.perform_loop_closure(loop_closure)
+
+        return self.current_pose, self.map_points
+
+    def initialize_map(self, image, keypoints, descriptors, timestamp):
+        &quot;&quot;&quot;Initialize map with first frame&quot;&quot;&quot;
+        # Create initial keyframe
+        initial_keyframe = KeyFrame(
+            image=image.copy(),
+            keypoints=keypoints,
+            descriptors=descriptors,
+            pose=np.eye(4),
+            timestamp=timestamp
+        )
+        self.keyframes.append(initial_keyframe)
+
+        # Initialize map points from keypoints
+        for i, (kp, desc) in enumerate(zip(keypoints, descriptors)):
+            map_point = MapPoint(
+                position=self._triangulate_initial_point(kp, np.eye(4)),
+                descriptor=desc,
+                observations=[{
+                    &#x27;keyframe_id&#x27;: 0,
+                    &#x27;keypoint_idx&#x27;: i,
+                    &#x27;pixel_coord&#x27;: kp.pt,
+                    &#x27;depth&#x27;: None
+                }]
+            )
+            self.map_points.append(map_point)
+
+    def track_frame(self, keypoints, descriptors, image, timestamp):
+        &quot;&quot;&quot;Track current frame against map&quot;&quot;&quot;
+        # Match features with last keyframe
+        last_keyframe = self.keyframes[-1]
+        matches = self.feature_matcher.match(last_keyframe.descriptors, descriptors)
+
+        if len(matches) &lt; self.min_matches_for_tracking:
+            return False
+
+        # Separate tracked and new features
+        tracked_points = []
+        new_keypoints = []
+        new_descriptors = []
+
+        tracked_map_points = []
+        for match in matches:
+            map_point_idx = match.queryIdx
+            if map_point_idx &lt; len(self.map_points):
+                tracked_points.append({
+                    &#x27;map_point_idx&#x27;: map_point_idx,
+                    &#x27;keypoint_idx&#x27;: match.trainIdx,
+                    &#x27;pixel_coord&#x27;: keypoints[match.trainIdx].pt
+                })
+                tracked_map_points.append(map_point_idx)
+
+        # Find unmatched keypoints
+        matched_indices = {m.trainIdx for m in matches}
+        for i, (kp, desc) in enumerate(zip(keypoints, descriptors)):
+            if i not in matched_indices:
+                new_keypoints.append(kp)
+                new_descriptors.append(desc)
+
+        # Estimate motion (PnP)
+        if len(tracked_points) &gt;= 4:
+            pose_estimated = self.estimate_motion_pnp(tracked_points, image.shape)
+            if pose_estimated is not None:
+                self.current_pose = pose_estimated
+
+                # Triangulate new points
+                new_map_points = self.triangulate_new_points(
+                    new_keypoints, new_descriptors, image.shape
+                )
+                self.map_points.extend(new_map_points)
+
+                # Check for keyframe creation
+                if self.should_create_keyframe(image, len(tracked_points)):
+                    self.create_keyframe(image, keypoints, descriptors, timestamp)
+
+                return True
+
+        return False
+
+    def estimate_motion_pnp(self, correspondences, image_shape):
+        &quot;&quot;&quot;Estimate camera pose using PnP&quot;&quot;&quot;
+        if len(correspondences) &lt; 4:
+            return None
+
+        # Prepare data for PnP
+        object_points = []
+        image_points = []
+
+        for corr in correspondences:
+            map_point = self.map_points[corr[&#x27;map_point_idx&#x27;]]
+            object_points.append(map_point.position)
+            image_points.append(corr[&#x27;pixel_coord&#x27;])
+
+        object_points = np.array(object_points, dtype=np.float32)
+        image_points = np.array(image_points, dtype=np.float32)
+
+        # Solve PnP
+        success, rvec, tvec, inliers = cv2.solvePnPRansac(
+            object_points,
+            image_points,
+            self.camera.intrinsic_matrix,
+            None,
+            iterationsCount=1000,
+            reprojectionError=2.0,
+            confidence=0.99
+        )
+
+        if success:
+            # Convert rotation vector to matrix
+            R, _ = cv2.Rodrigues(rvec)
+
+            # Create pose matrix
+            pose = np.eye(4)
+            pose[:3, :3] = R
+            pose[:3, 3] = tvec.flatten()
+
+            return pose
+
+        return None
+
+    def detect_loop_closure(self, image, keypoints, descriptors):
+        &quot;&quot;&quot;Detect loop closure using visual place recognition&quot;&quot;&quot;
+        # Extract current bag-of-words descriptor
+        current_bow = self._extract_bag_of_words(descriptors)
+
+        # Compare with previous keyframes
+        best_match = None
+        best_similarity = 0
+
+        for i, keyframe in enumerate(self.keyframes[:-10]):  # Don&#x27;t check recent frames
+            similarity = self._compare_bow_descriptors(current_bow, keyframe.bow_descriptor)
+
+            if similarity &gt; best_similarity and similarity &gt; self.loop_closure_threshold:
+                best_similarity = similarity
+                best_match = i
+
+        if best_match is not None:
+            return {
+                &#x27;current_frame_idx&#x27;: len(self.keyframes),
+                &#x27;loop_frame_idx&#x27;: best_match,
+                &#x27;similarity&#x27;: best_similarity,
+                &#x27;current_keypoints&#x27;: keypoints,
+                &#x27;current_descriptors&#x27;: descriptors
+            }
+
+        return None
+
+    def perform_loop_closure(self, loop_closure):
+        &quot;&quot;&quot;Perform loop closure correction&quot;&quot;&quot;
+        # Match features between current and loop frame
+        loop_frame = self.keyframes[loop_closure[&#x27;loop_frame_idx&#x27;]]
+        current_keypoints = loop_closure[&#x27;current_keypoints&#x27;]
+        current_descriptors = loop_closure[&#x27;current_descriptors&#x27;]
+
+        matches = self.feature_matcher.match(loop_frame.descriptors, current_descriptors)
+
+        if len(matches) &lt; 20:  # Minimum matches for loop closure
+            return
+
+        # Estimate relative pose
+        relative_pose = self._estimate_relative_pose(loop_frame, current_keypoints, matches)
+
+        if relative_pose is not None:
+            # Correct poses using pose graph optimization
+            self.correct_poses_with_loop_closure(
+                loop_closure[&#x27;loop_frame_idx&#x27;],
+                len(self.keyframes),
+                relative_pose
+            )
+
+    def _extract_bag_of_words(self, descriptors):
+        &quot;&quot;&quot;Extract bag-of-words descriptor for place recognition&quot;&quot;&quot;
+        # In practice, use VLAD or Fisher Vector
+        # Here, use simple histogram of visual words
+        visual_words = self._quantize_to_visual_words(descriptors)
+        histogram, _ = np.histogram(visual_words, bins=1000)
+        return histogram / np.linalg.norm(histogram)
+
+    def _quantize_to_visual_words(self, descriptors):
+        &quot;&quot;&quot;Quantize descriptors to visual words&quot;&quot;&quot;
+        # In practice, use pre-trained visual vocabulary
+        # Here, use simple quantization
+        visual_words = []
+        for desc in descriptors:
+            word = int(np.sum(desc) * 100) % 1000
+            visual_words.append(word)
+        return visual_words
+</code></pre>
+<h3 id="1532-dense-slam-with-rgb-d">15.3.2 Dense SLAM with RGB-D</h3>
+<p>Dense SLAM using depth cameras provides complete 3D reconstruction:</p>
+<pre><code class="language-python">class DenseSLAM:
+    def __init__(self, camera_parameters):
+        self.color_camera = PinholeCamera(camera_parameters[&#x27;color&#x27;])
+        self.depth_camera = PinholeCamera(camera_parameters[&#x27;depth&#x27;])
+
+        # Keyframe management
+        self.keyframes = []
+        self.max_keyframes = 100
+
+        # Map representation
+        self.volume = TSDFVolume(resolution=0.01, size=10.0)
+        self.raycasting = RayCasting(self.depth_camera)
+
+        # Pose tracking
+        self.current_pose = np.eye(4)
+        self.pose_graph = PoseGraph()
+
+        # Dense tracking
+        self.feature_tracker = DenseFeatureTracker()
+        self.direct_method = DirectMethod()
+
+    def process_rgbd_frame(self, color_image, depth_image, timestamp):
+        &quot;&quot;&quot;Process RGB-D frame&quot;&quot;&quot;
+        # Track frame using direct method
+        pose_delta, tracking_quality = self.direct_method.track_frame(
+            color_image, depth_image, self.current_pose
+        )
+
+        if tracking_quality &lt; 0.3:
+            # Lost tracking - try global registration
+            pose_estimate = self.global_registration(color_image, depth_image)
+            if pose_estimate is not None:
+                self.current_pose = pose_estimate
+                tracking_quality = 0.8
+
+        else:
+            # Update pose
+            self.current_pose = pose_delta @ self.current_pose
+
+        # Update volume if keyframe
+        if self.should_create_keyframe(tracking_quality, timestamp):
+            self.create_dense_keyframe(color_image, depth_image, timestamp)
+
+        # Raycast for depth prediction
+        predicted_depth = self.raycasting.render_depth(
+            color_image.shape[:2], self.current_pose
+        )
+
+        return self.current_pose, predicted_depth
+
+    def create_dense_keyframe(self, color_image, depth_image, timestamp):
+        &quot;&quot;&quot;Create dense keyframe and update volume&quot;&quot;&quot;
+        keyframe = DenseKeyFrame(
+            color_image=color_image.copy(),
+            depth_image=depth_image.copy(),
+            pose=self.current_pose.copy(),
+            timestamp=timestamp,
+            pyramid=self._create_image_pyramid(color_image)
+        )
+
+        # Add to keyframe list
+        self.keyframes.append(keyframe)
+
+        # Update TSDF volume
+        self.volume.integrate_frame(
+            color_image, depth_image,
+            self.current_pose,
+            self.color_camera.intrinsic_matrix
+        )
+
+        # Add to pose graph
+        if len(self.keyframes) &gt; 1:
+            last_keyframe = self.keyframes[-2]
+            relative_pose = np.linalg.inv(last_keyframe.pose) @ self.current_pose
+            self.pose_graph.add_edge(
+                len(self.keyframes) - 2,
+                len(self.keyframes) - 1,
+                relative_pose
+            )
+
+        # Limit number of keyframes
+        if len(self.keyframes) &gt; self.max_keyframes:
+            self.remove_oldest_keyframe()
+
+    def global_registration(self, color_image, depth_image):
+        &quot;&quot;&quot;Global registration when tracking is lost&quot;&quot;&quot;
+        best_match = None
+        best_inliers = 0
+
+        for i, keyframe in enumerate(self.keyframes):
+            # Perform feature matching
+            matches = self.feature_tracker.match_frames(
+                keyframe.color_image, color_image
+            )
+
+            if len(matches) &gt; 30:
+                # Estimate pose using PnP with depth
+                pose, inliers = self._estimate_pose_with_depth(
+                    matches, keyframe, depth_image
+                )
+
+                if inliers &gt; best_inliers:
+                    best_inliers = inliers
+                    best_match = (i, pose)
+
+        if best_match:
+            keyframe_idx, pose = best_match
+
+            # Add loop closure edge to pose graph
+            self.pose_graph.add_edge(
+                keyframe_idx,
+                len(self.keyframes),
+                np.linalg.inv(self.keyframes[keyframe_idx].pose) @ pose,
+                loop_closure=True
+            )
+
+            # Optimize pose graph
+            optimized_poses = self.pose_graph.optimize()
+
+            if len(optimized_poses) &gt; len(self.keyframes):
+                self.current_pose = optimized_poses[-1]
+
+            return pose
+
+        return None
+
+    def extract_mesh(self):
+        &quot;&quot;&quot;Extract triangle mesh from TSDF volume&quot;&quot;&quot;
+        vertices, faces = self.volume.extract_mesh()
+
+        return {
+            &#x27;vertices&#x27;: vertices,
+            &#x27;faces&#x27;: faces,
+            &#x27;colors&#x27;: self._extract_vertex_colors(vertices)
+        }
+
+class TSDFVolume:
+    def __init__(self, resolution, size):
+        self.resolution = resolution
+        self.size = size
+        self.voxels_per_dim = int(size / resolution)
+
+        # TSDF volume
+        self.tsdf = np.ones((self.voxels_per_dim, self.voxels_per_dim, self.voxels_per_dim))
+        self.weight = np.zeros((self.voxels_per_dim, self.voxels_per_dim, self.voxels_per_dim))
+
+        # Color volume
+        self.color = np.zeros((self.voxels_per_dim, self.voxels_per_dim, self.voxels_per_dim, 3))
+
+        # Truncation distance
+        self.truncation = 4 * resolution
+
+    def integrate_frame(self, color_image, depth_image, pose, intrinsic_matrix):
+        &quot;&quot;&quot;Integrate new RGB-D frame into TSDF volume&quot;&quot;&quot;
+        height, width = depth_image.shape
+
+        # Create coordinate grids
+        u, v = np.meshgrid(np.arange(width), np.arange(height))
+
+        # Backproject depth to 3D points
+        fx, fy = intrinsic_matrix[0, 0], intrinsic_matrix[1, 1]
+        cx, cy = intrinsic_matrix[0, 2], intrinsic_matrix[1, 2]
+
+        # Convert depth to meters if needed
+        depth_meters = depth_image / 1000.0
+
+        # Backproject to camera coordinates
+        x_cam = (u - cx) * depth_meters / fx
+        y_cam = (v - cy) * depth_meters / fy
+        z_cam = depth_meters
+
+        # Transform to world coordinates
+        points_cam = np.stack([x_cam.flatten(), y_cam.flatten(), z_cam.flatten()], axis=1)
+        ones = np.ones((points_cam.shape[0], 1))
+        points_cam_homo = np.hstack([points_cam, ones])
+
+        points_world = (pose @ points_cam_homo.T).T
+        points_world = points_world[:, :3]
+
+        # Filter valid points
+        valid = (depth_meters.flatten() &gt; 0.1) &amp; (depth_meters.flatten() &lt; 10.0)
+        points_world = points_world[valid]
+        colors = color_image.reshape(-1, 3)[valid]
+
+        # Update TSDF for each point
+        for i, (point, color) in enumerate(zip(points_world, colors)):
+            voxel = self._world_to_voxel(point)
+            if self._is_valid_voxel(voxel):
+                # Calculate signed distance
+                distance = np.linalg.norm(point - (pose @ np.array([0, 0, 0, 1]).T)[:3])
+
+                # Get current TSDF value
+                current_tsdf = self.tsdf[voxel[0], voxel[1], voxel[2]]
+                current_weight = self.weight[voxel[0], voxel[1], voxel[2]]
+
+                # Running average update
+                new_tsdf = min(distance, self.truncation)
+                new_weight = 1.0
+
+                if current_weight + new_weight &gt; 0:
+                    updated_tsdf = (current_tsdf * current_weight + new_tsdf * new_weight) / (current_weight + new_weight)
+                    self.tsdf[voxel[0], voxel[1], voxel[2]] = updated_tsdf
+                    self.weight[voxel[0], voxel[1], voxel[2]] = current_weight + new_weight
+
+                    # Update color
+                    self.color[voxel[0], voxel[1], voxel[2]] = color
+
+    def extract_mesh(self):
+        &quot;&quot;&quot;Extract mesh using marching cubes&quot;&quot;&quot;
+        from skimage.measure import marching_cubes
+
+        # Find zero-crossing surface
+        vertices, faces, normals, values = marching_cubes(
+            self.tsdf, level=0
+        )
+
+        # Scale voxel coordinates to world coordinates
+        scale = self.size / self.voxels_per_dim
+        vertices = vertices * scale - self.size / 2
+
+        # Filter small triangles
+        face_areas = self._calculate_face_areas(vertices, faces)
+        valid_faces = face_areas &gt; (scale ** 2) * 0.01  # Minimum triangle area
+
+        vertices = vertices[valid_faces]
+        faces = faces[valid_faces]
+
+        return vertices, faces
+</code></pre>
+<h2 id="154-navigation-with-slam">15.4 Navigation with SLAM</h2>
+<h3 id="1541-path-planning-in-slam-maps">15.4.1 Path Planning in SLAM Maps</h3>
+<p>Plan paths through SLAM-constructed environments:</p>
+<pre><code class="language-python">class SLAMNavigation:
+    def __init__(self, slam_system):
+        self.slam = slam_system
+        self.occupancy_grid = OccupancyGrid(resolution=0.05, size=100.0)
+
+        # Path planning
+        self.path_planner = AStarPlanner(self.occupancy_grid)
+        self.trajectory_planner = TrajectoryPlanner()
+
+        # Navigation state
+        self.current_goal = None
+        self.current_path = None
+        self.navigation_state = &#x27;IDLE&#x27;
+
+    def update_navigation_map(self):
+        &quot;&quot;&quot;Update occupancy grid from SLAM map&quot;&quot;&quot;
+        # Convert SLAM landmarks to occupancy grid
+        self.occupancy_grid.clear()
+
+        # Add landmarks as obstacles
+        for landmark in self.slam.landmarks:
+            x, y = landmark[&#x27;position&#x27;]
+            self.occupancy_grid.set_occupancy(x, y, 1.0)
+
+        # Add trajectory as free space
+        for pose in self.slam.trajectory:
+            x, y = pose[:2]
+            self.occupancy_grid.set_occupancy(x, y, 0.0)
+
+        # Inflate obstacles for robot footprint
+        self.occupancy_grid.inflate_obstacles(robot_radius=0.3)
+
+    def navigate_to_goal(self, goal_position):
+        &quot;&quot;&quot;Navigate to specified goal position&quot;&quot;&quot;
+        self.current_goal = goal_position
+        self.navigation_state = &#x27;PLANNING&#x27;
+
+        # Update navigation map
+        self.update_navigation_map()
+
+        # Get current position
+        current_position = self.slam.robot_pose[:2]
+
+        # Plan path
+        path = self.path_planner.plan_path(current_position, goal_position)
+
+        if path is not None:
+            self.current_path = path
+            self.navigation_state = &#x27;EXECUTING&#x27;
+            return True
+        else:
+            self.navigation_state = &#x27;NO_PATH&#x27;
+            return False
+
+    def execute_path(self):
+        &quot;&quot;&quot;Execute planned path&quot;&quot;&quot;
+        if self.navigation_state != &#x27;EXECUTING&#x27; or self.current_path is None:
+            return None
+
+        # Get current position
+        current_position = self.slam.robot_pose[:2]
+
+        # Find target point on path
+        target_point = self._get_target_point(current_position)
+
+        if target_point is None:
+            self.navigation_state = &#x27;REACHED_GOAL&#x27;
+            return None
+
+        # Generate trajectory to target point
+        trajectory = self.trajectory_planner.generate_trajectory(
+            current_position,
+            self.slam.robot_pose[2],  # Current heading
+            target_point
+        )
+
+        # Calculate control command
+        control = self._trajectory_to_control(trajectory)
+
+        return control
+
+    def _get_target_point(self, current_position):
+        &quot;&quot;&quot;Get target point along path&quot;&quot;&quot;
+        if self.current_path is None or len(self.current_path) == 0:
+            return None
+
+        # Find closest point on path
+        min_dist = float(&#x27;inf&#x27;)
+        closest_idx = 0
+
+        for i, point in enumerate(self.current_path):
+            dist = np.linalg.norm(current_position - point)
+            if dist &lt; min_dist:
+                min_dist = dist
+                closest_idx = i
+
+        # Look ahead on path
+        look_ahead_distance = 2.0
+        target_point = None
+
+        for j in range(closest_idx, min(closest_idx + 20, len(self.current_path))):
+            point = self.current_path[j]
+            dist = np.linalg.norm(current_position - point)
+
+            if dist &gt;= look_ahead_distance:
+                target_point = point
+                break
+
+        # If no point found ahead, use last point
+        if target_point is None:
+            target_point = self.current_path[-1]
+
+        return target_point
+
+class AStarPlanner:
+    def __init__(self, occupancy_grid):
+        self.grid = occupancy_grid
+        self.heuristic_weight = 1.0
+
+    def plan_path(self, start, goal):
+        &quot;&quot;&quot;Plan path using A* algorithm&quot;&quot;&quot;
+        start_cell = self.grid.world_to_grid(start)
+        goal_cell = self.grid.world_to_grid(goal)
+
+        if not self.grid.is_valid_cell(start_cell) or not self.grid.is_valid_cell(goal_cell):
+            return None
+
+        # A* algorithm
+        open_set = PriorityQueue()
+        closed_set = set()
+
+        # Start node
+        start_node = Node(start_cell, None, 0, self._heuristic(start_cell, goal_cell))
+        open_set.put(start_node)
+
+        while not open_set.empty():
+            current = open_set.get()
+
+            if current.cell == goal_cell:
+                # Reconstruct path
+                path = []
+                node = current
+                while node is not None:
+                    path.append(self.grid.grid_to_world(node.cell))
+                    node = node.parent
+                return path[::-1]
+
+            closed_set.add(current.cell)
+
+            # Explore neighbors
+            for neighbor in self._get_neighbors(current.cell):
+                if not self.grid.is_valid_cell(neighbor) or neighbor in closed_set:
+                    continue
+
+                g_cost = current.g_cost + self._distance(current.cell, neighbor)
+                h_cost = self._heuristic(neighbor, goal_cell)
+                f_cost = g_cost + self.heuristic_weight * h_cost
+
+                neighbor_node = Node(neighbor, current, g_cost, h_cost)
+                open_set.put(neighbor_node)
+
+        return None  # No path found
+
+    def _heuristic(self, cell1, cell2):
+        &quot;&quot;&quot;A* heuristic (Euclidean distance)&quot;&quot;&quot;
+        return self._distance(cell1, cell2)
+
+    def _distance(self, cell1, cell2):
+        &quot;&quot;&quot;Distance between grid cells&quot;&quot;&quot;
+        return np.linalg.norm(np.array(cell1) - np.array(cell2))
+
+    def _get_neighbors(self, cell):
+        &quot;&quot;&quot;Get valid neighbor cells&quot;&quot;&quot;
+        neighbors = []
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0),  # 4-connected
+                       (1, 1), (1, -1), (-1, 1), (-1, -1)]  # 8-connected
+
+        for dx, dy in directions:
+            neighbor = (cell[0] + dx, cell[1] + dy)
+            if self.grid.is_valid_cell(neighbor):
+                neighbors.append(neighbor)
+
+        return neighbors
+
+class Node:
+    def __init__(self, cell, parent, g_cost, h_cost):
+        self.cell = cell
+        self.parent = parent
+        self.g_cost = g_cost  # Cost from start
+        self.h_cost = h_cost  # Heuristic cost to goal
+        self.f_cost = g_cost + h_cost  # Total cost
+
+    def __lt__(self, other):
+        return self.f_cost &lt; other.f_cost
+
+class TrajectoryPlanner:
+    def __init__(self):
+        self.max_velocity = 1.0
+        self.max_angular_velocity = 1.0
+        self.dt = 0.1
+
+    def generate_trajectory(self, current_pos, current_heading, target_pos):
+        &quot;&quot;&quot;Generate smooth trajectory to target&quot;&quot;&quot;
+        # Calculate relative position and angle
+        dx = target_pos[0] - current_pos[0]
+        dy = target_pos[1] - current_pos[1]
+        target_heading = np.arctan2(dy, dx)
+
+        # Calculate heading error
+        heading_error = self._normalize_angle(target_heading - current_heading)
+
+        # Simple P-controller for velocities
+        kp_linear = 1.0
+        kp_angular = 2.0
+
+        # Distance to target
+        distance = np.sqrt(dx**2 + dy**2)
+
+        # Control velocities
+        linear_velocity = kp_linear * distance
+        angular_velocity = kp_angular * heading_error
+
+        # Saturate velocities
+        linear_velocity = np.clip(linear_velocity, -self.max_velocity, self.max_velocity)
+        angular_velocity = np.clip(angular_velocity, -self.max_angular_velocity, self.max_angular_velocity)
+
+        # Stop if very close
+        if distance &lt; 0.1:
+            linear_velocity = 0
+            angular_velocity = 0
+
+        return {
+            &#x27;linear_velocity&#x27;: linear_velocity,
+            &#x27;angular_velocity&#x27;: angular_velocity,
+            &#x27;trajectory&#x27;: self._predict_trajectory(
+                current_pos, current_heading, linear_velocity, angular_velocity, self.dt
+            )
+        }
+
+    def _normalize_angle(self, angle):
+        &quot;&quot;&quot;Normalize angle to [-pi, pi]&quot;&quot;&quot;
+        while angle &gt; np.pi:
+            angle -= 2 * np.pi
+        while angle &lt; -np.pi:
+            angle += 2 * np.pi
+        return angle
+
+    def _predict_trajectory(self, pos, heading, v, omega, dt, horizon=1.0):
+        &quot;&quot;&quot;Predict future trajectory&quot;&quot;&quot;
+        trajectory = [pos.copy()]
+        current_pos = pos.copy()
+        current_heading = heading
+
+        steps = int(horizon / dt)
+        for _ in range(steps):
+            # Update position
+            current_pos[0] += v * np.cos(current_heading) * dt
+            current_pos[1] += v * np.sin(current_heading) * dt
+            current_heading += omega * dt
+            current_heading = self._normalize_angle(current_heading)
+
+            trajectory.append(current_pos.copy())
+
+        return trajectory
+</code></pre>
+<h2 id="chapter-summary">Chapter Summary</h2>
+<p>This chapter covered comprehensive SLAM and navigation systems for robotics:</p>
+<h3 id="key-concepts-covered">Key Concepts Covered</h3>
+<ol>
+<li><strong>SLAM Fundamentals</strong>: Mathematical framework and uncertainty representation</li>
+<li><strong>EKF-SLAM</strong>: Extended Kalman Filter for landmark-based SLAM</li>
+<li><strong>Visual SLAM</strong>: Feature-based and dense RGB-D SLAM systems</li>
+<li><strong>Loop Closure</strong>: Place recognition and pose graph optimization</li>
+<li><strong>Navigation</strong>: Path planning and execution in SLAM maps</li>
+<li><strong>Real-time Applications</strong>: Practical implementations for autonomous robots</li>
+</ol>
+<h3 id="practical-implementations">Practical Implementations</h3>
+<ul>
+<li>Complete EKF-SLAM with data association and landmark management</li>
+<li>Feature-based VSLAM with ORB features and loop closure detection</li>
+<li>Dense SLAM with TSDF volume integration and mesh extraction</li>
+<li>A* path planning with SLAM map integration</li>
+<li>Trajectory planning with smooth control laws</li>
+</ul>
+<h3 id="next-steps">Next Steps</h3>
+<p>With SLAM and navigation expertise, you&#x27;re ready for:</p>
+<ul>
+<li>Chapter 16: Path Planning Algorithms</li>
+<li>Part V: Embodied Intelligence &amp; VLA (Chapters 17-20)</li>
+</ul>
+<hr>
+<h2 id="glossary-terms">Glossary Terms</h2>
+<p><strong>Term</strong>: <strong>Data Association</strong>
+<strong>Definition</strong>: Process of matching sensor measurements to map landmarks, a critical challenge in SLAM
+<strong>Related</strong>: <strong>Nearest Neighbor</strong>, <strong>Joint Compatibility Test</strong></p>
+<p><strong>Term</strong>: <strong>Loop Closure</strong>
+<strong>Definition:</strong> Detection when robot returns to previously visited location, enabling map correction and global consistency
+<strong>Related:</strong> <strong>Place Recognition</strong>, <strong>Pose Graph Optimization</strong></p>
+<p><strong>Term</strong>: <strong>Pose Graph</strong>
+<strong>Definition:</strong> Graph representation of robot poses and constraints between them, optimized for global consistency
+<strong>Related:</strong> <strong>Bundle Adjustment</strong>, <strong>Graph SLAM</strong></p>
+<p><strong>Term</strong>: <strong>TSDF (Truncated Signed Distance Function)</strong>
+<strong>Definition:</strong> Implicit surface representation storing distance to nearest surface with truncation for bandlimited updates
+<strong>Related:</strong> <strong>Volumetric Mapping</strong>, <strong>Marching Cubes</strong></p>
+<p><strong>Term</strong>: <strong>Visual Odometry</strong>
+<strong>Definition:</strong> Estimation of camera motion by tracking visual features between consecutive frames
+<strong>Related:</strong> <strong>Feature Tracking</strong>, <strong>Essential Matrix</strong></p>
+<hr>
+<h2 id="exercises">Exercises</h2>
+<h3 id="exercise-151-ekf-slam-implementation">Exercise 15.1: EKF-SLAM Implementation</h3>
+<p>Implement complete EKF-SLAM system:</p>
+<ul>
+<li>Add landmark initialization and management</li>
+<li>Implement robust data association with gating</li>
+<li>Handle map management and pruning</li>
+<li>Visualize uncertainty ellipses</li>
+</ul>
+<h3 id="exercise-152-feature-based-vslam">Exercise 15.2: Feature-Based VSLAM</h3>
+<p>Build visual SLAM with loop closure:</p>
+<ul>
+<li>Implement ORB feature extraction and matching</li>
+<li>Create keyframe management system</li>
+<li>Add loop closure detection with place recognition</li>
+<li>Optimize pose graph for global consistency</li>
+</ul>
+<h3 id="exercise-153-dense-rgb-d-slam">Exercise 15.3: Dense RGB-D SLAM</h3>
+<p>Develop dense SLAM with TSDF volume:</p>
+<ul>
+<li>Implement direct method tracking</li>
+<li>Create TSDF volume integration</li>
+<li>Extract and visualize mesh</li>
+<li>Handle missing depth data</li>
+</ul>
+<h3 id="exercise-154-slam-navigation">Exercise 15.4: SLAM Navigation</h3>
+<p>Create navigation system using SLAM map:</p>
+<ul>
+<li>Build occupancy grid from SLAM landmarks</li>
+<li>Implement A* path planning algorithm</li>
+<li>Add trajectory planning with smooth control</li>
+<li>Handle dynamic obstacles</li>
+</ul>
+<h3 id="exercise-155-multi-robot-slam">Exercise 15.5: Multi-Robot SLAM</h3>
+<p>Design collaborative SLAM system:</p>
+<ul>
+<li>Implement multi-robot pose graph optimization</li>
+<li>Create inter-robot loop closure detection</li>
+<li>Design distributed map merging</li>
+<li>Evaluate system scalability</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus/tree/main/docs/part-4-perception/chapter-15-slam-vslam-navigation.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-14-sensor-fusion-state-estimation"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Sensor Fusion and State Estimation</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-16-path-planning-algorithms"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Path Planning Algorithms</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#151-slam-fundamentals" class="table-of-contents__link toc-highlight">15.1 SLAM Fundamentals</a><ul><li><a href="#1511-the-slam-problem" class="table-of-contents__link toc-highlight">15.1.1 The SLAM Problem</a></li><li><a href="#1512-slam-mathematical-framework" class="table-of-contents__link toc-highlight">15.1.2 SLAM Mathematical Framework</a></li></ul></li><li><a href="#152-extended-kalman-filter-slam" class="table-of-contents__link toc-highlight">15.2 Extended Kalman Filter SLAM</a><ul><li><a href="#1521-ekf-slam-implementation" class="table-of-contents__link toc-highlight">15.2.1 EKF-SLAM Implementation</a></li></ul></li><li><a href="#153-visual-slam-vslam" class="table-of-contents__link toc-highlight">15.3 Visual SLAM (VSLAM)</a><ul><li><a href="#1531-feature-based-vslam" class="table-of-contents__link toc-highlight">15.3.1 Feature-Based VSLAM</a></li><li><a href="#1532-dense-slam-with-rgb-d" class="table-of-contents__link toc-highlight">15.3.2 Dense SLAM with RGB-D</a></li></ul></li><li><a href="#154-navigation-with-slam" class="table-of-contents__link toc-highlight">15.4 Navigation with SLAM</a><ul><li><a href="#1541-path-planning-in-slam-maps" class="table-of-contents__link toc-highlight">15.4.1 Path Planning in SLAM Maps</a></li></ul></li><li><a href="#chapter-summary" class="table-of-contents__link toc-highlight">Chapter Summary</a><ul><li><a href="#key-concepts-covered" class="table-of-contents__link toc-highlight">Key Concepts Covered</a></li><li><a href="#practical-implementations" class="table-of-contents__link toc-highlight">Practical Implementations</a></li><li><a href="#next-steps" class="table-of-contents__link toc-highlight">Next Steps</a></li></ul></li><li><a href="#glossary-terms" class="table-of-contents__link toc-highlight">Glossary Terms</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a><ul><li><a href="#exercise-151-ekf-slam-implementation" class="table-of-contents__link toc-highlight">Exercise 15.1: EKF-SLAM Implementation</a></li><li><a href="#exercise-152-feature-based-vslam" class="table-of-contents__link toc-highlight">Exercise 15.2: Feature-Based VSLAM</a></li><li><a href="#exercise-153-dense-rgb-d-slam" class="table-of-contents__link toc-highlight">Exercise 15.3: Dense RGB-D SLAM</a></li><li><a href="#exercise-154-slam-navigation" class="table-of-contents__link toc-highlight">Exercise 15.4: SLAM Navigation</a></li><li><a href="#exercise-155-multi-robot-slam" class="table-of-contents__link toc-highlight">Exercise 15.5: Multi-Robot SLAM</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="nm-custom-footer" data-testid="custom-footer"><div class="nm-footer-container"><div class="nm-footer-grid"><div class="nm-footer-brand"><div class="nm-footer-logo"><h3>Physical AI &amp; Robotics</h3><p>An AI-Native Engineering Textbook</p></div><p class="nm-footer-description">Master the convergence of artificial intelligence and physical robotics through comprehensive, hands-on learning experiences.</p><div class="nm-footer-stats"><div class="nm-stat"><div class="nm-stat-number">1000+</div><div class="nm-stat-label">Pages</div></div><div class="nm-stat"><div class="nm-stat-number">50+</div><div class="nm-stat-label">Exercises</div></div><div class="nm-stat"><div class="nm-stat-number">24/7</div><div class="nm-stat-label">Access</div></div></div></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Resources</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai">Foundations</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals">ROS &amp; Navigation</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots">Computer Vision</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models">Machine Learning</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation">Simulation &amp; Control</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Learning Paths</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/beginner">Beginner Track</a></li><li><a href="/ai-native-textbook-docusaurus/intermediate">Intermediate Track</a></li><li><a href="/ai-native-textbook-docusaurus/advanced">Advanced Track</a></li><li><a href="/ai-native-textbook-docusaurus/projects">Hands-on Projects</a></li><li><a href="/ai-native-textbook-docusaurus/certification">Certification</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Community</h4><ul class="nm-footer-links"><li><a href="https://github.com/your-username/ai-native-textbook">GitHub</a></li><li><a href="https://discord.gg/your-server">Discord</a></li><li><a href="https://forum.example.com">Forum</a></li><li><a href="/ai-native-textbook-docusaurus/contributors">Contributors</a></li><li><a href="/ai-native-textbook-docusaurus/blog">Blog</a></li></ul></div><div class="nm-footer-section nm-footer-newsletter"><h4 class="nm-footer-heading">Stay Updated</h4><p class="nm-footer-subtext">Get the latest updates and exclusive content</p><div class="nm-newsletter-form"><input type="email" placeholder="Enter your email" class="nm-newsletter-input"><button type="button" class="nm-newsletter-button">Subscribe</button></div><div class="nm-footer-social"><a href="https://github.com" class="nm-social-link" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><a href="https://twitter.com" class="nm-social-link" aria-label="Twitter"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg></a><a href="https://linkedin.com" class="nm-social-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></a></div></div></div><div class="nm-footer-bottom"><div class="nm-footer-bottom-left"><span class="nm-footer-copyright">© <!-- -->2025<!-- --> AI-Native Textbook. All rights reserved. Created by SNN Studio.</span></div><div class="nm-footer-bottom-right"><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/privacy">Privacy Policy</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/terms">Terms of Service</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/code-of-conduct">Code of Conduct</a></div></div></div></footer><div class="chat-widget"><button class="chat-widget-button" aria-label="Open chat"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button></div></div>
+</body>
+</html>

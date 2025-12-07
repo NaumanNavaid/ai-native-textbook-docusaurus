@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-part-4-perception/chapter-14-sensor-fusion-state-estimation" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Sensor Fusion and State Estimation | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-14-sensor-fusion-state-estimation"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Sensor Fusion and State Estimation | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="14.1 State Estimation Fundamentals"><meta data-rh="true" property="og:description" content="14.1 State Estimation Fundamentals"><link data-rh="true" rel="icon" href="/ai-native-textbook-docusaurus/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-14-sensor-fusion-state-estimation"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-14-sensor-fusion-state-estimation" hreflang="en"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-14-sensor-fusion-state-estimation" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Sensor Fusion and State Estimation","item":"https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-14-sensor-fusion-state-estimation"}]}</script><link rel="alternate" type="application/rss+xml" href="/ai-native-textbook-docusaurus/blog/rss.xml" title="Physical AI &amp; Humanoid Robotics RSS Feed">
+<link rel="alternate" type="application/atom+xml" href="/ai-native-textbook-docusaurus/blog/atom.xml" title="Physical AI &amp; Humanoid Robotics Atom Feed"><link rel="stylesheet" href="/ai-native-textbook-docusaurus/assets/css/styles.6e378bed.css">
+<script src="/ai-native-textbook-docusaurus/assets/js/runtime~main.5e3ab4fa.js" defer="defer"></script>
+<script src="/ai-native-textbook-docusaurus/assets/js/main.17a86997.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav class="nm-custom-navbar"><div class="nm-navbar-container"><div class="nm-navbar-logo"><a class="nm-logo-link" href="/ai-native-textbook-docusaurus/"><div class="nm-logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="currentColor"></rect><path d="M8 16C8 11.5817 11.5817 8 16 8C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24C11.5817 24 8 20.4183 8 16Z" fill="var(--ifm-background-color)"></path><path d="M12 16L16 12L20 16M16 12V20" stroke="var(--ifm-color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="nm-logo-text"><span class="nm-logo-title">Physical AI</span><span class="nm-logo-subtitle">&amp; Robotics</span></div></a></div><div class="nm-navbar-links"><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/">Home</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/about">About</a></div><div class="nm-navbar-actions"><div class="nm-search-container" style="margin-right:1rem"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div><button class="nm-action-button color-mode-toggle" aria-label="Toggle dark mode"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button><a href="https://github.com/NaumanNavaid/hackathon-1" class="nm-action-button" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><button class="nm-mobile-menu-toggle" aria-label="Toggle mobile menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu w-6 h-6" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button></div></div></nav><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/ai-native-textbook-docusaurus/"><b class="navbar__title text--truncate">Physical AI &amp; Robotics</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/ai-native-textbook-docusaurus/">Home</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai"><span title="Part 1: Foundations" class="categoryLinkLabel_W154">Part 1: Foundations</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals"><span title="Part 2: ROS Fundamentals" class="categoryLinkLabel_W154">Part 2: ROS Fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation"><span title="Part 3: Simulation &amp; Digital Twins" class="categoryLinkLabel_W154">Part 3: Simulation &amp; Digital Twins</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"><span title="Part 4: Perception &amp; State Estimation" class="categoryLinkLabel_W154">Part 4: Perception &amp; State Estimation</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"><span title="Computer Vision for Robots" class="linkLabel_WmDU">Computer Vision for Robots</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-14-sensor-fusion-state-estimation"><span title="Sensor Fusion and State Estimation" class="linkLabel_WmDU">Sensor Fusion and State Estimation</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-15-slam-vslam-navigation"><span title="SLAM, VSLAM, and Navigation" class="linkLabel_WmDU">SLAM, VSLAM, and Navigation</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-16-path-planning-algorithms"><span title="Path Planning Algorithms" class="linkLabel_WmDU">Path Planning Algorithms</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models"><span title="Part 5: Embodied Intelligence" class="categoryLinkLabel_W154">Part 5: Embodied Intelligence</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/ai-native-textbook-docusaurus/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Part 4: Perception &amp; State Estimation</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Sensor Fusion and State Estimation</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="chapter-14-sensor-fusion-and-state-estimation">Chapter 14: Sensor Fusion and State Estimation</h1></header>
+<h2 id="141-state-estimation-fundamentals">14.1 State Estimation Fundamentals</h2>
+<h3 id="1411-introduction-to-sensor-fusion">14.1.1 Introduction to Sensor Fusion</h3>
+<p>Sensor fusion combines data from multiple sensors to produce more accurate, reliable, and comprehensive information than any single sensor could provide. In robotics, sensor fusion is essential for robust perception and control.</p>
+<admonition type="info"><p>Sensor fusion addresses fundamental challenges in robotics: sensor noise, incomplete coverage, different update rates, and complementary sensor modalities. By intelligently combining measurements, robots can achieve environmental awareness that exceeds the capabilities of individual sensors.</p></admonition>
+<h3 id="1412-bayesian-filtering-framework">14.1.2 Bayesian Filtering Framework</h3>
+<p>Bayesian filtering provides the theoretical foundation for state estimation:</p>
+<span class="katex-error" title="ParseError: KaTeX parse error: Can&#x27;t use function &#x27;$&#x27; in math mode at position 87: …1:t-1) dx_{t-1}$̲$
+
+Where:
+- …" style="color:#cc0000">p(x_t | z_1:t) = η * p(z_t | x_t) * ∫ p(x_t | x_{t-1}) * p(x_{t-1} | z_1:t-1) dx_{t-1}$$
+
+Where:
+- x_t = State at time t
+- z_t = Measurement at time t
+- η = Normalization constant
+- p(x_t | x_{t-1}) = Motion model
+- p(z_t | x_t) = Measurement model
+
+```python
+class BayesianFilter:
+    def __init__(self, initial_state, initial_covariance):
+        self.state = initial_state
+        self.covariance = initial_covariance
+        self.state_history = [initial_state.copy()]
+        self.covariance_history = [initial_covariance.copy()]
+
+    def predict(self, motion_model, control_input, dt):
+        &quot;&quot;&quot;Predict step using motion model&quot;&quot;&quot;
+        # Predict mean
+        predicted_state = motion_model.predict_state(self.state, control_input, dt)
+
+        # Predict covariance
+        predicted_covariance = motion_model.predict_covariance(
+            self.covariance, control_input, dt
+        )
+
+        self.state = predicted_state
+        self.covariance = predicted_covariance
+
+        return self.state, self.covariance
+
+    def update(self, measurement_model, measurement):
+        &quot;&quot;&quot;Update step using measurement model&quot;&quot;&quot;
+        # Calculate Kalman gain
+        H = measurement_model.jacobian(self.state)
+        R = measurement_model.noise_covariance
+
+        innovation_covariance = H @ self.covariance @ H.T + R
+        kalman_gain = self.covariance @ H.T @ np.linalg.inv(innovation_covariance)
+
+        # Update state and covariance
+        predicted_measurement = measurement_model.predict_measurement(self.state)
+        innovation = measurement - predicted_measurement
+
+        self.state = self.state + kalman_gain @ innovation
+        self.covariance = (np.eye(len(self.state)) - kalman_gain @ H) @ self.covariance
+
+        return self.state, self.covariance
+
+    def get_state_estimate(self):
+        &quot;&quot;&quot;Get current state estimate with uncertainty&quot;&quot;&quot;
+        return {
+            &#x27;state&#x27;: self.state.copy(),
+            &#x27;covariance&#x27;: self.covariance.copy(),
+            &#x27;uncertainty&#x27;: np.diag(self.covariance)
+        }
+
+    def reset(self, new_state=None, new_covariance=None):
+        &quot;&quot;&quot;Reset filter to new state&quot;&quot;&quot;
+        if new_state is not None:
+            self.state = new_state
+        if new_covariance is not None:
+            self.covariance = new_covariance
+
+        self.state_history = [self.state.copy()]
+        self.covariance_history = [self.covariance.copy()]
+```
+
+## 14.2 Kalman Filter and Variants
+
+### 14.2.1 Extended Kalman Filter (EKF)
+
+For non-linear systems, the Extended Kalman Filter linearizes around the current estimate:
+
+```python
+class ExtendedKalmanFilter(BayesianFilter):
+    def __init__(self, initial_state, initial_covariance):
+        super().__init__(initial_state, initial_covariance)
+
+    def predict_nonlinear(self, motion_function, control_input, dt):
+        &quot;&quot;&quot;Predict step for non-linear motion model&quot;&quot;&quot;
+        # Predict state using non-linear function
+        self.state = motion_function(self.state, control_input, dt)
+
+        # Linearize around current state
+        F = self._compute_jacobian(motion_function, self.state, control_input, dt)
+        Q = motion_function.process_noise_covariance
+
+        # Predict covariance
+        self.covariance = F @ self.covariance @ F.T + Q
+
+        return self.state, self.covariance
+
+    def update_nonlinear(self, measurement_function, measurement):
+        &quot;&quot;&quot;Update step for non-linear measurement model&quot;&quot;&quot;
+        # Predict measurement
+        predicted_measurement = measurement_function(self.state)
+
+        # Linearize measurement function
+        H = self._compute_jacobian(measurement_function, self.state)
+        R = measurement_function.measurement_noise_covariance
+
+        # Kalman gain
+        S = H @ self.covariance @ H.T + R
+        K = self.covariance @ H.T @ np.linalg.inv(S)
+
+        # Update state and covariance
+        innovation = measurement - predicted_measurement
+        self.state = self.state + K @ innovation
+        self.covariance = (np.eye(len(self.state)) - K @ H) @ self.covariance
+
+        return self.state, self.covariance
+
+    def _compute_jacobian(self, function, state, *args):
+        &quot;&quot;&quot;Compute Jacobian matrix using numerical differentiation&quot;&quot;&quot;
+        epsilon = 1e-6
+        n = len(state)
+        m = len(function(state, *args))
+
+        J = np.zeros((m, n))
+
+        for i in range(n):
+            # Perturb state
+            state_plus = state.copy()
+            state_plus[i] += epsilon
+
+            state_minus = state.copy()
+            state_minus[i] -= epsilon
+
+            # Compute function values
+            f_plus = function(state_plus, *args)
+            f_minus = function(state_minus, *args)
+
+            # Compute partial derivative
+            J[:, i] = (f_plus - f_minus) / (2 * epsilon)
+
+        return J
+
+class RobotMotionModel:
+    def __init__(self, process_noise):
+        self.process_noise = process_noise
+
+    def predict_state(self, state, control, dt):
+        &quot;&quot;&quot;Non-linear motion model for differential drive robot&quot;&quot;&quot;
+        x, y, theta, v, omega = state
+        v_cmd, omega_cmd = control
+
+        # Add control noise
+        v_actual = v_cmd + np.random.normal(0, self.process_noise[0])
+        omega_actual = omega_cmd + np.random.normal(0, self.process_noise[1])
+
+        # Update velocity (with dynamics)
+        alpha = 0.1  # Smoothing factor
+        v = alpha * v_actual + (1 - alpha) * v
+        omega = alpha * omega_actual + (1 - alpha) * omega
+
+        # Update pose
+        if abs(omega) &lt; 1e-6:
+            # Straight line motion
+            x += v * np.cos(theta) * dt
+            y += v * np.sin(theta) * dt
+        else:
+            # Circular motion
+            R = v / omega
+            x += R * (np.sin(theta + omega * dt) - np.sin(theta))
+            y += R * (-np.cos(theta + omega * dt) + np.cos(theta))
+            theta += omega * dt
+
+        return np.array([x, y, theta, v, omega])
+
+    def predict_covariance(self, covariance, control, dt):
+        &quot;&quot;&quot;Predict covariance using linearized motion model&quot;&quot;&quot;
+        # State transition matrix
+        x, y, theta, v, omega = self.current_state
+
+        F = np.eye(5)
+        F[0, 2] = -v * np.sin(theta) * dt
+        F[0, 3] = np.cos(theta) * dt
+        F[1, 2] = v * np.cos(theta) * dt
+        F[1, 3] = np.sin(theta) * dt
+        F[2, 4] = dt
+
+        # Process noise covariance
+        Q = np.diag([
+            self.process_noise[2] * dt**2,  # Position noise
+            self.process_noise[2] * dt**2,
+            self.process_noise[3] * dt**2,  # Orientation noise
+            self.process_noise[0] * dt**2,  # Velocity noise
+            self.process_noise[1] * dt**2   # Angular velocity noise
+        ])
+
+        return F @ covariance @ F.T + Q
+```
+
+### 14.2.2 Unscented Kalman Filter (UKF)
+
+The Unscented Kalman Filter handles non-linearities without linearization:
+
+```python
+class UnscentedKalmanFilter(BayesianFilter):
+    def __init__(self, initial_state, initial_covariance, alpha=1e-3, beta=2, kappa=0):
+        super().__init__(initial_state, initial_covariance)
+        self.alpha = alpha
+        self.beta = beta
+        self.kappa = kappa
+        self.n = len(initial_state)
+
+        # Calculate weights
+        self.lambda_ = alpha**2 * (self.n + kappa) - self.n
+        self.weights_m, self.weights_c = self._calculate_weights()
+
+    def _calculate_weights(self):
+        &quot;&quot;&quot;Calculate weights for sigma points&quot;&quot;&quot;
+        n = self.n
+        lambda_ = self.lambda_
+
+        # Mean weights
+        weights_m = np.zeros(2 * n + 1)
+        weights_m[0] = lambda_ / (n + lambda_)
+        weights_m[1:] = 0.5 / (n + lambda_)
+
+        # Covariance weights
+        weights_c = np.zeros(2 * n + 1)
+        weights_c[0] = lambda_ / (n + lambda_) + (1 - alpha**2 + beta)
+        weights_c[1:] = 0.5 / (n + lambda_)
+
+        return weights_m, weights_c
+
+    def generate_sigma_points(self, state, covariance):
+        &quot;&quot;&quot;Generate sigma points&quot;&quot;&quot;
+        n = self.n
+        sigma_points = np.zeros((2 * n + 1, n))
+
+        # Calculate square root of covariance
+        sqrt_cov = np.linalg.cholesky((n + self.lambda_) * covariance).T
+
+        # First sigma point is the mean
+        sigma_points[0] = state
+
+        # Generate remaining sigma points
+        for i in range(n):
+            sigma_points[i + 1] = state + sqrt_cov[i]
+            sigma_points[i + n + 1] = state - sqrt_cov[i]
+
+        return sigma_points
+
+    def predict(self, motion_function, control, dt):
+        &quot;&quot;&quot;UKF prediction step&quot;&quot;&quot;
+        # Generate sigma points
+        sigma_points = self.generate_sigma_points(self.state, self.covariance)
+
+        # Propagate sigma points through motion model
+        propagated_points = np.zeros_like(sigma_points)
+        for i, point in enumerate(sigma_points):
+            propagated_points[i] = motion_function(point, control, dt)
+
+        # Calculate predicted mean
+        self.state = np.sum(self.weights_m[:, np.newaxis] * propagated_points, axis=0)
+
+        # Calculate predicted covariance
+        centered_points = propagated_points - self.state
+        self.covariance = np.sum(
+            self.weights_c[:, np.newaxis, np.newaxis] *
+            np.einsum(&#x27;ij,ik-&gt;ijk&#x27;, centered_points, centered_points),
+            axis=0
+        )
+
+        # Add process noise
+        self.covariance += motion_function.process_noise_covariance
+
+        return self.state, self.covariance
+
+    def update(self, measurement_function, measurement):
+        &quot;&quot;&quot;UKF update step&quot;&quot;&quot;
+        # Generate sigma points
+        sigma_points = self.generate_sigma_points(self.state, self.covariance)
+
+        # Propagate sigma points through measurement model
+        measurement_sigma_points = np.zeros((len(sigma_points), len(measurement)))
+        for i, point in enumerate(sigma_points):
+            measurement_sigma_points[i] = measurement_function(point)
+
+        # Predict measurement mean
+        predicted_measurement = np.sum(self.weights_m[:, np.newaxis] * measurement_sigma_points, axis=0)
+
+        # Calculate innovation covariance
+        centered_measurements = measurement_sigma_points - predicted_measurement
+        P_yy = np.sum(
+            self.weights_c[:, np.newaxis, np.newaxis] *
+            np.einsum(&#x27;ij,ik-&gt;ijk&#x27;, centered_measurements, centered_measurements),
+            axis=0
+        )
+        P_yy += measurement_function.measurement_noise_covariance
+
+        # Calculate cross-covariance
+        centered_states = sigma_points - self.state
+        P_xy = np.sum(
+            self.weights_c[:, np.newaxis, np.newaxis] *
+            np.einsum(&#x27;ij,ik-&gt;ijk&#x27;, centered_states, centered_measurements),
+            axis=0
+        )
+
+        # Kalman gain
+        K = P_xy @ np.linalg.inv(P_yy)
+
+        # Update state
+        innovation = measurement - predicted_measurement
+        self.state = self.state + K @ innovation
+
+        # Update covariance
+        self.covariance = self.covariance - K @ P_yy @ K.T
+
+        return self.state, self.covariance
+```
+
+## 14.3 Multi-Sensor Fusion
+
+### 14.3.1 Complementary Filter
+
+For simple orientation estimation using accelerometer and gyroscope:
+
+```python
+class ComplementaryFilter:
+    def __init__(self, alpha=0.98):
+        self.alpha = alpha  # Complementary filter gain
+        self.angle = 0.0
+        self.bias = 0.0
+        self.initialized = False
+
+    def update(self, accel_data, gyro_data, dt):
+        &quot;&quot;&quot;Update orientation estimate&quot;&quot;&quot;
+        ax, ay, az = accel_data
+        gx, gy, gz = gyro_data
+
+        if not self.initialized:
+            # Initialize with accelerometer
+            self.angle = math.atan2(ay, az)
+            self.bias = 0.0
+            self.initialized = True
+            return self.angle
+
+        # Integrate gyroscope
+        angle_gyro = self.angle + (gz - self.bias) * dt
+
+        # Calculate angle from accelerometer
+        angle_accel = math.atan2(ay, az)
+
+        # Complementary filter
+        self.angle = self.alpha * angle_gyro + (1 - self.alpha) * angle_accel
+
+        # Estimate bias (assuming angle_accel is low-frequency)
+        self.bias = self.bias + 0.01 * (angle_gyro - angle_accel)
+
+        return self.angle
+
+class MadgwickFilter:
+    def __init__(self, beta=0.1):
+        self.beta = beta  # Filter gain parameter
+        self.q = np.array([1.0, 0.0, 0.0, 0.0])  # Quaternion [w, x, y, z]
+
+    def update(self, accel, gyro, mag=None, dt=0.01):
+        &quot;&quot;&quot;Update orientation using Madgwick algorithm&quot;&quot;&quot;
+        ax, ay, az = accel
+        gx, gy, gz = gyro
+
+        # Normalize accelerometer
+        norm = np.sqrt(ax**2 + ay**2 + az**2)
+        if norm &gt; 0:
+            ax, ay, az = ax/norm, ay/norm, az/norm
+
+        # Rate of change of quaternion from gyroscope
+        q_dot = 0.5 * self._quaternion_multiply(
+            self.q,
+            np.array([0, gx, gy, gz])
+        )
+
+        if mag is not None:
+            mx, my, mz = mag
+
+            # Normalize magnetometer
+            norm = np.sqrt(mx**2 + my**2 + mz**2)
+            if norm &gt; 0:
+                mx, my, mz = mx/norm, my/norm, mz/norm
+
+            # Compute objective function and Jacobian
+            f = self._compute_objective_marg(accel, mag, self.q)
+            J = self._compute_jacobian_marg(accel, mag, self.q)
+
+            # Gradient descent step
+            step = J.T @ f
+            norm = np.linalg.norm(step)
+            if norm &gt; 0:
+                step = step / norm
+                step *= self.beta * dt
+                q_dot -= step
+
+        # Integrate quaternion
+        self.q += q_dot * dt
+
+        # Normalize quaternion
+        self.q = self.q / np.linalg.norm(self.q)
+
+        return self.q
+
+    def _quaternion_multiply(self, q1, q2):
+        &quot;&quot;&quot;Multiply two quaternions&quot;&quot;&quot;
+        w1, x1, y1, z1 = q1
+        w2, x2, y2, z2 = q2
+
+        return np.array([
+            w1*w2 - x1*x2 - y1*y2 - z1*z2,
+            w1*x2 + x1*w2 + y1*z2 - z1*y2,
+            w1*y2 - x1*z2 + y1*w2 + z1*x2,
+            w1*z2 + x1*y2 - y1*x2 + z1*w2
+        ])
+
+    def _compute_objective_marg(self, accel, mag, q):
+        &quot;&quot;&quot;Compute objective function for Madgwick filter&quot;&quot;&quot;
+        ax, ay, az = accel
+        mx, my, mz = mag
+
+        # Quaternion components
+        q0, q1, q2, q3 = q
+
+        # Rotate accelerometer into earth frame
+        ax_earth = 2 * (q1*q3 - q0*q2)
+        ay_earth = 2 * (q0*q1 + q2*q3)
+        az_earth = q0**2 - q1**2 - q2**2 + q3**2
+
+        # Rotate magnetometer into earth frame
+        hx_earth = mx * (q0**2 + q1**2 - q2**2 - q3**2) + 2 * my * (q1*q2 - q0*q3) + 2 * mz * (q1*q3 + q0*q2)
+        hy_earth = 2 * mx * (q1*q2 + q0*q3) + my * (q0**2 - q1**2 + q2**2 - q3**2) + 2 * mz * (q2*q3 - q0*q1)
+        hz_earth = 2 * mx * (q1*q3 - q0*q2) + 2 * my * (q2*q3 + q0*q1) + mz * (q0**2 - q1**2 - q2**2 + q3**2)
+
+        # Objective function (measured - expected)
+        f = np.array([
+            ax_earth - ax,  # Should be 0 for gravity
+            ay_earth - ay,
+            az_earth - az,
+            hx_earth,       # Should align with north
+            hy_earth,
+            hz_earth - np.sqrt(hx_earth**2 + hy_earth**2)
+        ])
+
+        return f
+
+    def _compute_jacobian_marg(self, accel, mag, q):
+        &quot;&quot;&quot;Compute Jacobian matrix for Madgwick filter&quot;&quot;&quot;
+        # Numerical differentiation
+        epsilon = 1e-6
+        J = np.zeros((6, 4))
+
+        f0 = self._compute_objective_marg(accel, mag, q)
+
+        for i in range(4):
+            q_plus = q.copy()
+            q_plus[i] += epsilon
+
+            f_plus = self._compute_objective_marg(accel, mag, q_plus)
+            J[:, i] = (f_plus - f0) / epsilon
+
+        return J
+```
+
+### 14.3.2 Particle Filter
+
+For highly non-linear, non-Gaussian estimation problems:
+
+```python
+class ParticleFilter:
+    def __init__(self, num_particles, state_dim, motion_model, measurement_model):
+        self.num_particles = num_particles
+        self.state_dim = state_dim
+        self.motion_model = motion_model
+        self.measurement_model = measurement_model
+
+        # Initialize particles
+        self.particles = np.zeros((num_particles, state_dim))
+        self.weights = np.ones(num_particles) / num_particles
+        self.effective_sample_size_threshold = num_particles / 2
+
+    def initialize_particles(self, mean, covariance):
+        &quot;&quot;&quot;Initialize particles from Gaussian distribution&quot;&quot;&quot;
+        self.particles = np.random.multivariate_normal(
+            mean, covariance, self.num_particles
+        )
+        self.weights = np.ones(self.num_particles) / self.num_particles
+
+    def predict(self, control, dt):
+        &quot;&quot;&quot;Predict step - propagate particles&quot;&quot;&quot;
+        for i in range(self.num_particles):
+            # Add process noise
+            noise = np.random.multivariate_normal(
+                np.zeros(self.state_dim),
+                self.motion_model.process_noise_covariance
+            )
+
+            # Propagate particle through motion model
+            self.particles[i] = self.motion_model.predict_state(
+                self.particles[i], control, dt
+            ) + noise
+
+    def update(self, measurement):
+        &quot;&quot;&quot;Update step - weight particles based on measurement likelihood&quot;&quot;&quot;
+        for i in range(self.num_particles):
+            # Calculate measurement likelihood
+            predicted_measurement = self.measurement_model.predict_measurement(
+                self.particles[i]
+            )
+
+            likelihood = self.measurement_model.calculate_likelihood(
+                predicted_measurement, measurement
+            )
+
+            # Update weight
+            self.weights[i] *= likelihood
+
+        # Normalize weights
+        total_weight = np.sum(self.weights)
+        if total_weight &gt; 0:
+            self.weights /= total_weight
+        else:
+            self.weights = np.ones(self.num_particles) / self.num_particles
+
+    def resample(self):
+        &quot;&quot;&quot;Resample particles if effective sample size is low&quot;&quot;&quot;
+        effective_sample_size = 1.0 / np.sum(self.weights**2)
+
+        if effective_sample_size &lt; self.effective_sample_size_threshold:
+            # Systematic resampling
+            cumsum_weights = np.cumsum(self.weights)
+            positions = (np.arange(self.num_particles) + np.random.uniform(0, 1)) / self.num_particles
+
+            indices = np.searchsorted(cumsum_weights, positions)
+            indices = np.clip(indices, 0, self.num_particles - 1)
+
+            self.particles = self.particles[indices]
+            self.weights = np.ones(self.num_particles) / self.num_particles
+
+    def estimate_state(self):
+        &quot;&quot;&quot;Estimate state from particles&quot;&quot;&quot;
+        # Weighted mean
+        mean_state = np.average(self.particles, weights=self.weights, axis=0)
+
+        # Weighted covariance
+        centered_particles = self.particles - mean_state
+        covariance = np.average(
+            np.einsum(&#x27;ij,ik-&gt;ijk&#x27;, centered_particles, centered_particles),
+            weights=self.weights,
+            axis=0
+        )
+
+        return mean_state, covariance
+
+    def get_particle_cloud(self):
+        &quot;&quot;&quot;Get all particles for visualization&quot;&quot;&quot;
+        return self.particles.copy(), self.weights.copy()
+
+class RobotParticleFilter(ParticleFilter):
+    def __init__(self, num_particles=1000):
+        # Robot state: [x, y, theta, v, omega]
+        motion_model = DifferentialDriveMotionModel()
+        measurement_model = RobotMeasurementModel()
+
+        super().__init__(num_particles, 5, motion_model, measurement_model)
+
+    def update_from_sensors(self, control, lidar_data, camera_data):
+        &quot;&quot;&quot;Update filter from sensor measurements&quot;&quot;&quot;
+        # Predict step
+        self.predict(control, 0.1)  # 10Hz update rate
+
+        # Combine measurements
+        measurement = self._combine_measurements(lidar_data, camera_data)
+
+        # Update step
+        self.update(measurement)
+
+        # Resample if necessary
+        self.resample()
+
+        # Return estimated state
+        return self.estimate_state()
+
+    def _combine_measurements(self, lidar_data, camera_data):
+        &quot;&quot;&quot;Combine multiple sensor measurements&quot;&quot;&quot;
+        # Simple combination - in practice, use more sophisticated fusion
+        combined_measurement = {
+            &#x27;landmark_observations&#x27;: lidar_data.get(&#x27;landmarks&#x27;, []),
+            &#x27;object_detections&#x27;: camera_data.get(&#x27;objects&#x27;, []),
+            &#x27;timestamp&#x27;: time.time()
+        }
+
+        return combined_measurement
+
+class DifferentialDriveMotionModel:
+    def __init__(self):
+        # Process noise parameters
+        self.alpha1 = 0.1  # Rotation error
+        self.alpha2 = 0.1  # Translation error
+        self.alpha3 = 0.1  # Translation error
+        self.alpha4 = 0.1  # Rotation error
+
+        # Process noise covariance
+        self.process_noise_covariance = np.diag([
+            0.1**2,  # x position
+            0.1**2,  # y position
+            0.05**2, # theta
+            0.05**2, # velocity
+            0.05**2  # angular velocity
+        ])
+
+    def predict_state(self, state, control, dt):
+        &quot;&quot;&quot;Differential drive motion model with noise&quot;&quot;&quot;
+        x, y, theta, v, omega = state
+        v_cmd, omega_cmd = control
+
+        # Add control noise
+        v_actual = v_cmd + np.random.normal(0, self.alpha1 * abs(v_cmd) + self.alpha2 * abs(omega_cmd))
+        omega_actual = omega_cmd + np.random.normal(0, self.alpha3 * abs(v_cmd) + self.alpha4 * abs(omega_cmd))
+
+        # Motion model
+        if abs(omega_actual) &lt; 1e-6:
+            # Straight line motion
+            x_new = x + v_actual * np.cos(theta) * dt
+            y_new = y + v_actual * np.sin(theta) * dt
+            theta_new = theta
+        else:
+            # Circular motion
+            R = v_actual / omega_actual
+            x_new = x + R * (np.sin(theta + omega_actual * dt) - np.sin(theta))
+            y_new = y + R * (-np.cos(theta + omega_actual * dt) + np.cos(theta))
+            theta_new = theta + omega_actual * dt
+
+        # Velocity with dynamics
+        alpha = 0.1  # Smoothing factor
+        v_new = alpha * v_actual + (1 - alpha) * v
+        omega_new = alpha * omega_actual + (1 - alpha) * omega
+
+        return np.array([x_new, y_new, theta_new, v_new, omega_new])
+```
+
+## 14.4 Visual-Inertial Odometry
+
+### 14.4.1 Tightly-Coupled VIO
+
+Combining visual and inertial measurements at the feature level:
+
+```python
+class VisualInertialOdometry:
+    def __init__(self, camera_parameters, imu_parameters):
+        self.camera = CameraModel(camera_parameters)
+        self.imu = IMUModel(imu_parameters)
+
+        # State: [position, orientation (quaternion), velocity, biases]
+        self.state = np.zeros(16)  # [p, q, v, ba, bg]
+        self.covariance = np.eye(16) * 0.1
+
+        # Visual features
+        self.features = []
+        self.max_features = 100
+
+        # EKF for VIO
+        self.ekf = ExtendedKalmanFilter(self.state, self.covariance)
+
+        # Sliding window optimization
+        self.window_size = 10
+        self.keyframes = []
+        self.imu_measurements = []
+
+    def add_imu_measurement(self, measurement, timestamp):
+        &quot;&quot;&quot;Add IMU measurement&quot;&quot;&quot;
+        # Pre-integrate IMU measurements
+        if len(self.imu_measurements) &gt; 0:
+            self._preintegrate_imu(measurement, timestamp)
+        else:
+            self.imu_measurements.append({
+                &#x27;measurement&#x27;: measurement,
+                &#x27;timestamp&#x27;: timestamp,
+                &#x27;delta_state&#x27;: np.zeros(9),  # [Δp, Δv, Δθ]
+                &#x27;jacobian&#x27;: np.zeros((9, 12)),
+                &#x27;covariance&#x27;: np.zeros((9, 9))
+            })
+
+    def process_image(self, image, timestamp):
+        &quot;&quot;&quot;Process visual measurement&quot;&quot;&quot;
+        # Extract features
+        keypoints, descriptors = self._extract_features(image)
+
+        # Match with previous features
+        if len(self.features) &gt; 0:
+            matches = self._match_features(descriptors)
+            self._update_with_visual_matches(matches, image, timestamp)
+
+        # Add new features
+        new_features = self._add_new_features(keypoints, descriptors, image, timestamp)
+
+        # Check for new keyframe
+        if self._should_create_keyframe(image, timestamp):
+            self._create_keyframe(image, timestamp)
+
+    def _preintegrate_imu(self, measurement, timestamp):
+        &quot;&quot;&quot;Pre-integrate IMU measurements between frames&quot;&quot;&quot;
+        if len(self.imu_measurements) == 0:
+            return
+
+        last_imu = self.imu_measurements[-1]
+        dt = timestamp - last_imu[&#x27;timestamp&#x27;]
+
+        if dt &lt;= 0:
+            return
+
+        # Get current bias estimates
+        ba = self.state[13:16]  # Accelerometer bias
+        bg = self.state[16:19]  # Gyroscope bias
+
+        # IMU measurement
+        acc = measurement[&#x27;acceleration&#x27;] - ba
+        gyro = measurement[&#x27;gyroscope&#x27;] - bg
+
+        # Current orientation estimate
+        q = self.state[3:7]  # Quaternion [w, x, y, z]
+
+        # Pre-integration
+        delta_state = last_imu[&#x27;delta_state&#x27;]
+
+        # Position update
+        delta_state[0:3] += last_imu[&#x27;delta_state&#x27;][3:6] * dt + 0.5 * self._rotate_vector(q, acc) * dt**2
+
+        # Velocity update
+        delta_state[3:6] += self._rotate_vector(q, acc) * dt
+
+        # Orientation update (small angle approximation)
+        theta_increment = gyro * dt
+        delta_state[6:9] += theta_increment
+
+        # Update pre-integrated state
+        self.imu_measurements.append({
+            &#x27;measurement&#x27;: measurement,
+            &#x27;timestamp&#x27;: timestamp,
+            &#x27;delta_state&#x27;: delta_state,
+            &#x27;jacobian&#x27;: last_imu[&#x27;jacobian&#x27;],
+            &#x27;covariance&#x27;: last_imu[&#x27;covariance&#x27;]
+        })
+
+    def _rotate_vector(self, q, v):
+        &quot;&quot;&quot;Rotate vector by quaternion&quot;&quot;&quot;
+        w, x, y, z = q
+        rotation_matrix = np.array([
+            [1-2*(y**2+z**2), 2*(x*y-w*z), 2*(x*z+w*y)],
+            [2*(x*y+w*z), 1-2*(x**2+z**2), 2*(y*z-w*x)],
+            [2*(x*z-w*y), 2*(y*z+w*x), 1-2*(x**2+y**2)]
+        ])
+
+        return rotation_matrix @ v
+
+    def _update_with_visual_matches(self, matches, image, timestamp):
+        &quot;&quot;&quot;Update state with visual measurements&quot;&quot;&quot;
+        if len(matches) &lt; 5:
+            return  # Not enough matches
+
+        # Get current state
+        position = self.state[0:3]
+        orientation = self.state[3:7]
+        velocity = self.state[7:10]
+
+        # Visual measurement function
+        def visual_measurement_function(state):
+            pos = state[0:3]
+            ori = state[3:7]
+
+            measurements = []
+            for match in matches:
+                feature_pos = self.features[match.queryIdx][&#x27;position&#x27;]
+
+                # Project feature to image plane
+                pixel = self.camera.project_3d_to_2d(feature_pos, pos, ori)
+                measurements.append(pixel)
+
+            return np.array(measurements)
+
+        # Measurement noise
+        visual_noise = np.eye(len(matches) * 2) * 1.0  # 1 pixel standard deviation
+
+        # Predicted measurement
+        predicted = visual_measurement_function(self.state)
+
+        # Actual measurement
+        actual = np.array([
+            self.features[match.trainIdx][&#x27;pixel&#x27;] for match in matches
+        ]).flatten()
+
+        # Update using EKF
+        self.state, self.covariance = self.ekf.update_nonlinear(
+            visual_measurement_function, actual
+        )
+
+    def estimate_trajectory(self):
+        &quot;&quot;&quot;Get current trajectory estimate&quot;&quot;&quot;
+        return {
+            &#x27;position&#x27;: self.state[0:3].copy(),
+            &#x27;orientation&#x27;: self.state[3:7].copy(),
+            &#x27;velocity&#x27;: self.state[7:10].copy(),
+            &#x27;uncertainty&#x27;: np.diag(self.covariance[:9, :9])
+        }
+
+class IMUModel:
+    def __init__(self, parameters):
+        self.gravity = parameters.get(&#x27;gravity&#x27;, 9.81)
+        self.noise_accelerometer = parameters.get(&#x27;noise_accelerometer&#x27;, 0.1)
+        self.noise_gyroscope = parameters.get(&#x27;noise_gyroscope&#x27;, 0.01)
+        self.bias_stability_accel = parameters.get(&#x27;bias_stability_accel&#x27;, 0.001)
+        self.bias_stability_gyro = parameters.get(&#x27;bias_stability_gyro&#x27;, 0.0001)
+
+    def propagate_state(self, state, measurement, dt):
+        &quot;&quot;&quot;Propagate IMU state&quot;&quot;&quot;
+        x, y, z, vx, vy, vz, qw, qx, qy, qz = state
+        ax, ay, az, gx, gy, gz = measurement
+
+        # Remove gravity
+        ax -= 0  # Assuming IMU is gravity-aligned in world frame
+        ay -= 0
+        az -= self.gravity
+
+        # Update velocity
+        vx += ax * dt
+        vy += ay * dt
+        vz += az * dt
+
+        # Update position
+        x += vx * dt
+        y += vy * dt
+        z += vz * dt
+
+        # Update orientation (simplified)
+        # In practice, use quaternion integration
+        dw = 0.5 * (-qx * gx - qy * gy - qz * gz)
+        dx = 0.5 * (qw * gx + qy * gz - qz * gy)
+        dy = 0.5 * (qw * gy - qx * gz + qz * gx)
+        dz = 0.5 * (qw * gz + qx * gy - qy * gx)
+
+        qw += dw * dt
+        qx += dx * dt
+        qy += dy * dt
+        qz += dz * dt
+
+        # Normalize quaternion
+        norm = np.sqrt(qw**2 + qx**2 + qy**2 + qz**2)
+        if norm &gt; 0:
+            qw, qx, qy, qz = qw/norm, qx/norm, qy/norm, qz/norm
+
+        return np.array([x, y, z, vx, vy, vz, qw, qx, qy, qz])
+```
+
+## Chapter Summary
+
+This chapter covered advanced sensor fusion and state estimation techniques for robotics:
+
+### Key Concepts Covered
+1. **Bayesian Filtering**: Mathematical foundation for recursive state estimation
+2. **Kalman Filter Family**: Linear, Extended, and Unscented Kalman Filters
+3. **Multi-Sensor Fusion**: Complementary filters and adaptive fusion techniques
+4. **Particle Filters**: Non-parametric estimation for highly non-linear systems
+5. **Visual-Inertial Odometry**: Tightly-coupled fusion of visual and inertial data
+6. **State Estimation**: Robust estimation under uncertainty and noise
+
+### Practical Implementations
+- Complete Extended Kalman Filter with Jacobian computation
+- Unscented Kalman Filter with sigma point generation
+- Complementary and Madgwick filters for orientation estimation
+- Particle filter for differential drive robot localization
+- Visual-Inertial Odometry with IMU pre-integration
+- Multi-modal sensor fusion architectures
+
+### Next Steps
+With sensor fusion expertise, you&#x27;re ready for:
+- Chapter 15: SLAM, VSLAM, and Navigation
+- Chapter 16: Path Planning Algorithms
+- Part V: Embodied Intelligence &amp; VLA
+
+---
+
+## Glossary Terms
+
+**Term**: **Kalman Gain**
+**Definition**: Matrix that determines how much to trust new measurements versus predicted state in Kalman filtering
+**Related**: **State Estimation**, **Bayesian Filtering**
+
+**Term**: **Sigma Points**
+**Definition**: Sample points used in Unscented Kalman Filter to capture mean and covariance of non-linear transformations
+**Related**: **Unscented Transform**, **UKF**
+
+**Term**: **Pre-integration**
+**Definition**: Technique to integrate high-frequency IMU measurements between visual updates in VIO
+**Related**: **Visual-Inertial Odometry**, **IMU Processing**
+
+**Term**: **Effective Sample Size**
+**Definition**: Metric indicating the diversity of particles in particle filter, used to determine when resampling is needed
+**Related**: **Particle Filter**, **Resampling**
+
+**Term**: **Complementary Filter**
+**Definition**: Filter that combines high-frequency and low-frequency sensor measurements using complementary filter gains
+**Related**: **Sensor Fusion**, **Orientation Estimation**
+
+---
+
+## Exercises
+
+### Exercise 14.1: Extended Kalman Filter
+Implement EKF for mobile robot:
+- Define non-linear motion model
+- Compute Jacobian matrices numerically
+- Handle GPS and odometry measurements
+- Visualize uncertainty ellipses
+
+### Exercise 14.2: Unscented Kalman Filter
+Create UKF for quadrotor attitude estimation:
+- Implement sigma point generation
+- Handle quaternion representation
+- Process accelerometer, gyroscope, magnetometer
+- Compare with EKF performance
+
+### Exercise 14.3: Particle Filter SLAM
+Build particle filter-based SLAM:
+- Implement FastSLAM algorithm
+- Handle data association uncertainty
+- Create efficient resampling strategy
+- Test in simulation environment
+
+### Exercise 14.4: Visual-Inertial Odometry
+Implement tightly-coupled VIO:
+- Pre-integrate IMU measurements
+- Track visual features with uncertainty
+- Optimize sliding window poses
+- Evaluate trajectory accuracy
+
+### Exercise 14.5: Multi-Sensor Fusion
+Create adaptive sensor fusion system:
+- Dynamically weight sensor measurements
+- Detect and handle sensor failures
+- Implement fault-tolerant estimation
+- Benchmark against ground truth</span></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus/tree/main/docs/part-4-perception/chapter-14-sensor-fusion-state-estimation.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Computer Vision for Robots</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-15-slam-vslam-navigation"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">SLAM, VSLAM, and Navigation</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#141-state-estimation-fundamentals" class="table-of-contents__link toc-highlight">14.1 State Estimation Fundamentals</a><ul><li><a href="#1411-introduction-to-sensor-fusion" class="table-of-contents__link toc-highlight">14.1.1 Introduction to Sensor Fusion</a></li><li><a href="#1412-bayesian-filtering-framework" class="table-of-contents__link toc-highlight">14.1.2 Bayesian Filtering Framework</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="nm-custom-footer" data-testid="custom-footer"><div class="nm-footer-container"><div class="nm-footer-grid"><div class="nm-footer-brand"><div class="nm-footer-logo"><h3>Physical AI &amp; Robotics</h3><p>An AI-Native Engineering Textbook</p></div><p class="nm-footer-description">Master the convergence of artificial intelligence and physical robotics through comprehensive, hands-on learning experiences.</p><div class="nm-footer-stats"><div class="nm-stat"><div class="nm-stat-number">1000+</div><div class="nm-stat-label">Pages</div></div><div class="nm-stat"><div class="nm-stat-number">50+</div><div class="nm-stat-label">Exercises</div></div><div class="nm-stat"><div class="nm-stat-number">24/7</div><div class="nm-stat-label">Access</div></div></div></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Resources</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai">Foundations</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals">ROS &amp; Navigation</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots">Computer Vision</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models">Machine Learning</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation">Simulation &amp; Control</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Learning Paths</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/beginner">Beginner Track</a></li><li><a href="/ai-native-textbook-docusaurus/intermediate">Intermediate Track</a></li><li><a href="/ai-native-textbook-docusaurus/advanced">Advanced Track</a></li><li><a href="/ai-native-textbook-docusaurus/projects">Hands-on Projects</a></li><li><a href="/ai-native-textbook-docusaurus/certification">Certification</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Community</h4><ul class="nm-footer-links"><li><a href="https://github.com/your-username/ai-native-textbook">GitHub</a></li><li><a href="https://discord.gg/your-server">Discord</a></li><li><a href="https://forum.example.com">Forum</a></li><li><a href="/ai-native-textbook-docusaurus/contributors">Contributors</a></li><li><a href="/ai-native-textbook-docusaurus/blog">Blog</a></li></ul></div><div class="nm-footer-section nm-footer-newsletter"><h4 class="nm-footer-heading">Stay Updated</h4><p class="nm-footer-subtext">Get the latest updates and exclusive content</p><div class="nm-newsletter-form"><input type="email" placeholder="Enter your email" class="nm-newsletter-input"><button type="button" class="nm-newsletter-button">Subscribe</button></div><div class="nm-footer-social"><a href="https://github.com" class="nm-social-link" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><a href="https://twitter.com" class="nm-social-link" aria-label="Twitter"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg></a><a href="https://linkedin.com" class="nm-social-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></a></div></div></div><div class="nm-footer-bottom"><div class="nm-footer-bottom-left"><span class="nm-footer-copyright">© <!-- -->2025<!-- --> AI-Native Textbook. All rights reserved. Created by SNN Studio.</span></div><div class="nm-footer-bottom-right"><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/privacy">Privacy Policy</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/terms">Terms of Service</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/code-of-conduct">Code of Conduct</a></div></div></div></footer><div class="chat-widget"><button class="chat-widget-button" aria-label="Open chat"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button></div></div>
+</body>
+</html>

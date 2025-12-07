@@ -1,0 +1,1837 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-part-2-ros/chapter-5-nodes-topics-services-actions" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Nodes, Topics, Services, Actions | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-5-nodes-topics-services-actions"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Nodes, Topics, Services, Actions | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Introduction"><meta data-rh="true" property="og:description" content="Introduction"><link data-rh="true" rel="icon" href="/ai-native-textbook-docusaurus/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-5-nodes-topics-services-actions"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-5-nodes-topics-services-actions" hreflang="en"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-5-nodes-topics-services-actions" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Nodes, Topics, Services, Actions","item":"https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-5-nodes-topics-services-actions"}]}</script><link rel="alternate" type="application/rss+xml" href="/ai-native-textbook-docusaurus/blog/rss.xml" title="Physical AI &amp; Humanoid Robotics RSS Feed">
+<link rel="alternate" type="application/atom+xml" href="/ai-native-textbook-docusaurus/blog/atom.xml" title="Physical AI &amp; Humanoid Robotics Atom Feed"><link rel="stylesheet" href="/ai-native-textbook-docusaurus/assets/css/styles.6e378bed.css">
+<script src="/ai-native-textbook-docusaurus/assets/js/runtime~main.5e3ab4fa.js" defer="defer"></script>
+<script src="/ai-native-textbook-docusaurus/assets/js/main.17a86997.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav class="nm-custom-navbar"><div class="nm-navbar-container"><div class="nm-navbar-logo"><a class="nm-logo-link" href="/ai-native-textbook-docusaurus/"><div class="nm-logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="currentColor"></rect><path d="M8 16C8 11.5817 11.5817 8 16 8C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24C11.5817 24 8 20.4183 8 16Z" fill="var(--ifm-background-color)"></path><path d="M12 16L16 12L20 16M16 12V20" stroke="var(--ifm-color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="nm-logo-text"><span class="nm-logo-title">Physical AI</span><span class="nm-logo-subtitle">&amp; Robotics</span></div></a></div><div class="nm-navbar-links"><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/">Home</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/about">About</a></div><div class="nm-navbar-actions"><div class="nm-search-container" style="margin-right:1rem"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div><button class="nm-action-button color-mode-toggle" aria-label="Toggle dark mode"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button><a href="https://github.com/NaumanNavaid/hackathon-1" class="nm-action-button" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><button class="nm-mobile-menu-toggle" aria-label="Toggle mobile menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu w-6 h-6" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button></div></div></nav><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/ai-native-textbook-docusaurus/"><b class="navbar__title text--truncate">Physical AI &amp; Robotics</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/ai-native-textbook-docusaurus/">Home</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai"><span title="Part 1: Foundations" class="categoryLinkLabel_W154">Part 1: Foundations</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals"><span title="Part 2: ROS Fundamentals" class="categoryLinkLabel_W154">Part 2: ROS Fundamentals</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals"><span title="ROS 2 Fundamentals" class="linkLabel_WmDU">ROS 2 Fundamentals</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-5-nodes-topics-services-actions"><span title="Nodes, Topics, Services, Actions" class="linkLabel_WmDU">Nodes, Topics, Services, Actions</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-6-urdf-robot-description-tf-trees"><span title="URDF, Robot Description, TF Trees" class="linkLabel_WmDU">URDF, Robot Description, TF Trees</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation"><span title="Part 3: Simulation &amp; Digital Twins" class="categoryLinkLabel_W154">Part 3: Simulation &amp; Digital Twins</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"><span title="Part 4: Perception &amp; State Estimation" class="categoryLinkLabel_W154">Part 4: Perception &amp; State Estimation</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models"><span title="Part 5: Embodied Intelligence" class="categoryLinkLabel_W154">Part 5: Embodied Intelligence</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/ai-native-textbook-docusaurus/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Part 2: ROS Fundamentals</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Nodes, Topics, Services, Actions</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="nodes-topics-services-actions">Nodes, Topics, Services, Actions</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>While Chapter 4 introduced the fundamental concepts of ROS 2, this chapter delves deeper into the advanced communication patterns that enable complex robotic systems. We&#x27;ll explore sophisticated node architectures, efficient topic design patterns, robust service implementations, and complex action workflows. Understanding these patterns is essential for building scalable, maintainable, and performant robotic applications.</p>
+<admonition type="info"><p>The choice between topics, services, and actions fundamentally impacts your system&#x27;s performance, reliability, and maintainability. Mastering these communication patterns is key to becoming a proficient ROS 2 developer.</p></admonition>
+<h2 id="51-advanced-node-architectures">5.1 Advanced Node Architectures</h2>
+<h3 id="511-node-composition-and-lifecycle">5.1.1 Node Composition and Lifecycle</h3>
+<p>Modern ROS 2 applications often use node composition to reduce computational overhead and improve communication efficiency:</p>
+<p><strong>Diagram: Node Composition vs Multiple Nodes</strong></p>
+<pre><code>Traditional Multi-Node Architecture:
+┌─────────────┐  ┌─────────────┐  ┌─────────────┐
+│   Sensor    │  │ Processor   │  │Controller  │
+│    Node     │  │    Node     │  │    Node     │
+│             │  │             │  │             │
+│ ┌─────────┐ │  │ ┌─────────┐ │  │ ┌─────────┐ │
+│ │Publisher│──┼─→│Subscriber│──┼─→│Subscriber│ │
+│ └─────────┘ │  │ └─────────┘ │  │ └─────────┘ │
+└─────────────┘  └─────────────┘  └─────────────┘
+    ↕               ↕               ↕
+Network transport with serialization overhead
+
+Composed Node Architecture:
+┌─────────────────────────────────────────────────────────┐
+│                  Composed Node                          │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │
+│  │   Sensor    │  │ Processor   │  │Controller  │     │
+│  │Component   │  │Component   │  │Component   │     │
+│  └─────────────┘  └─────────────┘  └─────────────┘     │
+│                                                         │
+│  ┌─────────────────────────────────────────────────┐   │
+│  │              Shared Memory Buffer                │   │
+│  │           Zero-Copy Communication              │   │
+│  └─────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Example: Composed Node Implementation</strong></p>
+<pre><code class="language-cpp#include" metastring="&lt;rclcpp/rclcpp.hpp&gt;">#include &lt;std_msgs/msg/string.hpp&gt;
+#include &lt;sensor_msgs/msg/image.hpp&gt;
+#include &lt;geometry_msgs/msg/twist.hpp&gt;
+
+class ComposedRobotNode : public rclcpp::Node {
+public:
+    ComposedRobotNode() : Node(&quot;composed_robot_node&quot;) {
+
+        // Create components
+        setup_sensor_component();
+        setup_processor_component();
+        setup_controller_component();
+
+        // Create shared data structures
+        shared_data_ = std::make_shared&lt;SharedData&gt;();
+
+        RCLCPP_INFO(this-&gt;get_logger(), &quot;Composed robot node initialized&quot;);
+    }
+
+private:
+    struct SharedData {
+        sensor_msgs::msg::Image::SharedPtr latest_image;
+        geometry_msgs::msg::Twist::SharedPtr control_command;
+        bool processing_active = false;
+        std::mutex mutex;
+    };
+
+    std::shared_ptr&lt;SharedData&gt; shared_data_;
+
+    void setup_sensor_component() {
+        // Image subscriber
+        image_sub_ = this-&gt;create_subscription&lt;sensor_msgs::msg::Image&gt;(
+            &quot;/camera/image_raw&quot;, 10,
+            [this](const sensor_msgs::msg::Image::SharedPtr msg) {
+                std::lock_guard&lt;std::mutex&gt; lock(shared_data_-&gt;mutex);
+                shared_data_-&gt;latest_image = msg;
+            });
+
+        // Timer for simulated sensor processing
+        sensor_timer_ = this-&gt;create_wall_timer(
+            std::chrono::milliseconds(30),
+            [this]() { process_sensor_data(); });
+    }
+
+    void setup_processor_component() {
+        // Timer for image processing
+        processor_timer_ = this-&gt;create_wall_timer(
+            std::chrono::milliseconds(100),
+            [this]() { process_image_data(); });
+    }
+
+    void setup_controller_component() {
+        // Publisher for control commands
+        cmd_vel_pub_ = this-&gt;create_publisher&lt;geometry_msgs::msg::Twist&gt;(
+            &quot;/cmd_vel&quot;, 10);
+
+        // Timer for control loop
+        control_timer_ = this-&gt;create_wall_timer(
+            std::chrono::milliseconds(50),
+            [this]() { execute_control_loop(); });
+    }
+
+    void process_sensor_data() {
+        // Simulate sensor processing
+        // In real implementation, this would process raw sensor data
+    }
+
+    void process_image_data() {
+        std::lock_guard&lt;std::mutex&gt; lock(shared_data_-&gt;mutex);
+
+        if (shared_data_-&gt;latest_image &amp;&amp; !shared_data_-&gt;processing_active) {
+            shared_data_-&gt;processing_active = true;
+
+            // Process image (simulation)
+            RCLCPP_INFO(this-&gt;get_logger(),
+                &quot;Processing image %dx%d&quot;,
+                shared_data_-&gt;latest_image-&gt;width,
+                shared_data_-&gt;latest_image-&gt;height);
+
+            // Generate control command based on image processing
+            auto cmd = std::make_shared&lt;geometry_msgs::msg::Twist&gt;();
+            cmd-&gt;linear.x = 0.5;  // Example: move forward
+            cmd-&gt;angular.z = 0.1;  // Example: slight turn
+
+            shared_data_-&gt;control_command = cmd;
+            shared_data_-&gt;processing_active = false;
+        }
+    }
+
+    void execute_control_loop() {
+        std::lock_guard&lt;std::mutex&gt; lock(shared_data_-&gt;mutex);
+
+        if (shared_data_-&gt;control_command) {
+            cmd_vel_pub_-&gt;publish(*shared_data_-&gt;control_command);
+            shared_data_-&gt;control_command.reset();
+        }
+    }
+
+    // Component members
+    rclcpp::Subscription&lt;sensor_msgs::msg::Image&gt;::SharedPtr image_sub_;
+    rclcpp::Publisher&lt;geometry_msgs::msg::Twist&gt;::SharedPtr cmd_vel_pub_;
+    rclcpp::TimerBase::SharedPtr sensor_timer_;
+    rclcpp::TimerBase::SharedPtr processor_timer_;
+    rclcpp::TimerBase::SharedPtr control_timer_;
+};
+
+int main(int argc, char** argv) {
+    rclcpp::init(argc, argv);
+    auto node = std::make_shared&lt;ComposedRobotNode&gt;();
+    rclcpp::spin(node);
+    rclcpp::shutdown();
+    return 0;
+}
+</code></pre>
+<h3 id="512-multi-threaded-node-design">5.1.2 Multi-threaded Node Design</h3>
+<p>ROS 2 nodes can leverage multiple threads for concurrent processing:</p>
+<p><strong>Example: Multi-threaded Node Example</strong></p>
+<pre><code class="language-pythonimport" metastring="rclpy">from rclpy.node import Node
+from rclpy.executors import MultiThreadedExecutor
+import threading
+import time
+from sensor_msgs.msg import Image
+from geometry_msgs.msg import Twist
+
+class MultiThreadedRobotNode(Node):
+    def __init__(self):
+        super().__init__(&#x27;multithreaded_robot_node&#x27;)
+
+        # Create executor for this node
+        self.executor = MultiThreadedExecutor()
+
+        # Shared state
+        self.image_data = None
+        self.processing_lock = threading.Lock()
+        self.control_command = None
+
+        # Setup components in separate threads
+        self.setup_sensor_thread()
+        self.setup_processor_thread()
+        self.setup_control_thread()
+
+        self.get_logger().info(&#x27;Multi-threaded robot node initialized&#x27;)
+
+    def setup_sensor_thread(self):
+        &quot;&quot;&quot;Setup sensor processing in separate thread&quot;&quot;&quot;
+        def sensor_worker():
+            # Create subscription
+            image_sub = self.create_subscription(
+                Image, &#x27;/camera/image_raw&#x27;, self.image_callback, 10)
+
+            # Add this node to executor
+            self.executor.add_node(self)
+
+            # Spin in thread
+            self.executor.spin()
+
+        # Start thread
+        self.sensor_thread = threading.Thread(target=sensor_worker, daemon=True)
+        self.sensor_thread.start()
+
+    def setup_processor_thread(self):
+        &quot;&quot;&quot;Setup image processing in separate thread&quot;&quot;&quot;
+        def processor_worker():
+            while rclpy.ok():
+                time.sleep(0.1)  # 10 Hz processing
+
+                with self.processing_lock:
+                    if self.image_data is not None:
+                        self.process_image()
+
+        self.processor_thread = threading.Thread(target=processor_worker, daemon=True)
+        self.processor_thread.start()
+
+    def setup_control_thread(self):
+        &quot;&quot;&quot;Setup control loop in separate thread&quot;&quot;&quot;
+        def control_worker():
+            # Create publisher
+            cmd_vel_pub = self.create_publisher(Twist, &#x27;/cmd_vel&#x27;, 10)
+
+            while rclpy.ok():
+                time.sleep(0.05)  # 20 Hz control loop
+
+                with self.processing_lock:
+                    if self.control_command is not None:
+                        cmd_vel_pub.publish(self.control_command)
+                        self.control_command = None
+
+        self.control_thread = threading.Thread(target=control_worker, daemon=True)
+        self.control_thread.start()
+
+    def image_callback(self, msg):
+        &quot;&quot;&quot;Handle incoming image messages&quot;&quot;&quot;
+        with self.processing_lock:
+            self.image_data = msg
+
+    def process_image(self):
+        &quot;&quot;&quot;Process latest image data&quot;&quot;&quot;
+        if self.image_data is None:
+            return
+
+        # Simulate image processing
+        self.get_logger().info(
+            f&#x27;Processing image: {self.image_data.width}x{self.image_data.height}&#x27;)
+
+        # Generate control command
+        cmd = Twist()
+        cmd.linear.x = 0.5
+        cmd.angular.z = 0.1
+
+        self.control_command = cmd
+        self.image_data = None
+
+def main():
+    rclpy.init()
+    node = MultiThreadedRobotNode()
+
+    try:
+        # Keep main thread alive
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        rclpy.shutdown()
+
+if __name__ == &#x27;__main__&#x27;:
+    main()
+</code></pre>
+<h3 id="513-node-lifecycle-management">5.1.3 Node Lifecycle Management</h3>
+<p>ROS 2 provides a lifecycle management system for controlled startup and shutdown:</p>
+<p><strong>Example: Lifecycle Node Implementation</strong></p>
+<pre><code class="language-cpp#include" metastring="&lt;rclcpp_lifecycle/lifecycle_node.hpp&gt;">#include &lt;lifecycle_msgs/msg/state.hpp&gt;
+#include &lt;lifecycle_msgs/msg/transition.hpp&gt;
+
+class LifecycleRobotNode : public rclcpp_lifecycle::LifecycleNode {
+public:
+    explicit LifecycleRobotNode(const std::string&amp; node_name)
+        : LifecycleNode(node_name) {}
+
+    using CallbackReturn =
+        rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
+
+    // Lifecycle state transitions
+    CallbackReturn on_configure(const rclcpp_lifecycle::State&amp;) {
+        // Configure hardware and resources
+        configure_hardware();
+        setup_subscribers();
+        setup_publishers();
+
+        RCLCPP_INFO(get_logger(), &quot;Node configured successfully&quot;);
+        return CallbackReturn::SUCCESS;
+    }
+
+    CallbackReturn on_activate(const rclcpp_lifecycle::State&amp;) {
+        // Activate publishers and start processing
+        activate_publishers();
+        start_processing();
+
+        RCLCPP_INFO(get_logger(), &quot;Node activated successfully&quot;);
+        return CallbackReturn::SUCCESS;
+    }
+
+    CallbackReturn on_deactivate(const rclcpp_lifecycle::State&amp;) {
+        // Deactivate publishers and stop processing
+        stop_processing();
+        deactivate_publishers();
+
+        RCLCPP_INFO(get_logger(), &quot;Node deactivated successfully&quot;);
+        return CallbackReturn::SUCCESS;
+    }
+
+    CallbackReturn on_cleanup(const rclcpp_lifecycle::State&amp;) {
+        // Cleanup resources
+        cleanup_hardware();
+
+        RCLCPP_INFO(get_logger(), &quot;Node cleaned up successfully&quot;);
+        return CallbackReturn::SUCCESS;
+    }
+
+    CallbackReturn on_shutdown(const rclcpp_lifecycle::State&amp;) {
+        // Final shutdown operations
+        RCLCPP_INFO(get_logger(), &quot;Node shutting down successfully&quot;);
+        return CallbackReturn::SUCCESS;
+    }
+
+private:
+    void configure_hardware() {
+        // Initialize hardware components
+        RCLCPP_INFO(get_logger(), &quot;Configuring hardware...&quot;);
+    }
+
+    void setup_subscribers() {
+        // Setup subscribers
+        RCLCPP_INFO(get_logger(), &quot;Setting up subscribers...&quot;);
+    }
+
+    void setup_publishers() {
+        // Setup publishers (but don&#x27;t activate yet)
+        cmd_vel_pub_ = create_publisher&lt;geometry_msgs::msg::Twist&gt;(
+            &quot;/cmd_vel&quot;, rclcpp::SystemDefaultsQoS());
+        RCLCPP_INFO(get_logger(), &quot;Setting up publishers...&quot;);
+    }
+
+    void activate_publishers() {
+        // Activate publishers
+        if (cmd_vel_pub_) {
+            cmd_vel_pub_-&gt;on_activate();
+        }
+        RCLCPP_INFO(get_logger(), &quot;Activating publishers...&quot;);
+    }
+
+    void deactivate_publishers() {
+        // Deactivate publishers
+        if (cmd_vel_pub_) {
+            cmd_vel_pub_-&gt;on_deactivate();
+        }
+        RCLCPP_INFO(get_logger(), &quot;Deactivating publishers...&quot;);
+    }
+
+    void start_processing() {
+        // Start main processing loop
+        processing_active_ = true;
+        RCLCPP_INFO(get_logger(), &quot;Starting processing...&quot;);
+    }
+
+    void stop_processing() {
+        // Stop main processing loop
+        processing_active_ = false;
+        RCLCPP_INFO(get_logger(), &quot;Stopping processing...&quot;);
+    }
+
+    void cleanup_hardware() {
+        // Cleanup hardware resources
+        RCLCPP_INFO(get_logger(), &quot;Cleaning up hardware...&quot;);
+    }
+
+    rclcpp_lifecycle::LifecyclePublisher&lt;geometry_msgs::msg::Twist&gt;::SharedPtr cmd_vel_pub_;
+    bool processing_active_ = false;
+};
+</code></pre>
+<h2 id="52-advanced-topic-patterns">5.2 Advanced Topic Patterns</h2>
+<h3 id="521-bandwidth-optimization">5.2.1 Bandwidth Optimization</h3>
+<p>For high-frequency data streams, optimization is crucial:</p>
+<p><strong>Example: Optimized Topic Publisher</strong></p>
+<pre><code class="language-pythonimport" metastring="rclpy">from rclpy.node import Node
+from sensor_msgs.msg import Image
+import numpy as np
+from std_msgs.msg import Header
+
+class OptimizedImagePublisher(Node):
+    def __init__(self):
+        super().__init__(&#x27;optimized_image_publisher&#x27;)
+
+        # Publisher with optimized QoS
+        self.image_pub = self.create_publisher(
+            Image, &#x27;/camera/image_compressed&#x27;, 10)
+
+        # Timer for high-frequency publishing
+        self.timer = self.create_timer(1.0/30.0, self.publish_image)  # 30 Hz
+
+        # Image data
+        self.image_width = 640
+        self.image_height = 480
+        self.frame_id = 0
+
+        # Compression settings
+        self.compression_quality = 80
+        self.publish_compressed = True
+
+        self.get_logger().info(&#x27;Optimized image publisher started&#x27;)
+
+    def generate_test_image(self):
+        &quot;&quot;&quot;Generate test image data&quot;&quot;&quot;
+        # Create numpy array representing image
+        image_data = np.random.randint(
+            0, 256,
+            (self.image_height, self.image_width, 3),
+            dtype=np.uint8
+        )
+        return image_data
+
+    def compress_image(self, image_data):
+        &quot;&quot;&quot;Compress image to reduce bandwidth&quot;&quot;&quot;
+        # In real implementation, use image compression library
+        # like OpenCV: cv2.imencode(&#x27;.jpg&#x27;, image_data, params)
+        return image_data.tobytes()  # Simplified
+
+    def publish_image(self):
+        &quot;&quot;&quot;Publish optimized image&quot;&quot;&quot;
+        # Generate test image
+        image_data = self.generate_test_image()
+
+        # Create message
+        msg = Image()
+        msg.header = Header()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = f&quot;camera_frame_{self.frame_id}&quot;
+        msg.height = self.image_height
+        msg.width = self.image_width
+        msg.encoding = &quot;rgb8&quot;
+        msg.is_bigendian = False
+        msg.step = self.image_width * 3  # bytes per row
+
+        # Optimize based on settings
+        if self.publish_compressed:
+            # Compressed image (simplified)
+            compressed_data = self.compress_image(image_data)
+            msg.data = compressed_data
+        else:
+            # Raw image
+            msg.data = image_data.tobytes()
+
+        # Publish
+        self.image_pub.publish(msg)
+        self.frame_id += 1
+
+        # Log bandwidth usage
+        data_size = len(msg.data)
+        self.get_logger().debug(
+            f&#x27;Published frame {self.frame_id}, size: {data_size} bytes&#x27;,
+            throttle_duration_sec=1.0
+        )
+
+# Advanced optimization with selective publishing
+class SmartImagePublisher(OptimizedImagePublisher):
+    def __init__(self):
+        super().__init__()
+
+        # Previous image for difference calculation
+        self.previous_image = None
+        self.threshold = 0.1  # 10% change threshold
+        self.frame_skip = 2  # Publish every 2nd frame
+        self.frame_counter = 0
+
+    def calculate_difference(self, image1, image2):
+        &quot;&quot;&quot;Calculate percentage difference between images&quot;&quot;&quot;
+        if image1 is None or image2 is None:
+            return 1.0
+
+        # Calculate absolute difference
+        diff = np.abs(image1.astype(float) - image2.astype(float))
+        return np.mean(diff) / 255.0
+
+    def publish_image(self):
+        &quot;&quot;&quot;Publish image only if significant change&quot;&quot;&quot;
+        self.frame_counter += 1
+
+        # Skip frames based on frame_skip setting
+        if self.frame_counter % self.frame_skip != 0:
+            return
+
+        # Generate current image
+        current_image = self.generate_test_image()
+
+        # Calculate difference with previous image
+        diff = self.calculate_difference(self.previous_image, current_image)
+
+        # Only publish if significant change
+        if diff &gt; self.threshold or self.previous_image is None:
+            super().publish_image()
+            self.previous_image = current_image.copy()
+            self.get_logger().debug(
+                f&#x27;Published frame due to {diff:.1%} change&#x27;)
+        else:
+            self.get_logger().debug(
+                f&#x27;Skipped frame, only {diff:.1%} change&#x27;)
+</code></pre>
+<h3 id="522-message-type-design">5.2.2 Message Type Design</h3>
+<p>Effective message type design is crucial for performance and maintainability:</p>
+<p><strong>Diagram: Message Type Hierarchy</strong></p>
+<pre><code>Base Message
+├── Header (timestamp, frame_id)
+├── Core Data Fields
+├── Metadata Fields
+└── Optional Extensions
+
+Good Design:
+robot_control_msg/Command
+├── header (std_msgs/Header)
+├── command_id (uint32)
+├── command_type (uint8)
+├── target_pose (geometry_msgs/PoseStamped)
+├── velocity (geometry_msgs/Twist)
+├── gripper_command (GripperCommand)
+└── parameters (CustomParameters)
+
+Avoid: Large monolithic messages with many optional fields
+</code></pre>
+<p><strong>Example: Custom Message Definition</strong></p>
+<pre><code class="language-msg#" metastring="robot_control_msg/Command.msg">std_msgs/Header header
+uint32 command_id
+uint8 type=0
+uint8 STOP=0
+uint8 MOVE=1
+uint8 GRASP=2
+uint8 RELEASE=3
+
+# Required fields based on command type
+geometry_msgs/PoseStamped target_pose
+geometry_msgs/Twist velocity
+GripperCommand gripper_command
+
+# Additional parameters
+CustomParameters[] parameters
+
+# robot_control_msg/GripperCommand.msg
+float64 position  # 0.0 (open) to 1.0 (closed)
+float64 force     # Maximum closing force
+bool relative     # True for relative positioning
+
+# robot_control_msg/CustomParameters.msg
+string key
+string value
+</code></pre>
+<h3 id="523-topic-naming-conventions">5.2.3 Topic Naming Conventions</h3>
+<admonition type="tip"><p>Follow ROS 2 topic naming conventions: use descriptive names, include hierarchy, and follow lower_case_with_underscores naming pattern.</p></admonition>
+<p><strong>Example: Topic Naming Examples</strong></p>
+<pre><code class="language-bash#" metastring="Good naming conventions">/camera/image_raw
+/camera/image_rect_color
+/camera/camera_info
+/robot_base/joint_states
+/robot_base/odom
+/arm_controller/command
+/arm_controller/state
+/gripper_controller/command
+/mobile_base/cmd_vel
+/mobile_base/odom
+/mobile_base/joint_states
+
+# Multi-robot systems
+/robot_1/camera/image_raw
+/robot_1/mobile_base/cmd_vel
+/robot_2/camera/image_raw
+/robot_2/mobile_base/cmd_vel
+
+# Sensor specific naming
+/front_lidar/scan
+/rear_lidar/scan
+/left_camera/image_raw
+/right_camera/image_raw
+/imu/data
+/gps/fix
+</code></pre>
+<h2 id="53-service-design-patterns">5.3 Service Design Patterns</h2>
+<h3 id="531-service-chain-patterns">5.3.1 Service Chain Patterns</h3>
+<p>Services can be chained together for complex operations:</p>
+<p><strong>Example: Service Chain Implementation</strong></p>
+<pre><code class="language-pythonimport" metastring="rclpy">from rclpy.node import Node
+from example_interfaces.srv import AddTwoInts, SetBool
+from std_srvs.srv import Empty
+
+class ServiceChainNode(Node):
+    def __init__(self):
+        super().__init__(&#x27;service_chain_node&#x27;)
+
+        # Create service chain
+        self.setup_service_chain()
+
+        # Create master service
+        self.master_service = self.create_service(
+            Empty, &#x27;master_operation&#x27;, self.master_operation_callback)
+
+        self.get_logger().info(&#x27;Service chain node initialized&#x27;)
+
+    def setup_service_chain(self):
+        &quot;&quot;&quot;Setup chain of services&quot;&quot;&quot;
+        # Service clients
+        self.add_client = self.create_client(AddTwoInts, &#x27;add_two_ints&#x27;)
+        self.multiply_client = self.create_client(AddTwoInts, &#x27;multiply&#x27;)
+        self.validate_client = self.create_client(SetBool, &#x27;validate_result&#x27;)
+
+        # Wait for services
+        while not all([
+            self.add_client.wait_for_service(timeout_sec=1.0),
+            self.multiply_client.wait_for_service(timeout_sec=1.0),
+            self.validate_client.wait_for_service(timeout_sec=1.0)
+        ]):
+            self.get_logger().info(&#x27;Waiting for services...&#x27;)
+
+    async def master_operation_callback(self, request, response):
+        &quot;&quot;&quot;Master service that chains multiple services&quot;&quot;&quot;
+        try:
+            # Step 1: Add two numbers
+            add_request = AddTwoInts.Request()
+            add_request.a = 5
+            add_request.b = 3
+
+            add_future = self.add_client.call_async(add_request)
+            rclpy.spin_until_future_complete(self, add_future)
+            add_result = add_future.result()
+
+            if add_result.sum is None:
+                response.success = False
+                response.message = &quot;Add service failed&quot;
+                return response
+
+            # Step 2: Multiply result by 2
+            multiply_request = AddTwoInts.Request()
+            multiply_request.a = add_result.sum
+            multiply_request.b = 2
+
+            multiply_future = self.multiply_client.call_async(multiply_request)
+            rclpy.spin_until_future_complete(self, multiply_future)
+            multiply_result = multiply_future.result()
+
+            if multiply_result.sum is None:
+                response.success = False
+                response.message = &quot;Multiply service failed&quot;
+                return response
+
+            # Step 3: Validate result
+            validate_request = SetBool.Request()
+            validate_request.data = multiply_result.sum &lt; 20
+
+            validate_future = self.validate_client.call_async(validate_request)
+            rclpy.spin_until_future_complete(self, validate_future)
+            validate_result = validate_future.result()
+
+            if validate_result.success:
+                response.success = True
+                response.message = f&quot;Operation successful: final result = {multiply_result.sum}&quot;
+            else:
+                response.success = False
+                response.message = &quot;Validation failed&quot;
+
+        except Exception as e:
+            response.success = False
+            response.message = f&quot;Service chain error: {str(e)}&quot;
+
+        return response
+
+# Enhanced master service response
+from example_interfaces.msg import String
+
+class EnhancedServiceChainNode(ServiceChainNode):
+    def __init__(self):
+        super().__init__()
+
+        # Create enhanced master service
+        self.enhanced_service = self.create_service(
+            String, &#x27;enhanced_operation&#x27;, self.enhanced_operation_callback)
+
+    async def enhanced_operation_callback(self, request, response):
+        &quot;&quot;&quot;Enhanced service with detailed response&quot;&quot;&quot;
+        response.output = &quot;&quot;
+
+        try:
+            # Execute the same chain
+            base_response = await self.master_operation_callback(None, None)
+
+            if base_response.success:
+                response.output = &quot;Service chain completed successfully:\n&quot;
+                response.output += f&quot;- Initial addition: 5 + 3 = 8\n&quot;
+                response.output += f&quot;- Multiplication: 8 * 2 = 16\n&quot;
+                response.output += f&quot;- Validation: 16 &lt; 20 = True\n&quot;
+                response.output += f&quot;- Final result: {base_response.message}&quot;
+            else:
+                response.output = f&quot;Service chain failed: {base_response.message}&quot;
+
+        except Exception as e:
+            response.output = f&quot;Enhanced service error: {str(e)}&quot;
+
+        return response
+
+# Synchronous service chain for better performance
+class SyncServiceChainNode(Node):
+    def __init__(self):
+        super().__init__(&#x27;sync_service_chain_node&#x27;)
+
+        # Create synchronized services
+        self.add_service = self.create_service(
+            AddTwoInts, &#x27;fast_add&#x27;, self.add_callback)
+        self.multiply_service = self.create_service(
+            AddTwoInts, &#x27;fast_multiply&#x27;, self.multiply_callback)
+
+        # Cache for performance
+        self.result_cache = {}
+
+        self.get_logger().info(&#x27;Sync service chain node initialized&#x27;)
+
+    def add_callback(self, request, response):
+        &quot;&quot;&quot;Fast addition with caching&quot;&quot;&quot;
+        cache_key = f&quot;add_{request.a}_{request.b}&quot;
+
+        if cache_key in self.result_cache:
+            response.sum = self.result_cache[cache_key]
+            self.get_logger().debug(f&quot;Cache hit for {cache_key}&quot;)
+        else:
+            response.sum = request.a + request.b
+            self.result_cache[cache_key] = response.sum
+            self.get_logger().debug(f&quot;Cache miss for {cache_key}&quot;)
+
+        return response
+
+    def multiply_callback(self, request, response):
+        &quot;&quot;&quot;Fast multiplication&quot;&quot;&quot;
+        cache_key = f&quot;mult_{request.a}_{request.b}&quot;
+
+        if cache_key in self.result_cache:
+            response.sum = self.result_cache[cache_key]
+        else:
+            response.sum = request.a * request.b
+            self.result_cache[cache_key] = response.sum
+
+        return response
+</code></pre>
+<h3 id="532-error-handling-in-services">5.3.2 Error Handling in Services</h3>
+<p><strong>Example: Robust Service Implementation</strong></p>
+<pre><code class="language-cpp#include" metastring="&lt;rclcpp/rclcpp.hpp&gt;">#include &lt;example_interfaces/srv/add_two_ints.hpp&gt;
+#include &lt;std_srvs/srv/trigger.hpp&gt;
+
+class RobustServiceNode : public rclcpp::Node {
+public:
+    RobustServiceNode() : Node(&quot;robust_service_node&quot;) {
+
+        // Create robust calculator service
+        calculator_service_ = create_service&lt;example_interfaces::srv::AddTwoInts&gt;(
+            &quot;robust_calculator&quot;,
+            std::bind(&amp;RobustServiceNode::calculator_callback, this,
+                      std::placeholders::_1, std::placeholders::_2));
+
+        // Create health check service
+        health_service_ = create_service&lt;std_srvs::srv::Trigger&gt;(
+            &quot;health_check&quot;,
+            std::bind(&amp;RobustServiceNode::health_check_callback, this,
+                      std::placeholders::_1, std::placeholders::_2));
+
+        // Service statistics
+        request_count_ = 0;
+        error_count_ = 0;
+        last_request_time_ = now();
+
+        RCLCPP_INFO(get_logger(), &quot;Robust service node initialized&quot;);
+    }
+
+private:
+    void calculator_callback(
+        const std::shared_ptr&lt;example_interfaces::srv::AddTwoInts::Request&gt; request,
+        std::shared_ptr&lt;example_interfaces::srv::AddTwoInts::Response&gt; response) {
+
+        request_count_++;
+        last_request_time_ = now();
+
+        try {
+            // Input validation
+            if (request-&gt;a &lt; 0 || request-&gt;a &gt; 1000 ||
+                request-&gt;b &lt; 0 || request-&gt;b &gt; 1000) {
+                response-&gt;success = false;
+                response-&gt;message = &quot;Input values must be between 0 and 1000&quot;;
+                error_count_++;
+                return;
+            }
+
+            // Check for potential overflow
+            if (request-&gt;a &gt; std::numeric_limits&lt;int32_t&gt;::max() - request-&gt;b) {
+                response-&gt;success = false;
+                response-&gt;message = &quot;Integer overflow detected&quot;;
+                error_count_++;
+                return;
+            }
+
+            // Perform calculation
+            response-&gt;sum = request-&gt;a + request-&gt;b;
+            response-&gt;success = true;
+            response-&gt;message = &quot;Calculation completed successfully&quot;;
+
+            RCLCPP_INFO(get_logger(),
+                       &quot;Successfully calculated %d + %d = %d&quot;,
+                       request-&gt;a, request-&gt;b, response-&gt;sum);
+
+        } catch (const std::exception&amp; e) {
+            RCLCPP_ERROR(get_logger(),
+                        &quot;Exception in calculator service: %s&quot;, e.what());
+            response-&gt;success = false;
+            response-&gt;message = std::string(&quot;Internal error: &quot;) + e.what();
+            error_count_++;
+        }
+    }
+
+    void health_check_callback(
+        const std::shared_ptr&lt;std_srvs::srv::Trigger::Request&gt; request,
+        std::shared_ptr&lt;std_srvs::srv::Trigger::Response&gt; response) {
+
+        try {
+            // Check service health
+            auto time_since_last_request = (now() - last_request_time_).seconds();
+
+            response-&gt;success = true;
+
+            std::ostringstream status;
+            status &lt;&lt; &quot;Service Status:\n&quot;;
+            status &lt;&lt; &quot;  - Total requests: &quot; &lt;&lt; request_count_ &lt;&lt; &quot;\n&quot;;
+            status &lt;&lt; &quot;  - Error count: &quot; &lt;&lt; error_count_ &lt;&lt; &quot;\n&quot;;
+            status &lt;&lt; &quot;  - Error rate: &quot;
+                   &lt;&lt; (request_count_ &gt; 0 ?
+                       (100.0 * error_count_ / request_count_) : 0.0) &lt;&lt; &quot;%\n&quot;;
+            status &lt;&lt; &quot;  - Time since last request: &quot;
+                   &lt;&lt; time_since_last_request &lt;&lt; &quot; seconds\n&quot;;
+            status &lt;&lt; &quot;  - Service uptime: &quot;
+                   &lt;&lt; (now().seconds() - start_time_.seconds()) &lt;&lt; &quot; seconds&quot;;
+
+            response-&gt;message = status.str();
+
+        } catch (const std::exception&amp; e) {
+            RCLCPP_ERROR(get_logger(),
+                        &quot;Exception in health check: %s&quot;, e.what());
+            response-&gt;success = false;
+            response-&gt;message = &quot;Health check failed&quot;;
+        }
+    }
+
+    // Service clients
+    rclcpp::Service&lt;example_interfaces::srv::AddTwoInts&gt;::SharedPtr calculator_service_;
+    rclcpp::Service&lt;std_srvs::srv::Trigger&gt;::SharedPtr health_service_;
+
+    // Statistics
+    uint64_t request_count_;
+    uint64_t error_count_;
+    rclcpp::Time last_request_time_;
+    rclcpp::Time start_time_;
+};
+
+// Service with timeout and retry mechanisms
+class AdvancedServiceNode : public rclcpp::Node {
+public:
+    AdvancedServiceNode() : Node(&quot;advanced_service_node&quot;) {
+
+        // Create service with timeout capability
+        timeout_service_ = create_service&lt;std_srvs::srv::Trigger&gt;(
+            &quot;timeout_service&quot;,
+            std::bind(&amp;AdvancedServiceNode::timeout_callback, this,
+                      std::placeholders::_1, std::placeholders::_2));
+
+        // Create service with retry mechanism
+        retry_service_ = create_service&lt;std_srvs::srv::Trigger&gt;(
+            &quot;retry_service&quot;,
+            std::bind(&amp;AdvancedServiceNode::retry_callback, this,
+                      std::placeholders::_1, std::placeholders::_2));
+
+        RCLCPP_INFO(get_logger(), &quot;Advanced service node initialized&quot;);
+    }
+
+private:
+    void timeout_callback(
+        const std::shared_ptr&lt;std_srvs::srv::Trigger::Request&gt; request,
+        std::shared_ptr&lt;std_srvs::srv::Trigger::Response&gt; response) {
+
+        // Service that demonstrates timeout handling
+        auto start_time = now();
+
+        try {
+            // Simulate long operation (5 seconds)
+            rclcpp::sleep_for(std::chrono::seconds(5));
+
+            auto elapsed = (now() - start_time).seconds();
+
+            response-&gt;success = true;
+            response-&gt;message = &quot;Timeout service completed in &quot; +
+                               std::to_string(elapsed) + &quot; seconds&quot;;
+
+        } catch (const std::exception&amp; e) {
+            response-&gt;success = false;
+            response-&gt;message = &quot;Timeout service failed: &quot; + std::string(e.what());
+        }
+    }
+
+    void retry_callback(
+        const std::shared_ptr&lt;std_srvs::srv::Trigger::Request&gt; request,
+        std::shared_ptr&lt;std_srvs::srv::Trigger::Response&gt; response) {
+
+        // Service that demonstrates retry mechanism
+        int max_attempts = 3;
+        int attempt = 0;
+        bool success = false;
+
+        while (attempt &lt; max_attempts &amp;&amp; !success) {
+            attempt++;
+
+            try {
+                // Simulate operation that might fail
+                double random_value = (double)rand() / RAND_MAX;
+
+                if (random_value &lt; 0.7) {  // 70% success rate
+                    success = true;
+                    response-&gt;success = true;
+                    response-&gt;message = &quot;Retry service succeeded after &quot; +
+                                       std::to_string(attempt) + &quot; attempts&quot;;
+                    break;
+                } else {
+                    // Simulate failure
+                    if (attempt &lt; max_attempts) {
+                        RCLCPP_INFO(get_logger(),
+                                   &quot;Attempt %d failed, retrying...&quot;, attempt);
+                        rclcpp::sleep_for(std::chrono::milliseconds(100));
+                    }
+                }
+
+            } catch (const std::exception&amp; e) {
+                RCLCPP_ERROR(get_logger(),
+                            &quot;Exception in attempt %d: %s&quot;, attempt, e.what());
+            }
+        }
+
+        if (!success) {
+            response-&gt;success = false;
+            response-&gt;message = &quot;Retry service failed after &quot; +
+                               std::to_string(max_attempts) + &quot; attempts&quot;;
+        }
+    }
+
+    rclcpp::Service&lt;std_srvs::srv::Trigger&gt;::SharedPtr timeout_service_;
+    rclcpp::Service&lt;std_srvs::srv::Trigger&gt;::SharedPtr retry_service_;
+};
+</code></pre>
+<h2 id="54-advanced-action-implementation">5.4 Advanced Action Implementation</h2>
+<h3 id="541-complex-action-workflows">5.4.1 Complex Action Workflows</h3>
+<p><strong>Example: Multi-Stage Action Server</strong></p>
+<pre><code class="language-pythonimport" metastring="rclpy">from rclpy.action import ActionServer
+from rclpy.node import Node
+from rclpy.duration import Duration
+
+from example_interfaces.action import Fibonacci
+from std_msgs.msg import String
+
+class MultiStageActionServer(Node):
+    def __init__(self):
+        super().__init__(&#x27;multi_stage_action_server&#x27;)
+
+        # Create action server
+        self.action_server = ActionServer(
+            self,
+            Fibonacci,
+            &#x27;fibonacci&#x27;,
+            self.execute_callback,
+            cancel_callback=self.cancel_callback)
+
+        # Event publisher for stage tracking
+        self.stage_pub = self.create_publisher(String, &#x27;/action_stage&#x27;, 10)
+
+        # Stage definitions
+        self.stages = [
+            &quot;initialization&quot;,
+            &quot;calculation&quot;,
+            &quot;validation&quot;,
+            &quot;finalization&quot;
+        ]
+
+        self.current_stage = 0
+        self.action_active = False
+
+        self.get_logger().info(&#x27;Multi-stage action server initialized&#x27;)
+
+    async def execute_callback(self, goal_handle):
+        &quot;&quot;&quot;Execute multi-stage action&quot;&quot;&quot;
+        self.action_active = True
+        self.current_stage = 0
+
+        # Get goal
+        order = goal_handle.request.order
+
+        self.get_logger().info(f&#x27;Executing Fibonacci sequence of order {order}&#x27;)
+
+        # Publish initial stage
+        self.publish_stage(&quot;initialization&quot;)
+
+        # Stage 1: Initialization
+        if not await self.stage_initialization(order, goal_handle):
+            goal_handle.abort()
+            return Fibonacci.Result()
+
+        # Stage 2: Calculation
+        sequence = await self.stage_calculation(order, goal_handle)
+        if sequence is None:
+            goal_handle.abort()
+            return Fibonacci.Result()
+
+        # Stage 3: Validation
+        if not await self.stage_validation(sequence, goal_handle):
+            goal_handle.abort()
+            return Fibonacci.Result()
+
+        # Stage 4: Finalization
+        if not await self.stage_finalization(sequence, goal_handle):
+            goal_handle.abort()
+            return Fibonacci.Result()
+
+        # Complete action
+        goal_handle.succeed()
+
+        result = Fibonacci.Result()
+        result.sequence = sequence
+
+        self.get_logger().info(f&#x27;Action completed: sequence = {sequence}&#x27;)
+
+        self.action_active = False
+        return result
+
+    async def stage_initialization(self, order, goal_handle):
+        &quot;&quot;&quot;Stage 1: Initialize resources&quot;&quot;&quot;
+        self.publish_stage(&quot;initialization&quot;)
+
+        feedback_msg = Fibonacci.Feedback()
+        feedback_msg.stage = &quot;initialization&quot;
+        feedback_msg.progress = 0.0
+
+        try:
+            # Validate input
+            if order &lt; 0 or order &gt; 100:
+                self.get_logger().error(f&#x27;Invalid order: {order}&#x27;)
+                return False
+
+            # Initialize resources
+            # Simulate initialization time
+            for i in range(10):
+                if goal_handle.is_cancel_requested:
+                    return False
+
+                progress = (i + 1) / 10.0 * 25.0  # 0-25% for initialization
+                feedback_msg.progress = progress
+                goal_handle.publish_feedback(feedback_msg)
+
+                self.get_logger().debug(f&#x27;Initialization progress: {progress:.1f}%&#x27;)
+                rclpy.spin_once(self, timeout_sec=0.1)
+                await asyncio.sleep(0.1)
+
+            self.get_logger().info(&#x27;Initialization completed&#x27;)
+            return True
+
+        except Exception as e:
+            self.get_logger().error(f&#x27;Initialization failed: {e}&#x27;)
+            return False
+
+    async def stage_calculation(self, order, goal_handle):
+        &quot;&quot;&quot;Stage 2: Calculate Fibonacci sequence&quot;&quot;&quot;
+        self.publish_stage(&quot;calculation&quot;)
+
+        feedback_msg = Fibonacci.Feedback()
+        feedback_msg.stage = &quot;calculation&quot;
+
+        try:
+            sequence = []
+            a, b = 0, 1
+
+            for i in range(order + 1):
+                # Check for cancellation
+                if goal_handle.is_cancel_requested:
+                    return None
+
+                # Calculate next number
+                if i == 0:
+                    sequence.append(a)
+                else:
+                    sequence.append(b)
+                    a, b = b, a + b
+
+                # Update feedback
+                progress = 25.0 + (i + 1) / (order + 1) * 50.0  # 25-75% for calculation
+                feedback_msg.partial_sequence = sequence
+                feedback_msg.progress = progress
+                goal_handle.publish_feedback(feedback_msg)
+
+                self.get_logger().debug(f&#x27;Calculation progress: {progress:.1f}%, current value: {b}&#x27;)
+                rclpy.spin_once(self, timeout_sec=0.1)
+
+                # Add delay to make stage visible
+                if i % 10 == 0:
+                    await asyncio.sleep(0.1)
+
+            self.get_logger().info(&#x27;Calculation completed&#x27;)
+            return sequence
+
+        except Exception as e:
+            self.get_logger().error(f&#x27;Calculation failed: {e}&#x27;)
+            return None
+
+    async def stage_validation(self, sequence, goal_handle):
+        &quot;&quot;&quot;Stage 3: Validate results&quot;&quot;&quot;
+        self.publish_stage(&quot;validation&quot;)
+
+        feedback_msg = Fibonacci.Feedback()
+        feedback_msg.stage = &quot;validation&quot;
+
+        try:
+            # Validate Fibonacci sequence
+            for i in range(2, len(sequence)):
+                expected = sequence[i-1] + sequence[i-2]
+                if sequence[i] != expected:
+                    self.get_logger().error(f&#x27;Validation failed at index {i}: &#x27;
+                                           f&#x27;{sequence[i]} != {expected}&#x27;)
+                    return False
+
+            # Update progress
+            for i in range(10):
+                if goal_handle.is_cancel_requested:
+                    return False
+
+                progress = 75.0 + (i + 1) / 10.0 * 20.0  # 75-95% for validation
+                feedback_msg.progress = progress
+                feedback_msg.partial_sequence = sequence
+                goal_handle.publish_feedback(feedback_msg)
+
+                rclpy.spin_once(self, timeout_sec=0.1)
+                await asyncio.sleep(0.05)
+
+            self.get_logger().info(&#x27;Validation completed&#x27;)
+            return True
+
+        except Exception as e:
+            self.get_logger().error(f&#x27;Validation failed: {e}&#x27;)
+            return False
+
+    async def stage_finalization(self, sequence, goal_handle):
+        &quot;&quot;&quot;Stage 4: Finalize and cleanup&quot;&quot;&quot;
+        self.publish_stage(&quot;finalization&quot;)
+
+        feedback_msg = Fibonacci.Feedback()
+        feedback_msg.stage = &quot;finalization&quot;
+
+        try:
+            # Finalize results
+            result_info = {
+                &#x27;sequence_length&#x27;: len(sequence),
+                &#x27;final_value&#x27;: sequence[-1] if sequence else 0,
+                &#x27;sum&#x27;: sum(sequence) if sequence else 0
+            }
+
+            # Update progress to 100%
+            for i in range(5):
+                if goal_handle.is_cancel_requested:
+                    return False
+
+                progress = 95.0 + (i + 1) / 5.0 * 5.0  # 95-100% for finalization
+                feedback_msg.progress = progress
+                feedback_msg.partial_sequence = sequence
+                goal_handle.publish_feedback(feedback_msg)
+
+                rclpy.spin_once(self, timeout_sec=0.1)
+                await asyncio.sleep(0.05)
+
+            self.get_logger().info(f&#x27;Finalization completed: {result_info}&#x27;)
+            return True
+
+        except Exception as e:
+            self.get_logger().error(f&#x27;Finalization failed: {e}&#x27;)
+            return False
+
+    def cancel_callback(self, goal_handle):
+        &quot;&quot;&quot;Handle action cancellation&quot;&quot;&quot;
+        self.get_logger().info(&#x27;Received cancel request&#x27;)
+        self.action_active = False
+        return True
+
+    def publish_stage(self, stage):
+        &quot;&quot;&quot;Publish current stage information&quot;&quot;&quot;
+        msg = String()
+        msg.data = f&#x27;Current stage: {stage}&#x27;
+        self.stage_pub.publish(msg)
+        self.current_stage = self.stages.index(stage) if stage in self.stages else 0
+
+# Extended feedback message definition (would be in .msg file)
+# example_interfaces/action/FibonacciExtended.action
+# int32 order
+# ---
+# int32[] sequence
+# string stage
+# float64 progress
+# ---
+# int32[] sequence
+# string status
+# float64 execution_time
+</code></pre>
+<h3 id="542-action-client-with-retry-and-timeout">5.4.2 Action Client with Retry and Timeout</h3>
+<p><strong>Example: Advanced Action Client</strong></p>
+<pre><code class="language-cpp#include" metastring="&lt;rclcpp/rclcpp.hpp&gt;">#include &lt;rclcpp_action/rclcpp_action.hpp&gt;
+#include &lt;example_interfaces/action/fibonacci.hpp&gt;
+#include &lt;chrono&gt;
+#include &lt;memory&gt;
+
+class AdvancedActionClient : public rclcpp::Node {
+public:
+    AdvancedActionClient() : Node(&quot;advanced_action_client&quot;) {
+
+        // Create action client
+        action_client_ = rclcpp_action::create_client&lt;Fibonacci&gt;(
+            this, &quot;fibonacci&quot;);
+
+        // Wait for action server
+        while (!action_client_-&gt;wait_for_action_server(std::chrono::seconds(1))) {
+            if (!rclcpp::ok()) {
+                RCLCPP_ERROR(get_logger(), &quot;Interrupted while waiting for action server&quot;);
+                return;
+            }
+            RCLCPP_INFO(get_logger(), &quot;Waiting for action server...&quot;);
+        }
+
+        RCLCPP_INFO(get_logger(), &quot;Advanced action client initialized&quot;);
+    }
+
+    void send_goal_with_retry(int order, int max_retries = 3) {
+        int retry_count = 0;
+
+        while (retry_count &lt; max_retries) {
+            if (send_goal(order)) {
+                RCLCPP_INFO(get_logger(), &quot;Goal completed successfully&quot;);
+                return;
+            } else {
+                retry_count++;
+                RCLCPP_WARN(get_logger(),
+                           &quot;Goal failed, retrying (%d/%d)...&quot;,
+                           retry_count, max_retries);
+
+                if (retry_count &lt; max_retries) {
+                    std::this_thread::sleep_for(std::chrono::seconds(1));
+                }
+            }
+        }
+
+        RCLCPP_ERROR(get_logger(), &quot;Goal failed after %d retries&quot;, max_retries);
+    }
+
+    void send_goal_with_timeout(int order, double timeout_seconds = 10.0) {
+        auto goal_msg = Fibonacci::Goal();
+        goal_msg.order = order;
+
+        RCLCPP_INFO(get_logger(), &quot;Sending goal with timeout %.1f seconds&quot;, timeout_seconds);
+
+        auto send_goal_options = rclcpp_action::Client&lt;Fibonacci&gt;::SendGoalOptions();
+        send_goal_options.goal_response_callback =
+            std::bind(&amp;AdvancedActionClient::goal_response_callback, this, std::placeholders::_1);
+        send_goal_options.feedback_callback =
+            std::bind(&amp;AdvancedActionClient::feedback_callback, this, std::placeholders::_1, std::placeholders::_2);
+        send_goal_options.result_callback =
+            std::bind(&amp;AdvancedActionClient::result_callback, this, std::placeholders::_1);
+
+        // Send goal
+        auto goal_handle_future = action_client_-&gt;async_send_goal(goal_msg, send_goal_options);
+
+        // Wait for goal completion with timeout
+        if (rclcpp::spin_until_future_complete(
+                this-&gt;get_node_base_interface(),
+                goal_handle_future,
+                std::chrono::duration&lt;double&gt;(timeout_seconds)) ==
+            rclcpp::FutureReturnCode::SUCCESS) {
+
+            auto goal_handle = goal_handle_future.get();
+            if (goal_handle) {
+                RCLCPP_INFO(get_logger(), &quot;Goal completed within timeout&quot;);
+            } else {
+                RCLCPP_ERROR(get_logger(), &quot;Goal was rejected&quot;);
+            }
+        } else {
+            RCLCPP_ERROR(get_logger(), &quot;Goal timed out after %.1f seconds&quot;, timeout_seconds);
+            // Cancel the goal
+            action_client_-&gt;async_cancel_all_goals();
+        }
+    }
+
+    void send_concurrent_goals() {
+        RCLCPP_INFO(get_logger(), &quot;Sending multiple concurrent goals&quot;);
+
+        // Send multiple goals concurrently
+        std::vector&lt;std::shared_future&lt;rclcpp_action::ClientGoalHandle&lt;Fibonacci&gt;::SharedPtr&gt;&gt; futures;
+
+        for (int i = 0; i &lt; 3; ++i) {
+            auto goal_msg = Fibonacci::Goal();
+            goal_msg.order = 10 + i * 2;  // 10, 12, 14
+
+            auto send_goal_options = rclcpp_action::Client&lt;Fibonacci&gt;::SendGoalOptions();
+            send_goal_options.result_callback =
+                [this, i](const rclcpp_action::ClientGoalHandle&lt;Fibonacci&gt;::WrappedResult &amp; result) {
+                    switch (result.code) {
+                        case rclcpp_action::ResultCode::SUCCEEDED:
+                            RCLCPP_INFO(get_logger(), &quot;Goal %d succeeded&quot;, i);
+                            break;
+                        case rclcpp_action::ResultCode::ABORTED:
+                            RCLCPP_WARN(get_logger(), &quot;Goal %d was aborted&quot;, i);
+                            break;
+                        case rclcpp_action::ResultCode::CANCELED:
+                            RCLCPP_INFO(get_logger(), &quot;Goal %d was canceled&quot;, i);
+                            break;
+                        default:
+                            RCLCPP_ERROR(get_logger(), &quot;Goal %d failed with unknown result code&quot;, i);
+                            break;
+                    }
+                };
+
+            auto future = action_client_-&gt;async_send_goal(goal_msg, send_goal_options);
+            futures.push_back(future);
+        }
+
+        // Wait for all goals to complete
+        for (auto&amp; future : futures) {
+            rclcpp::spin_until_future_complete(this-&gt;get_node_base_interface(), future);
+        }
+
+        RCLCPP_INFO(get_logger(), &quot;All concurrent goals completed&quot;);
+    }
+
+private:
+    bool send_goal(int order) {
+        auto goal_msg = Fibonacci::Goal();
+        goal_msg.order = order;
+
+        RCLCPP_INFO(get_logger(), &quot;Sending goal: order = %d&quot;, order);
+
+        auto send_goal_options = rclcpp_action::Client&lt;Fibonacci&gt;::SendGoalOptions();
+        send_goal_options.goal_response_callback =
+            std::bind(&amp;AdvancedActionClient::goal_response_callback, this, std::placeholders::_1);
+        send_goal_options.feedback_callback =
+            std::bind(&amp;AdvancedActionClient::feedback_callback, this, std::placeholders::_1, std::placeholders::_2);
+        send_goal_options.result_callback =
+            std::bind(&amp;AdvancedActionClient::result_callback, this, std::placeholders::_1);
+
+        // Send goal and wait for result
+        auto goal_handle_future = action_client_-&gt;async_send_goal(goal_msg, send_goal_options);
+
+        if (rclcpp::spin_until_future_complete(this-&gt;get_node_base_interface(), goal_handle_future) !=
+            rclcpp::FutureReturnCode::SUCCESS) {
+            RCLCPP_ERROR(get_logger(), &quot;Failed to send goal&quot;);
+            return false;
+        }
+
+        auto goal_handle = goal_handle_future.get();
+        if (!goal_handle) {
+            RCLCPP_ERROR(get_logger(), &quot;Goal was rejected&quot;);
+            return false;
+        }
+
+        // Wait for result
+        auto result_future = goal_handle-&gt;async_get_result();
+
+        if (rclcpp::spin_until_future_complete(this-&gt;get_node_base_interface(), result_future) !=
+            rclcpp::FutureReturnCode::SUCCESS) {
+            RCLCPP_ERROR(get_logger(), &quot;Failed to get result&quot;);
+            return false;
+        }
+
+        auto result = result_future.get();
+        return result.code == rclcpp_action::ResultCode::SUCCEEDED;
+    }
+
+    void goal_response_callback(const rclcpp_action::ClientGoalHandle&lt;Fibonacci&gt;::SharedPtr &amp; goal_handle) {
+        if (!goal_handle) {
+            RCLCPP_ERROR(get_logger(), &quot;Goal was rejected&quot;);
+        } else {
+            RCLCPP_INFO(get_logger(), &quot;Goal accepted by server&quot;);
+        }
+    }
+
+    void feedback_callback(
+        rclcpp_action::ClientGoalHandle&lt;Fibonacci&gt;::SharedPtr,
+        const std::shared_ptr&lt;const Fibonacci::Feedback&gt; feedback) {
+
+        RCLCPP_INFO(get_logger(),
+                   &quot;Received feedback: partial_sequence length = %zu&quot;,
+                   feedback-&gt;partial_sequence.size());
+    }
+
+    void result_callback(const rclcpp_action::ClientGoalHandle&lt;Fibonacci&gt;::WrappedResult &amp; result) {
+        switch (result.code) {
+            case rclcpp_action::ResultCode::SUCCEEDED:
+                RCLCPP_INFO(get_logger(), &quot;Goal succeeded&quot;);
+                RCLCPP_INFO(get_logger(), &quot;Final sequence:&quot;);
+                for (auto number : result.result-&gt;sequence) {
+                    RCLCPP_INFO(get_logger(), &quot;  %d&quot;, number);
+                }
+                break;
+            case rclcpp_action::ResultCode::ABORTED:
+                RCLCPP_ERROR(get_logger(), &quot;Goal was aborted&quot;);
+                break;
+            case rclcpp_action::ResultCode::CANCELED:
+                RCLCPP_ERROR(get_logger(), &quot;Goal was canceled&quot;);
+                break;
+            default:
+                RCLCPP_ERROR(get_logger(), &quot;Unknown result code&quot;);
+                break;
+        }
+    }
+
+    rclcpp_action::Client&lt;Fibonacci&gt;::SharedPtr action_client_;
+};
+</code></pre>
+<h2 id="55-real-world-communication-patterns">5.5 Real-world Communication Patterns</h2>
+<h3 id="551-sensor-processing-pipeline">5.5.1 Sensor Processing Pipeline</h3>
+<p><strong>Diagram: Sensor Processing Architecture</strong></p>
+<pre><code>Raw Sensor Data
+       ↓
+┌─────────────────┐
+│   Sensor Driver │
+└─────────────────┘
+       ↓
+┌─────────────────┐
+│  Preprocessing  │
+│ - Noise Filter  │
+│ - Calibration   │
+│ - Validation    │
+└─────────────────┘
+       ↓
+┌─────────────────┐
+│  Feature        │
+│  Extraction     │
+│ - Detection     │
+│ - Recognition   │
+│ - Tracking      │
+└─────────────────┘
+       ↓
+┌─────────────────┐
+│  Sensor Fusion  │
+│ - Kalman Filter │
+│ - Weighting     │
+│ - Validation    │
+└─────────────────┘
+       ↓
+┌─────────────────┐
+│  Publishing     │
+└─────────────────┘
+</code></pre>
+<p><strong>Example: Sensor Processing Pipeline</strong></p>
+<pre><code class="language-pythonimport" metastring="rclpy">from rclpy.node import Node
+from sensor_msgs.msg import Image, LaserScan
+from geometry_msgs.msg import PointStamped
+from nav_msgs.msg import Odometry
+import numpy as np
+
+class SensorProcessingPipeline(Node):
+    def __init__(self):
+        super().__init__(&#x27;sensor_processing_pipeline&#x27;)
+
+        # Raw sensor subscribers
+        self.image_sub = self.create_subscription(
+            Image, &#x27;/camera/image_raw&#x27;, self.image_callback, 10)
+        self.lidar_sub = self.create_subscription(
+            LaserScan, &#x27;/lidar/scan&#x27;, self.lidar_callback, 10)
+        self.odom_sub = self.create_subscription(
+            Odometry, &#x27;/odom&#x27;, self.odom_callback, 10)
+
+        # Processed data publishers
+        self.obstacle_pub = self.create_publisher(
+            PointStamped, &#x27;/obstacles&#x27;, 10)
+        self.trajectory_pub = self.create_publisher(
+            PointStamped, &#x27;/trajectory&#x27;, 10)
+
+        # Processing state
+        self.latest_image = None
+        self.latest_scan = None
+        latest_odom = None
+
+        # Processing parameters
+        self.obstacle_threshold = 2.0  # meters
+        self.publish_rate = 10.0  # Hz
+
+        # Processing timer
+        self.processing_timer = self.create_timer(
+            1.0 / self.publish_rate, self.process_sensor_data)
+
+        self.get_logger().info(&#x27;Sensor processing pipeline initialized&#x27;)
+
+    def image_callback(self, msg):
+        &quot;&quot;&quot;Handle raw image data&quot;&quot;&quot;
+        # Preprocess image
+        processed_image = self.preprocess_image(msg)
+
+        # Extract features
+        features = self.extract_image_features(processed_image)
+
+        # Store for fusion
+        self.latest_image = {
+            &#x27;header&#x27;: msg.header,
+            &#x27;features&#x27;: features,
+            &#x27;timestamp&#x27;: self.get_clock().now()
+        }
+
+    def lidar_callback(self, msg):
+        &quot;&quot;&quot;Handle raw LiDAR data&quot;&quot;&quot;
+        # Preprocess scan
+        processed_scan = self.preprocess_lidar(msg)
+
+        # Extract obstacles
+        obstacles = self.extract_obstacles(processed_scan)
+
+        # Store for fusion
+        self.latest_scan = {
+            &#x27;header&#x27;: msg.header,
+            &#x27;obstacles&#x27;: obstacles,
+            &#x27;timestamp&#x27;: self.get_clock().now()
+        }
+
+    def odom_callback(self, msg):
+        &quot;&quot;&quot;Handle odometry data&quot;&quot;&quot;
+        self.latest_odom = {
+            &#x27;header&#x27;: msg.header,
+            &#x27;pose&#x27;: msg.pose.pose,
+            &#x27;twist&#x27;: msg.twist.twist,
+            &#x27;timestamp&#x27;: self.get_clock().now()
+        }
+
+    def preprocess_image(self, msg):
+        &quot;&quot;&quot;Preprocess raw image&quot;&quot;&quot;
+        # In real implementation, use OpenCV or similar
+        # Convert to grayscale, apply filters, etc.
+        return msg
+
+    def extract_image_features(self, image_msg):
+        &quot;&quot;&quot;Extract features from preprocessed image&quot;&quot;&quot;
+        # Simulate feature extraction
+        features = []
+
+        # Create test features
+        for i in range(5):
+            feature = {
+                &#x27;id&#x27;: i,
+                &#x27;position&#x27;: (np.random.rand() * image_msg.width,
+                            np.random.rand() * image_msg.height),
+                &#x27;confidence&#x27;: np.random.rand(),
+                &#x27;type&#x27;: &#x27;corner&#x27;
+            }
+            features.append(feature)
+
+        return features
+
+    def preprocess_lidar(self, msg):
+        &quot;&quot;&quot;Preprocess raw LiDAR scan&quot;&quot;&quot;
+        # Remove invalid readings
+        valid_ranges = []
+        for i, r in enumerate(msg.ranges):
+            if msg.range_min &lt;= r &lt;= msg.range_max:
+                valid_ranges.append(r)
+            else:
+                valid_ranges.append(float(&#x27;inf&#x27;))
+
+        # Smooth the data
+        smoothed_ranges = self.smooth_ranges(valid_ranges)
+
+        return {
+            &#x27;ranges&#x27;: smoothed_ranges,
+            &#x27;angle_min&#x27;: msg.angle_min,
+            &#x27;angle_max&#x27;: msg.angle_max,
+            &#x27;angle_increment&#x27;: msg.angle_increment
+        }
+
+    def smooth_ranges(self, ranges):
+        &quot;&quot;&quot;Smooth LiDAR range data&quot;&quot;&quot;
+        if len(ranges) &lt; 3:
+            return ranges
+
+        smoothed = []
+        for i in range(len(ranges)):
+            if i == 0 or i == len(ranges) - 1:
+                smoothed.append(ranges[i])
+            else:
+                # Simple moving average
+                avg = (ranges[i-1] + ranges[i] + ranges[i+1]) / 3.0
+                smoothed.append(avg)
+
+        return smoothed
+
+    def extract_obstacles(self, scan_data):
+        &quot;&quot;&quot;Extract obstacle positions from LiDAR scan&quot;&quot;&quot;
+        obstacles = []
+
+        for i, r in enumerate(scan_data[&#x27;ranges&#x27;]):
+            if r &lt; self.obstacle_threshold:
+                # Convert polar to Cartesian
+                angle = scan_data[&#x27;angle_min&#x27;] + i * scan_data[&#x27;angle_increment&#x27;]
+                x = r * np.cos(angle)
+                y = r * np.sin(angle)
+
+                obstacles.append({
+                    &#x27;position&#x27;: (x, y),
+                    &#x27;distance&#x27;: r,
+                    &#x27;angle&#x27;: angle,
+                    &#x27;confidence&#x27;: 1.0 / (1.0 + r)  # Closer obstacles more confident
+                })
+
+        return obstacles
+
+    def process_sensor_data(self):
+        &quot;&quot;&quot;Main processing function&quot;&quot;&quot;
+        if not self.latest_scan or not self.latest_odom:
+            return
+
+        # Publish detected obstacles
+        self.publish_obstacles()
+
+        # Publish trajectory (example)
+        self.publish_trajectory()
+
+    def publish_obstacles(self):
+        &quot;&quot;&quot;Publish detected obstacles&quot;&quot;&quot;
+        for obstacle in self.latest_scan[&#x27;obstacles&#x27;]:
+            msg = PointStamped()
+            msg.header = self.latest_scan[&#x27;header&#x27;]
+            msg.header.frame_id = &#x27;base_link&#x27;
+            msg.point.x = obstacle[&#x27;position&#x27;][0]
+            msg.point.y = obstacle[&#x27;position&#x27;][1]
+            msg.point.z = 0.0
+
+            self.obstacle_pub.publish(msg)
+
+    def publish_trajectory(self):
+        &quot;&quot;&quot;Publish trajectory point&quot;&quot;&quot;
+        if self.latest_odom:
+            msg = PointStamped()
+            msg.header = self.latest_odom[&#x27;header&#x27;]
+            msg.header.frame_id = &#x27;base_link&#x27;
+            msg.point.x = self.latest_odom[&#x27;pose&#x27;].position.x
+            msg.point.y = self.latest_odom[&#x27;pose&#x27;].position.y
+            msg.point.z = self.latest_odom[&#x27;pose&#x27;].position.z
+
+            self.trajectory_pub.publish(msg)
+
+# Advanced sensor fusion with Kalman filtering
+class AdvancedSensorFusion(SensorProcessingPipeline):
+    def __init__(self):
+        super().__init__()
+
+        # Kalman filter for sensor fusion
+        self.kf_state = np.zeros([6, 1])  # [x, y, z, vx, vy, vz]
+        self.kf_covariance = np.eye(6) * 0.1
+        self.last_fusion_time = self.get_clock().now()
+
+        # Fused data publisher
+        self.fused_odom_pub = self.create_publisher(
+            Odometry, &#x27;/fused_odom&#x27;, 10)
+
+    def process_sensor_data(self):
+        &quot;&quot;&quot;Advanced processing with sensor fusion&quot;&quot;&quot;
+        super().process_sensor_data()
+
+        # Perform sensor fusion
+        self.sensor_fusion()
+
+    def sensor_fusion(self):
+        &quot;&quot;&quot;Perform Kalman filter-based sensor fusion&quot;&quot;&quot;
+        current_time = self.get_clock().now()
+        dt = (current_time - self.last_fusion_time).nanoseconds / 1e9
+
+        if dt &gt; 0:
+            # Prediction step
+            self.predict_step(dt)
+
+            # Update step with measurements
+            if self.latest_odom:
+                self.update_step_with_odom()
+
+            # Publish fused odometry
+            self.publish_fused_odometry()
+
+            self.last_fusion_time = current_time
+
+    def predict_step(self, dt):
+        &quot;&quot;&quot;Kalman filter prediction step&quot;&quot;&quot;
+        # State transition matrix
+        F = np.array([
+            [1, 0, 0, dt, 0, 0],  # x
+            [0, 1, 0, 0, dt, 0],  # y
+            [0, 0, 1, 0, 0, dt],  # z
+            [0, 0, 0, 1, 0, 0],  # vx
+            [0, 0, 0, 0, 1, 0],  # vy
+            [0, 0, 0, 0, 0, 1]   # vz
+        ])
+
+        # Process noise
+        Q = np.eye(6) * 0.01
+
+        # Predict
+        self.kf_state = F @ self.kf_state
+        self.kf_covariance = F @ self.kf_covariance @ F.T + Q
+
+    def update_step_with_odom(self):
+        &quot;&quot;&quot;Update step with odometry measurement&quot;&quot;&quot;
+        # Measurement matrix (we only measure position)
+        H = np.array([
+            [1, 0, 0, 0, 0, 0],
+            [0, 1, 0, 0, 0, 0],
+            [0, 0, 1, 0, 0, 0]
+        ])
+
+        # Measurement noise
+        R = np.eye(3) * 0.1
+
+        # Measurement
+        z = np.array([
+            [self.latest_odom[&#x27;pose&#x27;].position.x],
+            [self.latest_odom[&#x27;pose&#x27;].position.y],
+            [self.latest_odom[&#x27;pose&#x27;].position.z]
+        ])
+
+        # Kalman gain
+        S = H @ self.kf_covariance @ H.T + R
+        K = self.kf_covariance @ H.T @ np.linalg.inv(S)
+
+        # Update
+        y = z - H @ self.kf_state
+        self.kf_state = self.kf_state + K @ y
+        self.kf_covariance = (np.eye(6) - K @ H) @ self.kf_covariance
+
+    def publish_fused_odometry(self):
+        &quot;&quot;&quot;Publish fused odometry&quot;&quot;&quot;
+        msg = Odometry()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.header.frame_id = &#x27;odom&#x27;
+        msg.child_frame_id = &#x27;base_link&#x27;
+
+        # Set position
+        msg.pose.pose.position.x = self.kf_state[0, 0]
+        msg.pose.pose.position.y = self.kf_state[1, 0]
+        msg.pose.pose.position.z = self.kf_state[2, 0]
+
+        # Set velocity
+        msg.twist.twist.linear.x = self.kf_state[3, 0]
+        msg.twist.twist.linear.y = self.kf_state[4, 0]
+        msg.twist.twist.linear.z = self.kf_state[5, 0]
+
+        self.fused_odom_pub.publish(msg)
+</code></pre>
+<h2 id="summary">Summary</h2>
+<p>This chapter explored advanced ROS 2 communication patterns and architectural approaches essential for building complex, robust robotic systems. We covered sophisticated node designs, optimized topic patterns, robust service implementations, and complex action workflows.</p>
+<p>Key takeaways:</p>
+<ul>
+<li>Node composition and multi-threading improve performance and reduce overhead</li>
+<li>Lifecycle management provides controlled startup and shutdown procedures</li>
+<li>Bandwidth optimization and proper message design are crucial for high-frequency data</li>
+<li>Robust error handling and retry mechanisms ensure system reliability</li>
+<li>Multi-stage actions with detailed feedback enable complex workflows</li>
+<li>Sensor processing pipelines demonstrate real-world integration patterns</li>
+<li>Advanced patterns like sensor fusion with Kalman filtering enhance system capabilities</li>
+</ul>
+<h2 id="exercises">Exercises</h2>
+<h3 id="exercise-51-multi-threaded-node-implementation">Exercise 5.1: Multi-threaded Node Implementation</h3>
+<p>Create a multi-threaded node that:</p>
+<ul>
+<li>Processes sensor data in one thread</li>
+<li>Performs planning in another thread</li>
+<li>Executes control in a third thread</li>
+<li>Demonstrates proper thread synchronization</li>
+<li>Measures and reports performance</li>
+</ul>
+<h3 id="exercise-52-optimized-topic-design">Exercise 5.2: Optimized Topic Design</h3>
+<p>Design an optimized communication system:</p>
+<ul>
+<li>Create custom message types for specific use cases</li>
+<li>Implement bandwidth optimization techniques</li>
+<li>Test with different QoS settings</li>
+<li>Measure performance improvements</li>
+<li>Document trade-offs</li>
+</ul>
+<h3 id="exercise-53-robust-service-chain">Exercise 5.3: Robust Service Chain</h3>
+<p>Implement a service chain with:</p>
+<ul>
+<li>Multiple services with dependencies</li>
+<li>Error handling and recovery</li>
+<li>Retry mechanisms</li>
+<li>Performance monitoring</li>
+<li>Load balancing strategies</li>
+</ul>
+<h3 id="exercise-54-advanced-action-workflow">Exercise 5.4: Advanced Action Workflow</h3>
+<p>Create a multi-stage action system:</p>
+<ul>
+<li>Implement custom action interface</li>
+<li>Design multi-stage workflow</li>
+<li>Add detailed feedback mechanism</li>
+<li>Implement cancellation and preemption</li>
+<li>Add timeout and retry logic</li>
+</ul>
+<h3 id="exercise-55-sensor-fusion-system">Exercise 5.5: Sensor Fusion System</h3>
+<p>Build a complete sensor fusion system:</p>
+<ul>
+<li>Integrate multiple sensor types</li>
+<li>Implement Kalman filter for fusion</li>
+<li>Handle sensor failures gracefully</li>
+<li>Provide performance metrics</li>
+<li>Validate with ground truth data</li>
+</ul>
+<h2 id="glossary-terms">Glossary Terms</h2>
+<ul>
+<li><strong>Node Composition</strong>: Combining multiple logical nodes into a single process</li>
+<li><strong>Multi-threaded Node</strong>: Node using multiple threads for concurrent processing</li>
+<li><strong>Lifecycle Management</strong>: Controlled startup, activation, deactivation, and shutdown of nodes</li>
+<li><strong>Bandwidth Optimization</strong>: Techniques to reduce data transmission requirements</li>
+<li><strong>Service Chain</strong>: Sequence of services where output of one becomes input of next</li>
+<li><strong>Action Workflow</strong>: Multi-stage process with feedback and intermediate results</li>
+<li><strong>Sensor Fusion</strong>: Combining data from multiple sensors for improved perception</li>
+<li><strong>Kalman Filter</strong>: Recursive algorithm for estimating system state from noisy measurements</li>
+<li><strong>QoS (Quality of Service)</strong>: Policies controlling data exchange behavior</li>
+<li><strong>Message Serialization</strong>: Process of converting message objects to bytes for transmission</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus/tree/main/docs/part-2-ros/chapter-5-nodes-topics-services-actions.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">ROS 2 Fundamentals</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-6-urdf-robot-description-tf-trees"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">URDF, Robot Description, TF Trees</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#51-advanced-node-architectures" class="table-of-contents__link toc-highlight">5.1 Advanced Node Architectures</a><ul><li><a href="#511-node-composition-and-lifecycle" class="table-of-contents__link toc-highlight">5.1.1 Node Composition and Lifecycle</a></li><li><a href="#512-multi-threaded-node-design" class="table-of-contents__link toc-highlight">5.1.2 Multi-threaded Node Design</a></li><li><a href="#513-node-lifecycle-management" class="table-of-contents__link toc-highlight">5.1.3 Node Lifecycle Management</a></li></ul></li><li><a href="#52-advanced-topic-patterns" class="table-of-contents__link toc-highlight">5.2 Advanced Topic Patterns</a><ul><li><a href="#521-bandwidth-optimization" class="table-of-contents__link toc-highlight">5.2.1 Bandwidth Optimization</a></li><li><a href="#522-message-type-design" class="table-of-contents__link toc-highlight">5.2.2 Message Type Design</a></li><li><a href="#523-topic-naming-conventions" class="table-of-contents__link toc-highlight">5.2.3 Topic Naming Conventions</a></li></ul></li><li><a href="#53-service-design-patterns" class="table-of-contents__link toc-highlight">5.3 Service Design Patterns</a><ul><li><a href="#531-service-chain-patterns" class="table-of-contents__link toc-highlight">5.3.1 Service Chain Patterns</a></li><li><a href="#532-error-handling-in-services" class="table-of-contents__link toc-highlight">5.3.2 Error Handling in Services</a></li></ul></li><li><a href="#54-advanced-action-implementation" class="table-of-contents__link toc-highlight">5.4 Advanced Action Implementation</a><ul><li><a href="#541-complex-action-workflows" class="table-of-contents__link toc-highlight">5.4.1 Complex Action Workflows</a></li><li><a href="#542-action-client-with-retry-and-timeout" class="table-of-contents__link toc-highlight">5.4.2 Action Client with Retry and Timeout</a></li></ul></li><li><a href="#55-real-world-communication-patterns" class="table-of-contents__link toc-highlight">5.5 Real-world Communication Patterns</a><ul><li><a href="#551-sensor-processing-pipeline" class="table-of-contents__link toc-highlight">5.5.1 Sensor Processing Pipeline</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a><ul><li><a href="#exercise-51-multi-threaded-node-implementation" class="table-of-contents__link toc-highlight">Exercise 5.1: Multi-threaded Node Implementation</a></li><li><a href="#exercise-52-optimized-topic-design" class="table-of-contents__link toc-highlight">Exercise 5.2: Optimized Topic Design</a></li><li><a href="#exercise-53-robust-service-chain" class="table-of-contents__link toc-highlight">Exercise 5.3: Robust Service Chain</a></li><li><a href="#exercise-54-advanced-action-workflow" class="table-of-contents__link toc-highlight">Exercise 5.4: Advanced Action Workflow</a></li><li><a href="#exercise-55-sensor-fusion-system" class="table-of-contents__link toc-highlight">Exercise 5.5: Sensor Fusion System</a></li></ul></li><li><a href="#glossary-terms" class="table-of-contents__link toc-highlight">Glossary Terms</a></li></ul></div></div></div></div></main></div></div></div><footer class="nm-custom-footer" data-testid="custom-footer"><div class="nm-footer-container"><div class="nm-footer-grid"><div class="nm-footer-brand"><div class="nm-footer-logo"><h3>Physical AI &amp; Robotics</h3><p>An AI-Native Engineering Textbook</p></div><p class="nm-footer-description">Master the convergence of artificial intelligence and physical robotics through comprehensive, hands-on learning experiences.</p><div class="nm-footer-stats"><div class="nm-stat"><div class="nm-stat-number">1000+</div><div class="nm-stat-label">Pages</div></div><div class="nm-stat"><div class="nm-stat-number">50+</div><div class="nm-stat-label">Exercises</div></div><div class="nm-stat"><div class="nm-stat-number">24/7</div><div class="nm-stat-label">Access</div></div></div></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Resources</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai">Foundations</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals">ROS &amp; Navigation</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots">Computer Vision</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models">Machine Learning</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation">Simulation &amp; Control</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Learning Paths</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/beginner">Beginner Track</a></li><li><a href="/ai-native-textbook-docusaurus/intermediate">Intermediate Track</a></li><li><a href="/ai-native-textbook-docusaurus/advanced">Advanced Track</a></li><li><a href="/ai-native-textbook-docusaurus/projects">Hands-on Projects</a></li><li><a href="/ai-native-textbook-docusaurus/certification">Certification</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Community</h4><ul class="nm-footer-links"><li><a href="https://github.com/your-username/ai-native-textbook">GitHub</a></li><li><a href="https://discord.gg/your-server">Discord</a></li><li><a href="https://forum.example.com">Forum</a></li><li><a href="/ai-native-textbook-docusaurus/contributors">Contributors</a></li><li><a href="/ai-native-textbook-docusaurus/blog">Blog</a></li></ul></div><div class="nm-footer-section nm-footer-newsletter"><h4 class="nm-footer-heading">Stay Updated</h4><p class="nm-footer-subtext">Get the latest updates and exclusive content</p><div class="nm-newsletter-form"><input type="email" placeholder="Enter your email" class="nm-newsletter-input"><button type="button" class="nm-newsletter-button">Subscribe</button></div><div class="nm-footer-social"><a href="https://github.com" class="nm-social-link" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><a href="https://twitter.com" class="nm-social-link" aria-label="Twitter"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg></a><a href="https://linkedin.com" class="nm-social-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></a></div></div></div><div class="nm-footer-bottom"><div class="nm-footer-bottom-left"><span class="nm-footer-copyright">© <!-- -->2025<!-- --> AI-Native Textbook. All rights reserved. Created by SNN Studio.</span></div><div class="nm-footer-bottom-right"><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/privacy">Privacy Policy</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/terms">Terms of Service</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/code-of-conduct">Code of Conduct</a></div></div></div></footer><div class="chat-widget"><button class="chat-widget-button" aria-label="Open chat"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button></div></div>
+</body>
+</html>

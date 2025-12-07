@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-part-2-ros/chapter-4-ros2-fundamentals" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">ROS 2 Fundamentals | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="ROS 2 Fundamentals | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Introduction"><meta data-rh="true" property="og:description" content="Introduction"><link data-rh="true" rel="icon" href="/ai-native-textbook-docusaurus/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals" hreflang="en"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"ROS 2 Fundamentals","item":"https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals"}]}</script><link rel="alternate" type="application/rss+xml" href="/ai-native-textbook-docusaurus/blog/rss.xml" title="Physical AI &amp; Humanoid Robotics RSS Feed">
+<link rel="alternate" type="application/atom+xml" href="/ai-native-textbook-docusaurus/blog/atom.xml" title="Physical AI &amp; Humanoid Robotics Atom Feed"><link rel="stylesheet" href="/ai-native-textbook-docusaurus/assets/css/styles.6e378bed.css">
+<script src="/ai-native-textbook-docusaurus/assets/js/runtime~main.5e3ab4fa.js" defer="defer"></script>
+<script src="/ai-native-textbook-docusaurus/assets/js/main.17a86997.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav class="nm-custom-navbar"><div class="nm-navbar-container"><div class="nm-navbar-logo"><a class="nm-logo-link" href="/ai-native-textbook-docusaurus/"><div class="nm-logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="currentColor"></rect><path d="M8 16C8 11.5817 11.5817 8 16 8C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24C11.5817 24 8 20.4183 8 16Z" fill="var(--ifm-background-color)"></path><path d="M12 16L16 12L20 16M16 12V20" stroke="var(--ifm-color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="nm-logo-text"><span class="nm-logo-title">Physical AI</span><span class="nm-logo-subtitle">&amp; Robotics</span></div></a></div><div class="nm-navbar-links"><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/">Home</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/about">About</a></div><div class="nm-navbar-actions"><div class="nm-search-container" style="margin-right:1rem"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div><button class="nm-action-button color-mode-toggle" aria-label="Toggle dark mode"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button><a href="https://github.com/NaumanNavaid/hackathon-1" class="nm-action-button" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><button class="nm-mobile-menu-toggle" aria-label="Toggle mobile menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu w-6 h-6" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button></div></div></nav><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/ai-native-textbook-docusaurus/"><b class="navbar__title text--truncate">Physical AI &amp; Robotics</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/ai-native-textbook-docusaurus/">Home</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai"><span title="Part 1: Foundations" class="categoryLinkLabel_W154">Part 1: Foundations</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals"><span title="Part 2: ROS Fundamentals" class="categoryLinkLabel_W154">Part 2: ROS Fundamentals</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals"><span title="ROS 2 Fundamentals" class="linkLabel_WmDU">ROS 2 Fundamentals</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-5-nodes-topics-services-actions"><span title="Nodes, Topics, Services, Actions" class="linkLabel_WmDU">Nodes, Topics, Services, Actions</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-6-urdf-robot-description-tf-trees"><span title="URDF, Robot Description, TF Trees" class="linkLabel_WmDU">URDF, Robot Description, TF Trees</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation"><span title="Part 3: Simulation &amp; Digital Twins" class="categoryLinkLabel_W154">Part 3: Simulation &amp; Digital Twins</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"><span title="Part 4: Perception &amp; State Estimation" class="categoryLinkLabel_W154">Part 4: Perception &amp; State Estimation</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models"><span title="Part 5: Embodied Intelligence" class="categoryLinkLabel_W154">Part 5: Embodied Intelligence</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/ai-native-textbook-docusaurus/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Part 2: ROS Fundamentals</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">ROS 2 Fundamentals</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="ros-2-fundamentals">ROS 2 Fundamentals</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>Robot Operating System 2 (ROS 2) represents a fundamental evolution in robotics middleware, addressing the limitations of ROS 1 while maintaining its core philosophy of code reuse in robotics. ROS 2 is built from the ground up for real-world applications, featuring real-time capabilities, security, and support for multi-robot systems. This chapter introduces the fundamental concepts and architecture of ROS 2, providing the foundation for building complex robotic systems.</p>
+<admonition type="info"><p>ROS 2 is not an operating system but a middleware framework that provides services like hardware abstraction, device drivers, libraries, visualizers, message-passing, package management, and more.</p></admonition>
+<h2 id="41-ros-2-architecture-overview">4.1 ROS 2 Architecture Overview</h2>
+<h3 id="411-evolution-from-ros-1-to-ros-2">4.1.1 Evolution from ROS 1 to ROS 2</h3>
+<p>ROS 2 addresses critical limitations in ROS 1 while introducing significant architectural improvements:</p>
+<p><strong>Diagram: ROS 1 vs ROS 2 Architecture</strong></p>
+<pre><code>ROS 1 Architecture                    ROS 2 Architecture
+┌─────────────────────────┐         ┌─────────────────────────┐
+│ ROS Master              │         │ DDS (Data Distribution) │
+│ (Centralized)           │         │ (Decentralized)         │
+│    ↕    ↕    ↕          │         │    ↕    ↕    ↕          │
+┌───────┬───────┬───────┐   →    ┌───────┬───────┬───────┐
+│ Node A│ Node B│ Node C│       │ Node A│ Node B│ Node C│
+└───────┴───────┴───────┘       └───────┴───────┴───────┘
+                                │    ↕    ↕    ↕          │
+                                └─────────────────────────┘
+                                   Discovery, Communication
+                                   Security, Real-time
+</code></pre>
+<h3 id="412-key-architectural-improvements">4.1.2 Key Architectural Improvements</h3>
+<p><strong>Decentralized Communication</strong></p>
+<ul>
+<li>No single point of failure</li>
+<li>Dynamic node discovery</li>
+<li>Native support for multi-robot systems</li>
+</ul>
+<p><strong>Real-time Capabilities</strong></p>
+<ul>
+<li>Real-time transport support</li>
+<li>Deterministic scheduling</li>
+<li>Bounded latency communication</li>
+</ul>
+<p><strong>Security</strong></p>
+<ul>
+<li>Authentication and authorization</li>
+<li>Encrypted communication</li>
+<li>Access control mechanisms</li>
+</ul>
+<p><strong>Cross-platform Support</strong></p>
+<ul>
+<li>Windows, macOS, Linux support</li>
+<li>Embedded system deployment</li>
+<li>Real-time operating systems</li>
+</ul>
+<h3 id="413-dds-based-communication">4.1.3 DDS-based Communication</h3>
+<p>ROS 2 uses Data Distribution Service (DDS) as its underlying communication middleware:</p>
+<p><strong>Diagram: DDS Communication Architecture</strong></p>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                        DDS Domain                           │
+│                                                             │
+│  ┌─────────────┐   Publisher   ┌─────────────┐            │
+│  │   Node A    │ ──────────→   │   Node B    │            │
+│  │             │               │             │            │
+│  │ Publisher   │               │ Subscriber  │            │
+│  │ Subscriber  │               │ Publisher   │            │
+│  └─────────────┘ ←─────────── └─────────────┘            │
+│         │                            │                    │
+│         ↕                            ↕                    │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │              DDS Infrastructure                     │   │
+│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐             │   │
+│  │  │ RTPS    │  │ Discovery│  │Security │             │   │
+│  │  │ Protocol│  │ Service  │  │ Service  │             │   │
+│  │  └─────────┘  └─────────┘  └─────────┘             │   │
+│  └─────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<h2 id="42-core-ros-2-concepts">4.2 Core ROS 2 Concepts</h2>
+<h3 id="421-nodes">4.2.1 Nodes</h3>
+<p>Nodes are the fundamental units of computation in ROS 2:</p>
+<p><strong>Node Definition</strong>
+A node is a process that performs computation and communicates with other nodes:</p>
+<p><strong>Example: Basic ROS 2 Node in C++</strong></p>
+<pre><code class="language-cpp#include" metastring="&lt;rclcpp/rclcpp.hpp&gt;">
+class MinimalNode : public rclcpp::Node {
+public:
+    MinimalNode() : Node(&quot;minimal_node&quot;) {
+        // Initialize node
+        RCLCPP_INFO(this-&gt;get_logger(), &quot;Minimal node has been started&quot;);
+
+        // Create a timer for periodic work
+        timer_ = this-&gt;create_wall_timer(
+            std::chrono::milliseconds(500),
+            std::bind(&amp;MinimalNode::timer_callback, this));
+    }
+
+private:
+    void timer_callback() {
+        RCLCPP_INFO(this-&gt;get_logger(), &quot;Hello from minimal node!&quot;);
+    }
+
+    rclcpp::TimerBase::SharedPtr timer_;
+};
+
+int main(int argc, char** argv) {
+    rclcpp::init(argc, argv);
+
+    auto node = std::make_shared&lt;MinimalNode&gt;();
+
+    rclcpp::spin(node);
+
+    rclcpp::shutdown();
+    return 0;
+}
+</code></pre>
+<p><strong>Example: Basic ROS 2 Node in Python</strong></p>
+<pre><code class="language-pythonimport" metastring="rclpy">from rclpy.node import Node
+
+class MinimalNode(Node):
+    def __init__(self):
+        super().__init__(&#x27;minimal_node&#x27;)
+
+        self.get_logger().info(&#x27;Minimal node has been started&#x27;)
+
+        # Create a timer for periodic work
+        self.timer = self.create_timer(0.5, self.timer_callback)
+
+    def timer_callback(self):
+        self.get_logger().info(&#x27;Hello from minimal node!&#x27;)
+
+def main(args=None):
+    rclpy.init(args=args)
+
+    node = MinimalNode()
+
+    rclpy.spin(node)
+
+    node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == &#x27;__main__&#x27;:
+    main()
+</code></pre>
+<p><strong>Node Characteristics</strong></p>
+<ul>
+<li>Independent processes with their own memory space</li>
+<li>Can be written in different programming languages</li>
+<li>Communicate through DDS-based middleware</li>
+<li>Can be distributed across multiple machines</li>
+</ul>
+<h3 id="422-topics">4.2.2 Topics</h3>
+<p>Topics provide named buses for anonymous message exchange:</p>
+<p><strong>Diagram: Topic-based Communication</strong></p>
+<pre><code>               Topic: &quot;/robot/joint_states&quot;
+                         ↕
+┌─────────────┐   Publish   ┌─────────────┐   Subscribe   ┌─────────────┐
+│Joint State  │ ──────────→ │  Other      │ ←──────────── │Robot Control│
+│  Publisher  │             │   Nodes     │               │   Node      │
+└─────────────┘             └─────────────┘               └─────────────┘
+      ↕                           ↕                           ↕
+┌─────────────┐   Subscribe   ┌─────────────┐   Publish   ┌─────────────┐
+│   RViz      │ ←──────────── │Motion Planner│ ──────────→ │Simulation   │
+│  Visualizer │               │   Node      │             │   Node      │
+└─────────────┘               └─────────────┘             └─────────────┘
+</code></pre>
+<p><strong>Topic Properties</strong></p>
+<ul>
+<li>Named communication channels</li>
+<li>Anonymous publish/subscribe model</li>
+<li>Type-safe message passing</li>
+<li>Many-to-many communication</li>
+</ul>
+<p><strong>Example: Publisher and Subscriber Example</strong></p>
+<pre><code class="language-pythonimport" metastring="rclpy">from rclpy.node import Node
+from std_msgs.msg import String
+
+class PublisherNode(Node):
+    def __init__(self):
+        super().__init__(&#x27;publisher_node&#x27;)
+
+        # Create publisher
+        self.publisher_ = self.create_publisher(
+            String, &#x27;test_topic&#x27;, 10)
+
+        # Create timer for periodic publishing
+        self.timer = self.create_timer(1.0, self.publish_message)
+        self.count = 0
+
+    def publish_message(self):
+        msg = String()
+        msg.data = f&#x27;Hello ROS 2! Count: {self.count}&#x27;
+        self.publisher_.publish(msg)
+        self.count += 1
+        self.get_logger().info(f&#x27;Published: {msg.data}&#x27;)
+
+class SubscriberNode(Node):
+    def __init__(self):
+        super().__init__(&#x27;subscriber_node&#x27;)
+
+        # Create subscriber
+        self.subscription = self.create_subscription(
+            String, &#x27;test_topic&#x27;, self.listener_callback, 10)
+
+    def listener_callback(self, msg):
+        self.get_logger().info(f&#x27;Received: {msg.data}&#x27;)
+</code></pre>
+<h3 id="423-services">4.2.3 Services</h3>
+<p>Services provide request-response communication for synchronous operations:</p>
+<p><strong>Diagram: Service Call Architecture</strong></p>
+<pre><code>Client Node                    Server Node
+┌─────────────┐                ┌─────────────┐
+│    Call     │ Request/Response│    Service  │
+│ Service     │ ──────────────→ │    Handler  │
+│             │                │             │
+│   Response  │ ←────────────── │   Process   │
+│   Wait      │                │             │
+└─────────────┘                └─────────────┘
+</code></pre>
+<p><strong>Example: Service Example</strong></p>
+<pre><code class="language-pythonfrom" metastring="example_interfaces.srv import AddTwoInts">
+class ServiceNode(Node):
+    def __init__(self):
+        super().__init__(&#x27;service_node&#x27;)
+
+        # Create service
+        self.service = self.create_service(
+            AddTwoInts, &#x27;add_two_ints&#x27;, self.add_two_ints_callback)
+
+        self.get_logger().info(&#x27;Service ready&#x27;)
+
+    def add_two_ints_callback(self, request, response):
+        response.sum = request.a + request.b
+        self.get_logger().info(
+            f&#x27;Incoming request: {request.a} + {request.b} = {response.sum}&#x27;)
+
+        return response
+
+class ClientNode(Node):
+    def __init__(self):
+        super().__init__(&#x27;client_node&#x27;)
+
+        # Create client
+        self.client = self.create_client(AddTwoInts, &#x27;add_two_ints&#x27;)
+
+        # Wait for service to be available
+        while not self.client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info(&#x27;Service not available, waiting...&#x27;)
+
+    def send_request(self, a, b):
+        request = AddTwoInts.Request()
+        request.a = a
+        request.b = b
+
+        future = self.client.call_async(request)
+        return future
+</code></pre>
+<h3 id="424-actions">4.2.4 Actions</h3>
+<p>Actions provide long-running, preemptable, and cancelable asynchronous operations:</p>
+<p><strong>Diagram: Action Client/Server Architecture</strong></p>
+<pre><code>Action Client                    Action Server
+┌─────────────┐                ┌─────────────┐
+│   Send      │    Goal       │    Accept   │
+│   Goal      │ ──────────────→ │   Goal      │
+│             │                │             │
+│   Receive   │ Feedback       │    Send     │
+│  Feedback   │ ←────────────── │  Feedback   │
+│             │                │             │
+│   Receive   │   Result       │    Send     │
+│   Result    │ ←────────────── │   Result    │
+└─────────────┘                └─────────────┘
+     ↕   ↕
+Preempt/Cancel
+</code></pre>
+<p><strong>Example: Action Server Example</strong></p>
+<pre><code class="language-python">from action_msgs.msg import GoalStatus
+from rclpy.action import ActionServer
+from my_interface.action import Fibonacci
+
+class ActionServerNode(Node):
+    def __init__(self):
+        super().__init__(&#x27;action_server_node&#x27;)
+
+        # Create action server
+        self.action_server = ActionServer(
+            self, Fibonacci, &#x27;fibonacci&#x27;,
+            self.execute_callback)
+
+    def execute_callback(self, goal_handle):
+        self.get_logger().info(&#x27;Executing goal...&#x27;)
+
+        feedback_msg = Fibonacci.Feedback()
+        feedback_msg.partial_sequence = [0, 1]
+
+        # Execute long-running task
+        for i in range(1, goal_handle.request.order):
+            # Check for cancellation
+            if goal_handle.is_cancel_requested:
+                goal_handle.canceled()
+                return Fibonacci.Result()
+
+            # Compute next Fibonacci number
+            next_num = feedback_msg.partial_sequence[-1] + \
+                      feedback_msg.partial_sequence[-2]
+            feedback_msg.partial_sequence.append(next_num)
+
+            # Send feedback
+            goal_handle.publish_feedback(feedback_msg)
+
+            # Simulate work
+            self.get_clock().sleep_for(0.5)
+
+        goal_handle.succeed()
+
+        result = Fibonacci.Result()
+        result.sequence = feedback_msg.partial_sequence
+        return result
+</code></pre>
+<h2 id="43-quality-of-service-qos-policies">4.3 Quality of Service (QoS) Policies</h2>
+<h3 id="431-qos-overview">4.3.1 QoS Overview</h3>
+<p>QoS policies control how data is exchanged between nodes, enabling fine-tuned control over reliability, durability, and latency:</p>
+<p><strong>Diagram: QoS Policy Impact</strong></p>
+<pre><code>     Publisher                         Subscriber
+┌───────────────────┐            ┌───────────────────┐
+│    QoS Settings   │            │    QoS Settings   │
+│  ┌─────────────┐  │            │  ┌─────────────┐  │
+│  │ Reliability │  │            │  │ Reliability │  │
+│  └─────────────┘  │            │  └─────────────┘  │
+│  ┌─────────────┐  │            │  ┌─────────────┐  │
+│  │ Durability  │  │            │  │ Durability  │  │
+│  └─────────────┘  │            │  └─────────────┘  │
+│  ┌─────────────┐  │            │  ┌─────────────┐  │
+│  │ Deadline    │  │            │  │ Deadline    │  │
+│  └─────────────┘  │            │  └─────────────┘  │
+│  ┌─────────────┐  │            │  ┌─────────────┐  │
+│  │ Lifespan    │  │            │  │ Lifespan    │  │
+│  └─────────────┘  │            │  └─────────────┘  │
+└───────────────────┘            └───────────────────┘
+         ↕                                 ↕
+               Communication Channel
+         ↕                                 ↕
+    ┌─────────────────────────────────┐
+    │        DDS Middleware           │
+    │  Policy Negotiation &amp; Enforcement│
+    └─────────────────────────────────┘
+</code></pre>
+<h3 id="432-key-qos-policies">4.3.2 Key QoS Policies</h3>
+<p><strong>Reliability</strong></p>
+<ul>
+<li><strong>BEST_EFFORT</strong>: Messages may be lost</li>
+<li><strong>RELIABLE</strong>: Guaranteed delivery (when possible)</li>
+</ul>
+<p><strong>Durability</strong></p>
+<ul>
+<li><strong>VOLATILE</strong>: Only current subscribers receive messages</li>
+<li><strong>TRANSIENT_LOCAL</strong>: Late-joining subscribers receive last message</li>
+</ul>
+<p><strong>Deadline</strong></p>
+<ul>
+<li>Maximum time between consecutive messages</li>
+</ul>
+<p><strong>Lifespan</strong></p>
+<ul>
+<li>Maximum time a message is considered valid</li>
+</ul>
+<p><strong>Example: QoS Configuration</strong></p>
+<pre><code class="language-pythonfrom" metastring="rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy">
+# Custom QoS profile for sensor data
+sensor_qos = QoSProfile(
+    depth=10,
+    reliability=QoSReliabilityPolicy.BEST_EFFORT,  # Allow some loss
+    durability=QoSDurabilityPolicy.VOLATILE,       # Only new data
+)
+
+# QoS for control commands
+control_qos = QoSProfile(
+    depth=10,
+    reliability=QoSReliabilityPolicy.RELIABLE,     # Must arrive
+    durability=QoSDurabilityPolicy.TRANSIENT_LOCAL, # Keep last state
+)
+
+# Create publisher with custom QoS
+publisher = node.create_publisher(
+    String, &#x27;control_topic&#x27;,
+    qos_profile=control_qos)
+</code></pre>
+<h3 id="433-common-qos-profiles">4.3.3 Common QoS Profiles</h3>
+<p>ROS 2 provides predefined QoS profiles:</p>
+<p><strong>Diagram: Common QoS Profiles</strong></p>
+<pre><code>SENSOR_DATA Profile
+├── Reliability: BEST_EFFORT
+├── Durability: VOLATILE
+├── Deadline: (disabled)
+└── Lifespan: (disabled)
+Use Cases: Camera images, LiDAR scans
+
+DEFAULT Profile
+├── Reliability: RELIABLE
+├── Durability: VOLATILE
+├── Deadline: (disabled)
+└── Lifespan: (disabled)
+Use Cases: General communication
+
+PARAMETERS Profile
+├── Reliability: RELIABLE
+├── Durability: TRANSIENT_LOCAL
+├── Deadline: (disabled)
+└── Lifespan: (disabled)
+Use Cases: Parameter updates
+
+SERVICES Profile
+├── Reliability: RELIABLE
+├── Durability: VOLATILE
+├── Deadline: (disabled)
+└── Lifespan: (disabled)
+Use Cases: Service calls
+</code></pre>
+<h2 id="44-ros-2-workspace-and-packages">4.4 ROS 2 Workspace and Packages</h2>
+<h3 id="441-workspace-structure">4.4.1 Workspace Structure</h3>
+<p>A ROS 2 workspace organizes packages and builds them efficiently:</p>
+<p><strong>Diagram: ROS 2 Workspace Structure</strong></p>
+<pre><code>ros2_ws/                          # Workspace root
+├── src/                          # Source packages
+│   ├── package_1/                # Package directory
+│   │   ├── include/              # Header files
+│   │   ├── src/                  # Source files
+│   │   ├── launch/               # Launch files
+│   │   ├── config/               # Configuration files
+│   │   ├── CMakeLists.txt        # CMake configuration
+│   │   └── package.xml          # Package metadata
+│   └── package_2/
+├── build/                        # Build artifacts
+├── install/                      # Install files
+├── log/                          # Build logs
+└── devel/                        # Development files
+</code></pre>
+<h3 id="442-creating-a-package">4.4.2 Creating a Package</h3>
+<p><strong>Example: Creating a ROS 2 Package</strong></p>
+<pre><code class="language-bash#" metastring="Create workspace">mkdir -p ~/ros2_ws/src
+cd ~/ros2_ws/src
+
+# Create package with dependencies
+ros2 pkg create --build-type ament_cmake \
+    --dependencies rclcpp std_msgs \
+    my_robot_package
+
+# Create Python package
+ros2 pkg create --build-type ament_python \
+    --dependencies rclpy std_msgs \
+    my_python_package
+
+# Navigate to workspace
+cd ~/ros2_ws
+
+# Build the workspace
+colcon build --packages-select my_robot_package
+
+# Source the workspace
+source install/setup.bash
+</code></pre>
+<h3 id="443-package-configuration">4.4.3 Package Configuration</h3>
+<p><strong>CMakeLists.txt for C++ packages</strong></p>
+<pre><code class="language-cmake">cmake_minimum_required(VERSION 3.8)
+project(my_robot_package)
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES &quot;Clang&quot;)
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# Find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
+
+# Add executable
+add_executable(my_node src/my_node.cpp)
+
+# Target specific includes and libraries
+ament_target_dependencies(my_node rclcpp std_msgs)
+
+# Install targets
+install(TARGETS my_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+ament_package()
+</code></pre>
+<p><strong>package.xml</strong></p>
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;?xml-model href=&quot;http://download.ros.org/schema/package_format3.xsd&quot; schematypens=&quot;http://www.w3.org/2001/XMLSchema&quot;?&gt;
+&lt;package format=&quot;3&quot;&gt;
+  &lt;name&gt;my_robot_package&lt;/name&gt;
+  &lt;version&gt;0.0.0&lt;/version&gt;
+  &lt;description&gt;Example ROS 2 package&lt;/description&gt;
+  &lt;maintainer email=&quot;developer@example.com&quot;&gt;Developer&lt;/maintainer&gt;
+  &lt;license&gt;Apache-2.0&lt;/license&gt;
+
+  &lt;buildtool_depend&gt;ament_cmake&lt;/buildtool_depend&gt;
+
+  &lt;depend&gt;rclcpp&lt;/depend&gt;
+  &lt;depend&gt;std_msgs&lt;/depend&gt;
+
+  &lt;test_depend&gt;ament_lint_auto&lt;/test_depend&gt;
+  &lt;test_depend&gt;ament_lint_common&lt;/test_depend&gt;
+
+  &lt;export&gt;
+    &lt;build_type&gt;ament_cmake&lt;/build_type&gt;
+  &lt;/export&gt;
+&lt;/package&gt;
+&lt;/CodeBlock&gt;
+
+## 4.5 Launch System
+
+### 4.5.1 Launch Files
+
+Launch files coordinate multiple nodes and configure their behavior:
+
+**Example: Python Launch File**
+
+```pythonfrom launch import LaunchDescription
+from launch_ros.actions import Node
+
+def generate_launch_description():
+    return LaunchDescription([
+        Node(
+            package=&#x27;my_robot_package&#x27;,
+            executable=&#x27;motor_controller&#x27;,
+            name=&#x27;motor_controller&#x27;,
+            output=&#x27;screen&#x27;,
+            parameters=[
+                {&#x27;motor_ids&#x27;: [1, 2, 3, 4]},
+                {&#x27;max_speed&#x27;: 10.0}
+            ]
+        ),
+        Node(
+            package=&#x27;my_robot_package&#x27;,
+            executable=&#x27;sensor_processor&#x27;,
+            name=&#x27;sensor_processor&#x27;,
+            output=&#x27;screen&#x27;,
+            remappings=[
+                (&#x27;input_topic&#x27;, &#x27;/raw_sensor_data&#x27;),
+                (&#x27;output_topic&#x27;, &#x27;/processed_data&#x27;)
+            ]
+        ),
+    ])
+</code></pre>
+<h3 id="452-launch-configuration">4.5.2 Launch Configuration</h3>
+<p><strong>Example: Running Launch Files</strong></p>
+<pre><code class="language-bash#" metastring="Launch specific nodes">ros2 launch my_robot_package my_robot_launch.py
+
+# Launch with arguments
+ros2 launch my_robot_package my_robot_launch.py \
+    use_sim_time:=True \
+    robot_name:=my_robot
+
+# Include other launch files
+ros2 launch my_robot_package main_launch.py \
+    navigation:=true \
+    perception:=false
+</code></pre>
+<h2 id="46-parameters-and-configuration">4.6 Parameters and Configuration</h2>
+<h3 id="461-parameter-system">4.6.1 Parameter System</h3>
+<p>ROS 2 provides a flexible parameter system for runtime configuration:</p>
+<p><strong>Example: Parameter Usage</strong></p>
+<pre><code class="language-pythonimport" metastring="rclpy">from rclpy.node import Node
+
+class ParameterNode(Node):
+    def __init__(self):
+        super().__init__(&#x27;parameter_node&#x27;)
+
+        # Declare parameters with defaults
+        self.declare_parameter(&#x27;max_speed&#x27;, 5.0)
+        self.declare_parameter(&#x27;safety_distance&#x27;, 1.0)
+        self.declare_parameter(&#x27;use_sensors&#x27;, True)
+
+        # Get parameter values
+        self.max_speed = self.get_parameter(&#x27;max_speed&#x27;).value
+        self.safety_distance = self.get_parameter(&#x27;safety_distance&#x27;).value
+        self.use_sensors = self.get_parameter(&#x27;use_sensors&#x27;).value
+
+        # Set parameter callback
+        self.add_on_set_parameters_callback(self.parameter_callback)
+
+    def parameter_callback(self, params):
+        &quot;&quot;&quot;Handle parameter updates&quot;&quot;&quot;
+        for param in params:
+            if param.name == &#x27;max_speed&#x27; and param.type_ == param.Type.DOUBLE:
+                if param.value &gt; 0.0 and param.value &lt;= 20.0:
+                    self.max_speed = param.value
+                else:
+                    return rclpy.ParameterDescriptor(
+                        type_=param.Type.DOUBLE,
+                        description=&#x27;Maximum robot speed (0-20 m/s)&#x27;)
+
+        # Successfully updated
+        return SetParametersResult(successful=True)
+</code></pre>
+<h3 id="462-parameter-files">4.6.2 Parameter Files</h3>
+<p>YAML parameter files enable organized configuration:</p>
+<p><strong>Example: Parameter File (params.yaml)</strong></p>
+<pre><code class="language-yamlmotor_controller:">  ros__parameters:
+    motor_ids: [1, 2, 3, 4]
+    max_speed: 10.0
+    acceleration_limit: 5.0
+    use_encoders: true
+    safety_limits:
+      max_current: 10.0
+      max_temperature: 80.0
+
+sensor_processing:
+  ros__parameters:
+    input_topics:
+      - &quot;/camera/image_raw&quot;
+      - &quot;/lidar/scan&quot;
+      - &quot;/imu/data&quot;
+    output_rate: 30.0
+    filter_config:
+      gaussian_kernel_size: 5
+      edge_threshold: 100
+</code></pre>
+<p><strong>Example: Loading Parameters</strong></p>
+<pre><code class="language-bash#" metastring="Load parameters from file">ros2 param load motor_controller /path/to/params.yaml
+
+# Set individual parameters
+ros2 param set /motor_controller max_speed 8.0
+
+# List parameters
+ros2 param list /motor_controller
+
+# Get parameter value
+ros2 param get /motor_controller max_speed
+</code></pre>
+<h2 id="47-real-world-ros-2-applications">4.7 Real-world ROS 2 Applications</h2>
+<h3 id="471-mobile-robot-control">4.7.1 Mobile Robot Control</h3>
+<blockquote>
+<p><strong>Example: Autonomous Mobile Robot</strong></p>
+<p>A ROS 2-based autonomous mobile robot system:</p>
+</blockquote>
+<p><strong>Hardware Abstraction Layer</strong></p>
+<ul>
+<li>Motor controller node (CAN bus interface)</li>
+<li>Sensor driver nodes (LiDAR, cameras, IMU)</li>
+<li>Power management node</li>
+</ul>
+<p><strong>Perception Stack</strong></p>
+<ul>
+<li>LiDAR processing and obstacle detection</li>
+<li>Visual SLAM using camera data</li>
+<li>Sensor fusion for robust localization</li>
+</ul>
+<p><strong>Planning and Control</strong></p>
+<ul>
+<li>Path planning using Nav2</li>
+<li>Motion control with feedback</li>
+<li>Safety monitoring and emergency stops</li>
+</ul>
+<p><strong>User Interface</strong></p>
+<ul>
+<li>Web-based control panel</li>
+<li>RViz visualization</li>
+<li>Remote monitoring</li>
+</ul>
+<h3 id="472-manipulation-system">4.7.2 Manipulation System</h3>
+<p><strong>Diagram: ROS 2 Manipulation Architecture</strong></p>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                     User Interface                          │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐        │
+│  │ RViz    │  │Web UI   │  │Teleop   │  │Program  │        │
+│  │Visual   │  │Control  │  │Interface│  │Interface│        │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────┘        │
+└─────────────────────────────────────────────────────────────┘
+                              ↕
+┌─────────────────────────────────────────────────────────────┐
+│                    High-Level Control                        │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐        │
+│  │Task     │  │Motion   │  │Grasp    │  │Safety   │        │
+│  │Planner  │  │Planner  │  │Planner  │  │Monitor  │        │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────┘        │
+└─────────────────────────────────────────────────────────────┘
+                              ↕
+┌─────────────────────────────────────────────────────────────┐
+│                    Low-Level Control                         │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐        │
+│  │Joint    │  │Force    │  │PID      │  │Hardware │        │
+│  │Control  │  │Control  │  │Control  │  │Drivers  │        │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────┘        │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<h2 id="48-best-practices-and-common-patterns">4.8 Best Practices and Common Patterns</h2>
+<h3 id="481-node-design-patterns">4.8.1 Node Design Patterns</h3>
+<p><strong>Single Responsibility Principle</strong></p>
+<ul>
+<li>Each node performs one specific function</li>
+<li>Clear interfaces between nodes</li>
+<li>Modular and reusable design</li>
+</ul>
+<p><strong>Error Handling</strong></p>
+<ul>
+<li>Graceful degradation</li>
+<li>Retry mechanisms</li>
+<li>Emergency procedures</li>
+</ul>
+<p><strong>Resource Management</strong></p>
+<ul>
+<li>Efficient memory usage</li>
+<li>Proper cleanup</li>
+<li>Resource monitoring</li>
+</ul>
+<h3 id="482-communication-patterns">4.8.2 Communication Patterns</h3>
+<admonition type="tip"><p>Use topics for high-frequency data streaming, services for sporadic request-response communication, and actions for long-running operations with feedback.</p></admonition>
+<p><strong>Topic Naming Conventions</strong></p>
+<ul>
+<li>Use descriptive, hierarchical names</li>
+<li>Follow ROS 2 naming guidelines</li>
+<li>Include message type in documentation</li>
+</ul>
+<p><strong>QoS Best Practices</strong></p>
+<ul>
+<li>Match publisher and subscriber QoS</li>
+<li>Consider network conditions</li>
+<li>Balance reliability with performance</li>
+</ul>
+<h2 id="49-debugging-and-development-tools">4.9 Debugging and Development Tools</h2>
+<h3 id="491-command-line-tools">4.9.1 Command Line Tools</h3>
+<p><strong>Example: Essential ROS 2 Commands</strong></p>
+<pre><code class="language-bash#" metastring="Node management">ros2 node list                    # List running nodes
+ros2 node info /node_name        # Node information
+ros2 lifecycle                   # Lifecycle management
+
+# Topic operations
+ros2 topic list                   # List topics
+ros2 topic echo /topic_name      # View topic messages
+ros2 topic hz /topic_name        # Topic frequency
+ros2 topic pub /topic_name ...   # Publish to topic
+
+# Service operations
+ros2 service list                 # List services
+ros2 service call /service_name  # Call service
+ros2 service type /service_name  # Service type
+
+# Parameter operations
+ros2 param list /node_name       # List parameters
+ros2 param get /node_name param  # Get parameter
+ros2 param set /node_name param  # Set parameter
+
+# Action operations
+ros2 action list                  # List actions
+ros2 action send_goal /action_name # Send action goal
+</code></pre>
+<h3 id="492-visualization-tools">4.9.2 Visualization Tools</h3>
+<p><strong>RViz2</strong></p>
+<ul>
+<li>3D visualization</li>
+<li>Plugin architecture</li>
+<li>Custom displays</li>
+</ul>
+<p><strong>rqt</strong></p>
+<ul>
+<li>GUI framework</li>
+<li>Various plugins</li>
+<li>Custom interfaces</li>
+</ul>
+<h2 id="summary">Summary</h2>
+<p>ROS 2 provides a robust foundation for building complex robotic systems with improved reliability, security, and real-time capabilities compared to ROS 1. Key concepts include decentralized communication through DDS, flexible QoS policies, and comprehensive development tools.</p>
+<p>Key takeaways:</p>
+<ul>
+<li>ROS 2 uses DDS for decentralized, real-time communication</li>
+<li>QoS policies enable fine-tuned control over data exchange</li>
+<li>Nodes, topics, services, and actions provide communication paradigms</li>
+<li>Launch files coordinate multiple nodes and configurations</li>
+<li>Parameter system enables runtime configuration</li>
+<li>Comprehensive tooling supports development and debugging</li>
+</ul>
+<h2 id="exercises">Exercises</h2>
+<h3 id="exercise-41-create-a-ros-2-package">Exercise 4.1: Create a ROS 2 Package</h3>
+<p>Create a new ROS 2 package that implements:</p>
+<ul>
+<li>A publisher node that publishes sensor data</li>
+<li>A subscriber node that processes the data</li>
+<li>A service node that provides configuration</li>
+<li>Launch files to coordinate all nodes</li>
+</ul>
+<h3 id="exercise-42-qos-experiment">Exercise 4.2: QoS Experiment</h3>
+<p>Implement a publisher/subscriber pair with different QoS settings:</p>
+<ul>
+<li>Compare BEST_EFFORT vs RELIABLE reliability</li>
+<li>Test VOLATILE vs TRANSIENT_LOCAL durability</li>
+<li>Measure latency with different profiles</li>
+<li>Analyze network behavior under load</li>
+</ul>
+<h3 id="exercise-43-multi-node-system">Exercise 4.3: Multi-Node System</h3>
+<p>Design a multi-node system for a specific robot application:</p>
+<ul>
+<li>Define node responsibilities and interfaces</li>
+<li>Implement communication between nodes</li>
+<li>Handle errors and failures gracefully</li>
+<li>Test system performance</li>
+</ul>
+<h3 id="exercise-44-parameter-management">Exercise 4.4: Parameter Management</h3>
+<p>Create a configurable system using ROS 2 parameters:</p>
+<ul>
+<li>Define parameter structure and defaults</li>
+<li>Implement parameter callbacks</li>
+<li>Create YAML configuration files</li>
+<li>Test runtime parameter updates</li>
+</ul>
+<h3 id="exercise-45-action-server">Exercise 4.5: Action Server</h3>
+<p>Implement an action server for a long-running task:</p>
+<ul>
+<li>Define custom action interface</li>
+<li>Implement server with feedback</li>
+<li>Create client with goal handling</li>
+<li>Add cancellation and preemption support</li>
+</ul>
+<h2 id="glossary-terms">Glossary Terms</h2>
+<ul>
+<li><strong>DDS (Data Distribution Service)</strong>: Middleware standard for real-time data distribution</li>
+<li><strong>Node</strong>: Process that performs computation and communicates in ROS 2</li>
+<li><strong>Topic</strong>: Named bus for anonymous message exchange</li>
+<li><strong>Service</strong>: Request-response communication pattern</li>
+<li><strong>Action</strong>: Long-running, preemptable asynchronous operations</li>
+<li><strong>QoS (Quality of Service)</strong>: Policies controlling data exchange behavior</li>
+<li><strong>Launch File</strong>: Configuration file for starting multiple nodes</li>
+<li><strong>Parameter</strong>: Runtime configuration values for nodes</li>
+<li><strong>Workspace</strong>: Directory containing ROS 2 packages</li>
+<li><strong>Package</strong>: Organizational unit containing ROS 2 code and resources</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus/tree/main/docs/part-2-ros/chapter-4-ros2-fundamentals.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-3-sensors-actuators-physical-limits"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Sensors, Actuators, and Physical Limits</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-5-nodes-topics-services-actions"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Nodes, Topics, Services, Actions</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#41-ros-2-architecture-overview" class="table-of-contents__link toc-highlight">4.1 ROS 2 Architecture Overview</a><ul><li><a href="#411-evolution-from-ros-1-to-ros-2" class="table-of-contents__link toc-highlight">4.1.1 Evolution from ROS 1 to ROS 2</a></li><li><a href="#412-key-architectural-improvements" class="table-of-contents__link toc-highlight">4.1.2 Key Architectural Improvements</a></li><li><a href="#413-dds-based-communication" class="table-of-contents__link toc-highlight">4.1.3 DDS-based Communication</a></li></ul></li><li><a href="#42-core-ros-2-concepts" class="table-of-contents__link toc-highlight">4.2 Core ROS 2 Concepts</a><ul><li><a href="#421-nodes" class="table-of-contents__link toc-highlight">4.2.1 Nodes</a></li><li><a href="#422-topics" class="table-of-contents__link toc-highlight">4.2.2 Topics</a></li><li><a href="#423-services" class="table-of-contents__link toc-highlight">4.2.3 Services</a></li><li><a href="#424-actions" class="table-of-contents__link toc-highlight">4.2.4 Actions</a></li></ul></li><li><a href="#43-quality-of-service-qos-policies" class="table-of-contents__link toc-highlight">4.3 Quality of Service (QoS) Policies</a><ul><li><a href="#431-qos-overview" class="table-of-contents__link toc-highlight">4.3.1 QoS Overview</a></li><li><a href="#432-key-qos-policies" class="table-of-contents__link toc-highlight">4.3.2 Key QoS Policies</a></li><li><a href="#433-common-qos-profiles" class="table-of-contents__link toc-highlight">4.3.3 Common QoS Profiles</a></li></ul></li><li><a href="#44-ros-2-workspace-and-packages" class="table-of-contents__link toc-highlight">4.4 ROS 2 Workspace and Packages</a><ul><li><a href="#441-workspace-structure" class="table-of-contents__link toc-highlight">4.4.1 Workspace Structure</a></li><li><a href="#442-creating-a-package" class="table-of-contents__link toc-highlight">4.4.2 Creating a Package</a></li><li><a href="#443-package-configuration" class="table-of-contents__link toc-highlight">4.4.3 Package Configuration</a></li><li><a href="#452-launch-configuration" class="table-of-contents__link toc-highlight">4.5.2 Launch Configuration</a></li></ul></li><li><a href="#46-parameters-and-configuration" class="table-of-contents__link toc-highlight">4.6 Parameters and Configuration</a><ul><li><a href="#461-parameter-system" class="table-of-contents__link toc-highlight">4.6.1 Parameter System</a></li><li><a href="#462-parameter-files" class="table-of-contents__link toc-highlight">4.6.2 Parameter Files</a></li></ul></li><li><a href="#47-real-world-ros-2-applications" class="table-of-contents__link toc-highlight">4.7 Real-world ROS 2 Applications</a><ul><li><a href="#471-mobile-robot-control" class="table-of-contents__link toc-highlight">4.7.1 Mobile Robot Control</a></li><li><a href="#472-manipulation-system" class="table-of-contents__link toc-highlight">4.7.2 Manipulation System</a></li></ul></li><li><a href="#48-best-practices-and-common-patterns" class="table-of-contents__link toc-highlight">4.8 Best Practices and Common Patterns</a><ul><li><a href="#481-node-design-patterns" class="table-of-contents__link toc-highlight">4.8.1 Node Design Patterns</a></li><li><a href="#482-communication-patterns" class="table-of-contents__link toc-highlight">4.8.2 Communication Patterns</a></li></ul></li><li><a href="#49-debugging-and-development-tools" class="table-of-contents__link toc-highlight">4.9 Debugging and Development Tools</a><ul><li><a href="#491-command-line-tools" class="table-of-contents__link toc-highlight">4.9.1 Command Line Tools</a></li><li><a href="#492-visualization-tools" class="table-of-contents__link toc-highlight">4.9.2 Visualization Tools</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a><ul><li><a href="#exercise-41-create-a-ros-2-package" class="table-of-contents__link toc-highlight">Exercise 4.1: Create a ROS 2 Package</a></li><li><a href="#exercise-42-qos-experiment" class="table-of-contents__link toc-highlight">Exercise 4.2: QoS Experiment</a></li><li><a href="#exercise-43-multi-node-system" class="table-of-contents__link toc-highlight">Exercise 4.3: Multi-Node System</a></li><li><a href="#exercise-44-parameter-management" class="table-of-contents__link toc-highlight">Exercise 4.4: Parameter Management</a></li><li><a href="#exercise-45-action-server" class="table-of-contents__link toc-highlight">Exercise 4.5: Action Server</a></li></ul></li><li><a href="#glossary-terms" class="table-of-contents__link toc-highlight">Glossary Terms</a></li></ul></div></div></div></div></main></div></div></div><footer class="nm-custom-footer" data-testid="custom-footer"><div class="nm-footer-container"><div class="nm-footer-grid"><div class="nm-footer-brand"><div class="nm-footer-logo"><h3>Physical AI &amp; Robotics</h3><p>An AI-Native Engineering Textbook</p></div><p class="nm-footer-description">Master the convergence of artificial intelligence and physical robotics through comprehensive, hands-on learning experiences.</p><div class="nm-footer-stats"><div class="nm-stat"><div class="nm-stat-number">1000+</div><div class="nm-stat-label">Pages</div></div><div class="nm-stat"><div class="nm-stat-number">50+</div><div class="nm-stat-label">Exercises</div></div><div class="nm-stat"><div class="nm-stat-number">24/7</div><div class="nm-stat-label">Access</div></div></div></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Resources</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai">Foundations</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals">ROS &amp; Navigation</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots">Computer Vision</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models">Machine Learning</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation">Simulation &amp; Control</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Learning Paths</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/beginner">Beginner Track</a></li><li><a href="/ai-native-textbook-docusaurus/intermediate">Intermediate Track</a></li><li><a href="/ai-native-textbook-docusaurus/advanced">Advanced Track</a></li><li><a href="/ai-native-textbook-docusaurus/projects">Hands-on Projects</a></li><li><a href="/ai-native-textbook-docusaurus/certification">Certification</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Community</h4><ul class="nm-footer-links"><li><a href="https://github.com/your-username/ai-native-textbook">GitHub</a></li><li><a href="https://discord.gg/your-server">Discord</a></li><li><a href="https://forum.example.com">Forum</a></li><li><a href="/ai-native-textbook-docusaurus/contributors">Contributors</a></li><li><a href="/ai-native-textbook-docusaurus/blog">Blog</a></li></ul></div><div class="nm-footer-section nm-footer-newsletter"><h4 class="nm-footer-heading">Stay Updated</h4><p class="nm-footer-subtext">Get the latest updates and exclusive content</p><div class="nm-newsletter-form"><input type="email" placeholder="Enter your email" class="nm-newsletter-input"><button type="button" class="nm-newsletter-button">Subscribe</button></div><div class="nm-footer-social"><a href="https://github.com" class="nm-social-link" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><a href="https://twitter.com" class="nm-social-link" aria-label="Twitter"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg></a><a href="https://linkedin.com" class="nm-social-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></a></div></div></div><div class="nm-footer-bottom"><div class="nm-footer-bottom-left"><span class="nm-footer-copyright">© <!-- -->2025<!-- --> AI-Native Textbook. All rights reserved. Created by SNN Studio.</span></div><div class="nm-footer-bottom-right"><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/privacy">Privacy Policy</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/terms">Terms of Service</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/code-of-conduct">Code of Conduct</a></div></div></div></footer><div class="chat-widget"><button class="chat-widget-button" aria-label="Open chat"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button></div></div>
+</body>
+</html>

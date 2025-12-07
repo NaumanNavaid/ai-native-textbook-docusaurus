@@ -1,0 +1,1019 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-part-3-simulation/chapter-9-nvidia-isaac-synthetic-data" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">NVIDIA Isaac Sim &amp; Synthetic Data | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-9-nvidia-isaac-synthetic-data"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="NVIDIA Isaac Sim &amp; Synthetic Data | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Introduction"><meta data-rh="true" property="og:description" content="Introduction"><link data-rh="true" rel="icon" href="/ai-native-textbook-docusaurus/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-9-nvidia-isaac-synthetic-data"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-9-nvidia-isaac-synthetic-data" hreflang="en"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-9-nvidia-isaac-synthetic-data" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"NVIDIA Isaac Sim & Synthetic Data","item":"https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-9-nvidia-isaac-synthetic-data"}]}</script><link rel="alternate" type="application/rss+xml" href="/ai-native-textbook-docusaurus/blog/rss.xml" title="Physical AI &amp; Humanoid Robotics RSS Feed">
+<link rel="alternate" type="application/atom+xml" href="/ai-native-textbook-docusaurus/blog/atom.xml" title="Physical AI &amp; Humanoid Robotics Atom Feed"><link rel="stylesheet" href="/ai-native-textbook-docusaurus/assets/css/styles.6e378bed.css">
+<script src="/ai-native-textbook-docusaurus/assets/js/runtime~main.5e3ab4fa.js" defer="defer"></script>
+<script src="/ai-native-textbook-docusaurus/assets/js/main.17a86997.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav class="nm-custom-navbar"><div class="nm-navbar-container"><div class="nm-navbar-logo"><a class="nm-logo-link" href="/ai-native-textbook-docusaurus/"><div class="nm-logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="currentColor"></rect><path d="M8 16C8 11.5817 11.5817 8 16 8C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24C11.5817 24 8 20.4183 8 16Z" fill="var(--ifm-background-color)"></path><path d="M12 16L16 12L20 16M16 12V20" stroke="var(--ifm-color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="nm-logo-text"><span class="nm-logo-title">Physical AI</span><span class="nm-logo-subtitle">&amp; Robotics</span></div></a></div><div class="nm-navbar-links"><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/">Home</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/about">About</a></div><div class="nm-navbar-actions"><div class="nm-search-container" style="margin-right:1rem"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div><button class="nm-action-button color-mode-toggle" aria-label="Toggle dark mode"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button><a href="https://github.com/NaumanNavaid/hackathon-1" class="nm-action-button" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><button class="nm-mobile-menu-toggle" aria-label="Toggle mobile menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu w-6 h-6" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button></div></div></nav><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/ai-native-textbook-docusaurus/"><b class="navbar__title text--truncate">Physical AI &amp; Robotics</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/ai-native-textbook-docusaurus/">Home</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai"><span title="Part 1: Foundations" class="categoryLinkLabel_W154">Part 1: Foundations</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals"><span title="Part 2: ROS Fundamentals" class="categoryLinkLabel_W154">Part 2: ROS Fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation"><span title="Part 3: Simulation &amp; Digital Twins" class="categoryLinkLabel_W154">Part 3: Simulation &amp; Digital Twins</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation"><span title="Gazebo Physics Simulation" class="linkLabel_WmDU">Gazebo Physics Simulation</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-8-unity-robotics-visualization"><span title="Unity for Robotics Visualization" class="linkLabel_WmDU">Unity for Robotics Visualization</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-9-nvidia-isaac-synthetic-data"><span title="NVIDIA Isaac Sim &amp; Synthetic Data" class="linkLabel_WmDU">NVIDIA Isaac Sim &amp; Synthetic Data</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-10-physics-simulations"><span title="Physics Simulations for Robotics" class="linkLabel_WmDU">Physics Simulations for Robotics</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-11-isaac-sim-platform"><span title="NVIDIA Isaac Sim Platform" class="linkLabel_WmDU">NVIDIA Isaac Sim Platform</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-12-digital-twin-development"><span title="Digital Twin Development" class="linkLabel_WmDU">Digital Twin Development</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"><span title="Part 4: Perception &amp; State Estimation" class="categoryLinkLabel_W154">Part 4: Perception &amp; State Estimation</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models"><span title="Part 5: Embodied Intelligence" class="categoryLinkLabel_W154">Part 5: Embodied Intelligence</span></a></div></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/ai-native-textbook-docusaurus/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Part 3: Simulation &amp; Digital Twins</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">NVIDIA Isaac Sim &amp; Synthetic Data</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="nvidia-isaac-sim--synthetic-data">NVIDIA Isaac Sim &amp; Synthetic Data</h1></header>
+<h2 id="introduction">Introduction</h2>
+<p>NVIDIA Isaac Sim represents the cutting edge of robotics simulation platforms, combining photorealistic rendering, advanced physics simulation, and AI-driven synthetic data generation. Built on NVIDIA&#x27;s Omniverse platform, Isaac Sim provides a comprehensive environment for developing, testing, and training autonomous robots. This chapter explores Isaac Sim&#x27;s capabilities, synthetic data generation techniques, and integration with modern AI training pipelines.</p>
+<admonition type="info"><p>Isaac Sim bridges the gap between simulation and reality by creating photorealistic environments that can generate unlimited training data for AI models, dramatically accelerating robotic learning and development.</p></admonition>
+<h2 id="91-isaac-sim-architecture">9.1 Isaac Sim Architecture</h2>
+<h3 id="911-omniverse-platform-foundation">9.1.1 Omniverse Platform Foundation</h3>
+<p>Isaac Sim is built on NVIDIA&#x27;s Omniverse, a collaborative 3D simulation platform:</p>
+<p><strong>Diagram: Isaac Sim Architecture</strong></p>
+<pre><code>Omniverse Platform
+├── Nucleus (Core Services)
+│   ├── Scene Management
+│   ├── Asset Loading
+│   ├── Collaboration
+│   └── Version Control
+├── USD (Universal Scene Description)
+│   ├── Scene Graph
+│   ├── Material System
+│   ├── Animation System
+│   └── Physics Integration
+├── Simulation Engines
+│   ├── NVIDIA PhysX 5
+│   ├── Ray Tracing
+│   ├── Fluid Dynamics
+│   └── Cloth Simulation
+├── Isaac Sim SDK
+│   ├── Python API
+│   ├── C++ API
+│   ├── ROS 2 Integration
+│   └── Extension System
+└── AI Integration
+    ├── Synthesis Network
+    ├── Domain Randomization
+    ├── Data Generation
+    └── Cloud Services
+</code></pre>
+<h3 id="912-key-components">9.1.2 Key Components</h3>
+<p><strong>Simulation Core</strong></p>
+<ul>
+<li><strong>PhysX 5</strong>: Advanced physics simulation with real-time performance</li>
+<li><strong>Ray Tracing</strong>: Realistic lighting, shadows, and reflections</li>
+<li><strong>Material System</strong>: Physically accurate material rendering</li>
+<li><strong>Animation</strong>: Complex character and object animation</li>
+</ul>
+<p><strong>AI Integration</strong></p>
+<ul>
+<li><strong>Synthetia</strong>: NVIDIA&#x27;s synthetic data generation system</li>
+<li><strong>Domain Randomization</strong>: Automatic scene and parameter variation</li>
+<li><strong>Ground Truth Generation</strong>: Automated labeling and annotation</li>
+<li><strong>Cloud Services</strong>: Scalable cloud-based simulation</li>
+</ul>
+<p><strong>Example: Isaac Sim Python API Setup</strong></p>
+<pre><code class="language-pythonimport" metastring="numpy as np">import matplotlib.pyplot as plt
+from isaacsim import SimulationApp
+from omni.isaac.core import World, WorldSettings
+from omni.isaac.core.robots import Robot
+from omni.isaac.core.utils.nucleus import get_current_stage
+
+class IsaacSimEnvironment:
+    def __init__(self):
+        # Initialize Isaac Sim application
+        self.sim_app = SimulationApp({
+            &quot;headless&quot;: False,
+            &quot;width&quot;: 1920,
+            &quot;height&quot;: 1080
+        })
+
+        # Create world with specific settings
+        world_settings = WorldSettings(
+            physics_dt=1/120.0,
+            stage_units_in_meters=1.0,
+            rendering_dt=1/60.0
+        )
+
+        self.world = World(world_settings)
+        self.scene = get_current_stage()
+
+        # Initialize components
+        self.robots = []
+        self.sensors = []
+        self.cameras = []
+
+    def setup_scene(self):
+        &quot;&quot;&quot;Setup the simulation scene&quot;&quot;&quot;
+        # Clear existing scene
+        self.scene.Clear()
+
+        # Add lighting
+        self.setup_lighting()
+
+        # Add ground plane
+        self.add_ground_plane()
+
+        # Add environment elements
+        self.add_environment()
+
+    def setup_lighting(self):
+        &quot;&quot;&quot;Configure lighting for photorealistic rendering&quot;&quot;&quot;
+        # Add dome light for global illumination
+        from omni.isaac.core import Lighting
+
+        dome_light = self.scene.GetLighting()
+        dome_light.SetDomeLightIntensity(1.0)
+        dome_light.SetTint(1.0, 1.0, 1.0)
+
+        # Add directional lights
+        self.add_directional_lights()
+
+    def add_directional_lights(self):
+        &quot;&quot;&quot;Add directional lights for realistic lighting&quot;&quot;&quot;
+        from omni.isaac.core import Light
+
+        # Main sun light
+        sun_light = Light(
+            prim_path=&quot;/World/light_sun&quot;,
+            light_type=&quot;distant&quot;,
+            intensity=2000.0,
+            color=(1.0, 0.95, 0.8)
+        )
+        sun_light.SetCameraPose(0.57735, -0.57735, 0.57735, 0, 0, 0, 1)
+
+        # Ambient fill lights
+        fill_light = Light(
+            prim_path=&quot;/World/light_fill&quot;,
+            light_type=&quot;distant&quot;,
+            intensity=500.0,
+            color=(0.8, 0.9, 1.0)
+        )
+        fill_light.SetCameraPose(-0.57735, 0.57735, -0.57735, 0, 0, 0, 1)
+
+    def add_ground_plane(self):
+        &quot;&quot;&quot;Add photorealistic ground plane&quot;&quot;&quot;
+        from omni.isaac.core.utils.nucleus import add_ground_plane
+
+        # Add ground plane with high-quality material
+        add_ground_plane(
+            prim_path=&quot;/World/ground_plane&quot;,
+            size=100.0,
+            material=&quot;concrete_material&quot;
+        )
+
+    def add_environment(self):
+        &quot;&quot;&quot;Add environment elements&quot;&quot;&quot;
+        self.add_buildings()
+        self.add_vegetation()
+        self.add_obstacles()
+
+    def add_buildings(self):
+        &quot;&quot;&quot;Add realistic building models&quot;&quot;&quot;
+        # Load building USD files
+        building_paths = [
+            &quot;/path/to/office_building.usd&quot;,
+            &quot;/path/to/warehouse.usd&quot;,
+            &quot;/path/to/apartment_complex.usd&quot;
+        ]
+
+        for i, building_path in enumerate(building_paths):
+            building = self.scene.ImportUSD(
+                building_path,
+                f&quot;/World/building_{i}&quot;
+            )
+            self.apply_photorealistic_materials(building)
+
+    def apply_photorealistic_materials(self, prim):
+        &quot;&quot;&quot;Apply high-quality materials to primitives&quot;&quot;&quot;
+        from omni.isaac.core.materials import Material
+
+        # Create PBR material
+        material = Material(
+            prim_path=&quot;/Looks/photorealistic_material&quot;,
+            material_type=&quot;mdl&quot;
+        )
+
+        # Set material properties
+        material.SetBaseColorRoughness(
+            base_color=(0.7, 0.7, 0.7, 1.0),
+            roughness=0.3,
+            metallic=0.1
+        )
+
+        # Apply to primitive
+        material.ApplyToPrim(prim)
+
+    def run_simulation(self):
+        &quot;&quot;&quot;Run the simulation loop&quot;&quot;&quot;
+        self.sim_app.update()
+        return self.world
+
+    def cleanup(self):
+        &quot;&quot;&quot;Clean up resources&quot;&quot;&quot;
+        self.world.clear()
+        self.sim_app.close()
+
+# Example usage
+def main():
+    env = IsaacSimEnvironment()
+
+    try:
+        env.setup_scene()
+
+        # Main simulation loop
+        while True:
+            world = env.run_simulation()
+
+            # Process simulation data
+            pass
+
+    except KeyboardInterrupt:
+        print(&quot;Simulation stopped by user&quot;)
+    finally:
+        env.cleanup()
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
+<h2 id="92-synthetic-data-generation">9.2 Synthetic Data Generation</h2>
+<h3 id="921-domain-randomization">9.2.1 Domain Randomization</h3>
+<p>Domain randomization is crucial for robust AI training:</p>
+<p><strong>Example: Domain Randomization System</strong></p>
+<pre><code class="language-pythonimport" metastring="random">import numpy as np
+from isaacsim import SimulationApp
+from omni.isaac.core import World
+from omni.isaac.core.utils.nucleus import get_current_stage
+
+class DomainRandomization:
+    def __init__(self, scene):
+        self.scene = scene
+        self.randomization_params = {
+            &#x27;lighting&#x27;: {
+                &#x27;sun_intensity_range&#x27;: (800, 3000),
+                &#x27;sun_color_variation&#x27;: 0.2,
+                &#x27;ambient_intensity_range&#x27;: (100, 500)
+            },
+            &#x27;weather&#x27;: {
+                &#x27;cloud_density_range&#x27;: (0.0, 0.8),
+                &#x27;fog_density_range&#x27;: (0.0, 0.3),
+                &#x27;rain_intensity_range&#x27;: (0.0, 1.0)
+            },
+            &#x27;materials&#x27;: {
+                &#x27;roughness_range&#x27;: (0.1, 0.9),
+                &#x27;metallic_range&#x27;: (0.0, 0.8),
+                &#x27;base_color_variation&#x27;: 0.3
+            },
+            &#x27;geometry&#x27;: {
+                &#x27;scale_range&#x27;: (0.8, 1.2),
+                &#x27;rotation_range&#x27;: (-30, 30),
+                &#x27;position_jitter&#x27;: 0.5
+            }
+        }
+
+    def randomize_all(self):
+        &quot;&quot;&quot;Apply complete domain randomization&quot;&quot;&quot;
+        self.randomize_lighting()
+        self.randomize_weather()
+        self.randomize_materials()
+        self.randomize_geometry()
+
+        print(f&quot;Domain randomization applied: {self.get_randomization_summary()}&quot;)
+
+    def randomize_lighting(self):
+        &quot;&quot;&quot;Randomize lighting conditions&quot;&quot;&quot;
+        from omni.isaac.core import Light
+
+        # Randomize sun intensity
+        sun_light = self.scene.GetLighting().GetDistantLights()[0]
+        sun_intensity = random.uniform(*self.randomization_params[&#x27;lighting&#x27;][&#x27;sun_intensity_range&#x27;])
+        sun_light.SetIntensity(sun_intensity)
+
+        # Randomize sun color
+        color_variation = self.randomization_params[&#x27;lighting&#x27;][&#x27;sun_color_variation&#x27;]
+        sun_color = (
+            1.0 + random.uniform(-color_variation, color_variation),
+            0.95 + random.uniform(-color_variation, color_variation),
+            0.8 + random.uniform(-color_variation, color_variation)
+        )
+        sun_light.SetColor(sun_color)
+
+        # Randomize ambient lighting
+        ambient_intensity = random.uniform(*self.randomization_params[&#x27;lighting&#x27;][&#x27;ambient_intensity_range&#x27;])
+        self.scene.GetLighting().SetAmbientLightIntensity(ambient_intensity)
+
+    def randomize_weather(self):
+        &quot;&quot;&quot;Randomize weather conditions&quot;&quot;&quot;
+        from omni.isaac.core import Weather
+
+        weather = Weather()
+
+        # Randomize cloud density
+        cloud_density = random.uniform(*self.randomization_params[&#x27;weather&#x27;][&#x27;cloud_density_range&#x27;])
+        weather.SetCloudDensity(cloud_density)
+
+        # Randomize fog
+        fog_density = random.uniform(*self.randomization_params[&#x27;weather&#x27;][&#x27;fog_density_range&#x27;])
+        weather.SetFogDensity(fog_density)
+
+        # Randomize rain (if available)
+        rain_intensity = random.uniform(*self.randomization_params[&#x27;weather&#x27;][&#x27;rain_intensity_range&#x27;])
+        weather.SetRainIntensity(rain_intensity)
+
+        weather.Apply()
+
+    def randomize_materials(self):
+        &quot;&quot;&quot;Randomize material properties&quot;&quot;&quot;
+        from omni.isaac.core.materials import Material
+
+        # Get all materials in scene
+        materials = self.scene.GetMaterials()
+
+        for material in materials:
+            if material.GetPrim().GetName() == &quot;DefaultMaterial&quot;:
+                continue  # Skip default material
+
+            # Randomize roughness
+            roughness = random.uniform(*self.randomization_params[&#x27;materials&#x27;][&#x27;roughness_range&#x27;])
+            material.SetRoughness(roughness)
+
+            # Randomize metallic property
+            metallic = random.uniform(*self.randomization_params[&#x27;materials&#x27;][&#x27;metallic_range&#x27;])
+            material.SetMetallic(metallic)
+
+            # Randomize base color
+            color_variation = self.randomization_params[&#x27;materials&#x27;][&#x27;base_color_variation&#x27;]
+            current_color = material.GetBaseColor()
+            new_color = tuple(
+                max(0, min(1, c + random.uniform(-color_variation, color_variation)))
+                for c in current_color
+            )
+            material.SetBaseColor(new_color)
+
+    def randomize_geometry(self):
+        &quot;&quot;&quot;Randomize object geometry&quot;&quot;&quot;
+        from omni.isaac.core.utils.nucleus import get_prims
+
+        prims = get_prims()
+
+        for prim in prims:
+            # Randomize scale
+            scale_range = self.randomization_params[&#x27;geometry&#x27;][&#x27;scale_range&#x27;]
+            scale = random.uniform(*scale_range)
+            prim.SetScale((scale, scale, scale))
+
+            # Randomize rotation
+            rotation_range = self.randomization_params[&#x27;geometry&#x27;][&#x27;rotation_range&#x27;]
+            rotation = random.uniform(-rotation_range, rotation_range) * np.pi / 180
+            prim.SetOrientation(rotation)
+
+            # Randomize position slightly
+            jitter = self.randomization_params[&#x27;geometry&#x27;][&#x27;position_jitter&#x27;]
+            current_pos = prim.GetPosition()
+            jittered_pos = tuple(
+                pos + random.uniform(-jitter, jitter)
+                for pos in current_pos
+            )
+            prim.SetPosition(jittered_pos)
+
+    def get_randomization_summary(self):
+        &quot;&quot;&quot;Get summary of applied randomization&quot;&quot;&quot;
+        summary = {
+            &#x27;lighting&#x27;: f&quot;Sun intensity randomized between {self.randomization_params[&#x27;lighting&#x27;][&#x27;sun_intensity_range&#x27;]}&quot;,
+            &#x27;weather&#x27;: f&quot;Weather conditions varied including clouds, fog, and rain&quot;,
+            &#x27;materials&#x27;: f&quot;Material properties varied within specified ranges&quot;,
+            &#x27;geometry&#x27;: f&quot;Object geometry randomized with scale and rotation&quot;
+        }
+        return summary
+
+# Advanced domain randomization for specific training scenarios
+class AdvancedDomainRandomization(DomainRandomization):
+    def __init__(self, scene):
+        super().__init__(scene)
+        self.training_scenarios = [&#x27;outdoor_navigation&#x27;, &#x27;indoor_manipulation&#x27;, &#x27;mixed_environment&#x27;]
+        self.current_scenario = None
+
+    def setup_scenario_randomization(self, scenario_type):
+        &quot;&quot;&quot;Setup domain randomization for specific training scenario&quot;&quot;&quot;
+        self.current_scenario = scenario_type
+
+        if scenario_type == &#x27;outdoor_navigation&#x27;:
+            self.setup_outdoor_navigation_randomization()
+        elif scenario_type == &#x27;indoor_manipulation&#x27;:
+            self.setup_indoor_manipulation_randomization()
+        elif scenario_type == &#x27;mixed_environment&#x27;:
+            self.setup_mixed_environment_randomization()
+
+    def setup_outdoor_navigation_randomization(self):
+        &quot;&quot;&quot;Randomization optimized for outdoor navigation training&quot;&quot;&quot;
+        # Enhanced weather effects
+        self.randomization_params[&#x27;weather&#x27;][&#x27;rain_intensity_range&#x27;] = (0.0, 0.5)
+        self.randomization_params[&#x27;weather&#x27;][&#x27;fog_density_range&#x27;] = (0.0, 0.2)
+        self.randomization_params[&#x27;weather&#x27;][&#x27;cloud_density_range&#x27;] = (0.0, 0.6)
+
+        # Ground material variation
+        self.randomization_params[&#x27;materials&#x27;][&#x27;roughness_range&#x27;] = (0.4, 0.9)
+
+        # Time of day simulation (lighting angle)
+        self.randomize_sun_angle()
+
+    def setup_indoor_manipulation_randomization(self):
+        &quot;&quot;&quot;Randomization optimized for indoor manipulation training&quot;&quot;&quot;
+        # Indoor lighting conditions
+        self.randomization_params[&#x27;lighting&#x27;][&#x27;sun_intensity_range&#x27;] = (500, 1500)
+        self.randomization_params[&#x27;lighting&#x27;][&#x27;ambient_intensity_range&#x27;] = (200, 600)
+
+        # Object material variation
+        self.randomization_params[&#x27;materials&#x27;][&#x27;roughness_range&#x27;] = (0.2, 0.7)
+        self.randomization_params[&#x27;materials&#x27;][&#x27;metallic_range&#x27;] = (0.1, 0.6)
+
+        # Minimal weather effects for indoor
+        self.randomization_params[&#x27;weather&#x27;][&#x27;fog_density_range&#x27;] = (0.0, 0.05)
+        self.randomization_params[&#x27;weather&#x27;][&#x27;rain_intensity_range&#x27;] = (0.0, 0.1)
+
+    def setup_mixed_environment_randomization(self):
+        &quot;&quot;&quot;Randomization for mixed indoor/outdoor scenarios&quot;&quot;&quot;
+        # Wide range of conditions
+        self.randomization_params[&#x27;lighting&#x27;][&#x27;sun_intensity_range&#x27;] = (400, 2500)
+        self.randomization_params[&#x27;weather&#x27;][&#x27;fog_density_range&#x27;] = (0.0, 0.15)
+        self.randomization_params[&#x27;weather&#x27;][&#x27;cloud_density_range&#x27;] = (0.0, 0.7)
+
+        # Varied material properties
+        self.randomization_params[&#x27;materials&#x27;][&#x27;roughness_range&#x27;] = (0.2, 0.8)
+        self.randomization_params[&#x27;materials&#x27;][&#x27;metallic_range&#x27;] = (0.0, 0.7)
+
+    def randomize_sun_angle(self):
+        &quot;&quot;&quot;Randomize sun angle to simulate different times of day&quot;&quot;&quot;
+        from omni.isaac.core import Light
+
+        sun_light = self.scene.GetLighting().GetDistantLights()[0]
+
+        # Random sun elevation angle (20-70 degrees)
+        elevation = random.uniform(20, 70) * np.pi / 180
+        # Random azimuth angle (0-360 degrees)
+        azimuth = random.uniform(0, 360) * np.pi / 180
+
+        # Convert to quaternion
+        x = np.sin(elevation) * np.sin(azimuth)
+        y = np.sin(elevation) * np.cos(azimuth)
+        z = np.cos(elevation)
+        w = 0
+
+        sun_light.SetCameraPose(x, y, z, w)
+</code></pre>
+<h3 id="922-ground-truth-generation">9.2.2 Ground Truth Generation</h3>
+<p><strong>Example: Ground Truth Data Generation</strong></p>
+<pre><code class="language-pythonimport" metastring="numpy as np">from isaacsim import SimulationApp
+from omni.isaac.core import World
+from omni.isaac.core.utils.nucleus import get_current_stage
+
+class GroundTruthGenerator:
+    def __init__(self, scene):
+        self.scene = scene
+        self.ground_truth_dir = &quot;synthetic_data/ground_truth&quot;
+
+        # Ground truth types to generate
+        self.gt_types = [
+            &#x27;semantic_segmentation&#x27;,
+            &#x27;instance_segmentation&#x27;,
+            &#x27;depth&#x27;,
+            &#x27;normal&#x27;,
+            &#x27;optical_flow&#x27;,
+            &#x27;bounding_boxes&#x27;,
+            &#x27;keypoints&#x27;,
+            &#x27;robot_state&#x27;
+        ]
+
+    def generate_all_ground_truth(self, frame_number):
+        &quot;&quot;&quot;Generate all types of ground truth data&quot;&quot;&quot;
+        gt_data = {}
+
+        for gt_type in self.gt_types:
+            if gt_type == &#x27;semantic_segmentation&#x27;:
+                gt_data[gt_type] = self.generate_semantic_segmentation()
+            elif gt_type == &#x27;instance_segmentation&#x27;:
+                gt_data[gt_type] = self.generate_instance_segmentation()
+            elif gt_type == &#x27;depth&#x27;:
+                gt_data[gt_type] = self.generate_depth_data()
+            elif gt_type == &#x27;normal&#x27;:
+                gt_data[gt_type] = self.generate_normal_data()
+            elif gt_type == &#x27;bounding_boxes&#x27;:
+                gt_data[gt_type] = self.generate_bounding_boxes()
+            elif gt_type == &#x27;robot_state&#x27;:
+                gt_data[gt_type] = self.generate_robot_state()
+
+        # Save ground truth data
+        self.save_ground_truth(gt_data, frame_number)
+
+        return gt_data
+
+    def generate_semantic_segmentation(self):
+        &quot;&quot;&quot;Generate semantic segmentation ground truth&quot;&quot;&quot;
+        from omni.isaac.core.utils.nucleus import get_prims
+
+        # Get all objects in scene
+        prims = get_prims()
+
+        # Create semantic segmentation map
+        segmentation_map = np.zeros((1080, 1920), dtype=np.uint8)
+
+        # Object class mapping
+        class_mapping = {
+            &#x27;ground_plane&#x27;: 0,
+            &#x27;building&#x27;: 1,
+            &#x27;vehicle&#x27;: 2,
+            &#x27;robot&#x27;: 3,
+            &#x27;obstacle&#x27;: 4,
+            &#x27;person&#x27;: 5,
+            &#x27;vegetation&#x27;: 6,
+            &#x27;sky&#x27;: 7
+        }
+
+        for prim in prims:
+            class_name = self.get_object_class(prim.GetName())
+            if class_name in class_mapping:
+                # Get object&#x27;s 2D projection
+                projection = self.get_object_projection(prim)
+                # Apply to segmentation map
+                mask = self.project_to_image(prim, projection)
+                segmentation_map[mask == 1] = class_mapping[class_name]
+
+        return segmentation_map
+
+    def generate_instance_segmentation(self):
+        &quot;&quot;&quot;Generate instance segmentation ground truth&quot;&quot;&quot;
+        from omni.isaac.core.utils.nucleus import get_prims
+
+        prims = get_prims()
+
+        # Create instance segmentation map
+        instance_map = np.zeros((1080, 1920), dtype=np.uint16)
+
+        for i, prim in enumerate(prims):
+            projection = self.get_object_projection(prim)
+            mask = self.project_to_image(prim, projection)
+            instance_map[mask == 1] = i + 1  # Instance IDs start from 1
+
+        return instance_map
+
+    def generate_depth_data(self):
+        &quot;&quot;&quot;Generate depth ground truth&quot;&quot;&quot;
+        from omni.isaac.core. import Camera
+
+        cameras = self.scene.GetCameras()
+        depth_data = {}
+
+        for camera in cameras:
+            # Get camera parameters
+            intrinsics = camera.GetIntrinsics()
+
+            # Render depth buffer
+            depth_buffer = camera.GetDepthBuffer()
+
+            # Convert to depth image
+            depth_image = self.depth_buffer_to_image(depth_buffer, intrinsics)
+            depth_data[camera.GetName()] = depth_image
+
+        return depth_data
+
+    def generate_normal_data(self):
+        &quot;&quot;&quot;Generate surface normal ground truth&quot;&quot;&quot;
+        from omni.isaac.core import Geometry
+
+        # Get all geometry in scene
+        geometries = self.scene.GetGeometries()
+
+        # Create normal map
+        normal_map = np.zeros((1080, 1920, 3), dtype=np.float32)
+
+        for geometry in geometries:
+            # Get mesh normals
+            mesh_normals = geometry.GetMeshNormals()
+
+            # Project normals to image space
+            normal_projection = self.project_normals_to_image(geometry, mesh_normals)
+
+            # Apply to normal map
+            mask = self.project_to_image(geometry, normal_projection[&#x27;mask&#x27;])
+            normal_map[mask == 1] = normal_projection[&#x27;normals&#x27;][mask == 1]
+
+        return normal_map
+
+    def generate_bounding_boxes(self):
+        &quot;&quot;&quot;Generate bounding box ground truth&quot;&quot;&quot;
+        from omni.isaac.core.utils.nucleus import get_prims
+
+        prims = get_prims()
+
+        bounding_boxes = []
+
+        for prim in prims:
+            if self.should_detect_object(prim.GetName()):
+                # Get 3D bounding box
+                bbox_3d = prim.GetLocalBoundingBox()
+
+                # Project to 2D
+                bbox_2d = self.project_3d_bbox_to_2d(bbox_3d)
+
+                # Create bounding box record
+                bbox_record = {
+                    &#x27;class_name&#x27;: self.get_object_class(prim.GetName()),
+                    &#x27;bbox_2d&#x27;: bbox_2d,
+                    &#x27;bbox_3d&#x27;: bbox_3d,
+                    &#x27;confidence&#x27;: 1.0,
+                    &#x27;occlusion&#x27;: self.calculate_occlusion(prim)
+                }
+
+                bounding_boxes.append(bbox_record)
+
+        return bounding_boxes
+
+    def generate_robot_state(self):
+        &quot;&quot;&quot;Generate robot state ground truth&quot;&quot;&quot;
+        from omni.isaac.core.robots import Robot
+
+        robots = self.scene.GetRobots()
+        robot_states = []
+
+        for robot in robots:
+            # Get robot configuration
+            joint_positions = robot.GetJointPositions()
+            joint_velocities = robot.GetJointVelocities()
+
+            # Get robot pose
+            pose = robot.GetWorldPose()
+
+            # Create robot state record
+            robot_state = {
+                &#x27;robot_name&#x27;: robot.GetName(),
+                &#x27;joint_positions&#x27;: joint_positions,
+                &#x27;joint_velocities&#x27;: joint_velocities,
+                &#x27;pose&#x27;: pose,
+                &#x27;timestamp&#x27;: self.get_current_time()
+            }
+
+            robot_states.append(robot_state)
+
+        return robot_states
+
+    def save_ground_truth(self, gt_data, frame_number):
+        &quot;&quot;&quot;Save ground truth data to files&quot;&quot;&quot;
+        import os
+        import pickle
+        import json
+
+        os.makedirs(self.ground_truth_dir, exist_ok=True)
+
+        for gt_type, data in gt_data.items():
+            filename = f&quot;{self.ground_truth_dir}/frame_{frame_number:06d}_{gt_type}&quot;
+
+            if gt_type in [&#x27;semantic_segmentation&#x27;, &#x27;instance_segmentation&#x27;]:
+                # Save as image
+                self.save_image(data, f&quot;{filename}.png&quot;)
+            elif gt_type == &#x27;depth&#x27;:
+                # Save depth data
+                self.save_depth_data(data, f&quot;{filename}.npy&quot;)
+            elif gt_type in [&#x27;bounding_boxes&#x27;, &#x27;robot_state&#x27;]:
+                # Save as JSON
+                with open(f&quot;{filename}.json&quot;, &#x27;w&#x27;) as f:
+                    json.dump(data, f, indent=2)
+            else:
+                # Save as pickle
+                with open(f&quot;{filename}.pkl&quot;, &#x27;wb&#x27;) as f:
+                    pickle.dump(data, f)
+
+    def get_object_class(self, prim_name):
+        &quot;&quot;&quot;Get object class from primitive name&quot;&quot;&quot;
+        # Extract class name from primitive name
+        if &#x27;ground&#x27; in prim_name.lower():
+            return &#x27;ground_plane&#x27;
+        elif &#x27;building&#x27; in prim_name.lower() or &#x27;wall&#x27; in prim_name.lower():
+            return &#x27;building&#x27;
+        elif &#x27;vehicle&#x27; in prim_name.lower() or &#x27;car&#x27; in prim_name.lower():
+            return &#x27;vehicle&#x27;
+        elif &#x27;robot&#x27; in prim_name.lower():
+            return &#x27;robot&#x27;
+        elif &#x27;person&#x27; in prim_name.lower() or &#x27;human&#x27; in prim_name.lower():
+            return &#x27;person&#x27;
+        elif &#x27;tree&#x27; in prim_name.lower() or &#x27;grass&#x27; in prim_name.lower():
+            return &#x27;vegetation&#x27;
+        else:
+            return &#x27;obstacle&#x27;
+
+    def should_detect_object(self, prim_name):
+        &quot;&quot;&quot;Determine if object should be detected&quot;&quot;&quot;
+        # Objects to exclude from detection
+        exclude_names = [&#x27;ground_plane&#x27;, &#x27;light&#x27;, &#x27;camera&#x27;, &#x27;sky&#x27;]
+
+        return not any(exclude in prim_name.lower() for exclude in exclude_names)
+
+    # Helper methods for projection and rendering
+    def get_object_projection(self, prim):
+        &quot;&quot;&quot;Get object&#x27;s 2D projection&quot;&quot;&quot;
+        # Implementation would calculate object&#x27;s screen space projection
+        pass
+
+    def project_to_image(self, prim, projection):
+        &quot;&quot;&quot;Project 3D object to 2D image&quot;&quot;&quot;
+        # Implementation would project 3D coordinates to 2D image space
+        pass
+
+    def depth_buffer_to_image(self, depth_buffer, intrinsics):
+        &quot;&quot;&quot;Convert depth buffer to depth image&quot;&quot;&quot;
+        # Implementation would convert depth buffer to actual depth values
+        pass
+
+    def project_normals_to_image(self, geometry, normals):
+        &quot;&quot;&quot;Project mesh normals to image space&quot;&quot;&quot;
+        # Implementation would project 3D normals to 2D image space
+        pass
+
+    def project_3d_bbox_to_2d(self, bbox_3d):
+        &quot;&quot;&quot;Project 3D bounding box to 2D coordinates&quot;&quot;&quot;
+        # Implementation would calculate 2D bounding box projection
+        pass
+
+    def calculate_occlusion(self, prim):
+        &quot;&quot;&quot;Calculate object occlusion percentage&quot;&quot;&quot;
+        # Implementation would calculate how much of object is occluded
+        pass
+
+    def save_image(self, image_data, filename):
+        &quot;&quot;&quot;Save image data to file&quot;&quot;&quot;
+        import cv2
+        cv2.imwrite(filename, image_data)
+
+    def save_depth_data(self, depth_data, filename):
+        &quot;&quot;&quot;Save depth data to file&quot;&quot;&quot;
+        np.save(filename, depth_data)
+
+    def get_current_time(self):
+        &quot;&quot;&quot;Get current simulation time&quot;&quot;&quot;
+        import time
+        return time.time()
+</code></pre>
+<h2 id="93-ai-training-integration">9.3 AI Training Integration</h2>
+<h3 id="931-synthetic-data-pipeline">9.3.1 Synthetic Data Pipeline</h3>
+<p><strong>Example: AI Training Data Pipeline</strong></p>
+<pre><code class="language-pythonimport" metastring="torch">import torch.utils.data as data
+from torchvision import transforms
+import numpy as np
+
+class SyntheticDataLoader(data.Dataset):
+    def __init__(self, gt_data_dir, transform=None, target_transform=None):
+        self.gt_data_dir = gt_data_dir
+        self.transform = transform
+        self.target_transform = target_transform
+
+        # Find all frame directories
+        self.frame_dirs = [d for d in os.listdir(gt_data_dir)
+                            if os.path.isdir(os.path.join(gt_data_dir, d))]
+        self.frame_dirs.sort()
+
+        # Ground truth types to load
+        self.gt_types = [&#x27;rgb&#x27;, &#x27;semantic_segmentation&#x27;, &#x27;depth&#x27;, &#x27;bounding_boxes&#x27;]
+
+    def __len__(self):
+        return len(self.frame_dirs)
+
+    def __getitem__(self, idx):
+        frame_dir = os.path.join(self.gt_data_dir, self.frame_dirs[idx])
+
+        # Load all ground truth data for this frame
+        data = {}
+        for gt_type in self.gt_types:
+            data[gt_type] = self.load_ground_truth(frame_dir, gt_type)
+
+        # Apply transforms
+        if self.transform:
+            data[&#x27;rgb&#x27;] = self.transform(data[&#x27;rgb&#x27;])
+
+        if self.target_transform:
+            if &#x27;semantic_segmentation&#x27; in data:
+                data[&#x27;semantic_segmentation&#x27;] = self.target_transform(data[&#x27;semantic_segmentation&#x27;])
+            if &#x27;depth&#x27; in data:
+                data[&#x27;depth&#x27;] = self.target_transform(data[&#x27;depth&#x27;])
+
+        return data
+
+    def load_ground_truth(self, frame_dir, gt_type):
+        &quot;&quot;&quot;Load specific ground truth type&quot;&quot;&quot;
+        if gt_type == &#x27;rgb&#x27;:
+            return self.load_image(frame_dir, &#x27;rgb&#x27;)
+        elif gt_type == &#x27;semantic_segmentation&#x27;:
+            return self.load_segmentation(frame_dir, &#x27;semantic_segmentation&#x27;)
+        elif gt_type == &#x27;depth&#x27;:
+            return self.load_depth(frame_dir, &#x27;depth&#x27;)
+        elif gt_type == &#x27;bounding_boxes&#x27;:
+            return self.load_bounding_boxes(frame_dir, &#x27;bounding_boxes&#x27;)
+        else:
+            return None
+
+    def load_image(self, frame_dir, image_type):
+        &quot;&quot;&quot;Load RGB image&quot;&quot;&quot;
+        import cv2
+        image_path = os.path.join(frame_dir, f&quot;frame_{self.frame_dirs.index(os.path.basename(frame_dir)):06d}_rgb.png&quot;)
+        image = cv2.imread(image_path)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        return image
+
+    def load_segmentation(self, frame_dir, seg_type):
+        &quot;&quot;&quot;Load segmentation mask&quot;&quot;&quot;
+        import cv2
+        seg_path = os.path.join(frame_dir, f&quot;frame_{self.frame_dirs.index(os.path.basename(frame_dir)):06d}_{seg_type}.png&quot;)
+        mask = cv2.imread(seg_path, cv2.IMREAD_GRAYSCALE)
+        return mask
+
+    def load_depth(self, frame_dir, depth_type):
+        &quot;&quot;&quot;Load depth data&quot;&quot;&quot;
+        import numpy as np
+        depth_path = os.path.join(frame_dir, f&quot;frame_{self.frame_dirs.index(os.path.basename(frame_dir)):06d}_{depth_type}.npy&quot;)
+        depth = np.load(depth_path)
+        return depth
+
+    def load_bounding_boxes(self, frame_dir, bbox_type):
+        &quot;&quot;&quot;Load bounding boxes&quot;&quot;&quot;
+        import json
+        bbox_path = os.path.join(frame_dir, f&quot;frame_{self.frame_dirs.index(os.path.basename(frame_dir)):06d}_{bbox_type}.json&quot;)
+        with open(bbox_path, &#x27;r&#x27;) as f:
+            bboxes = json.load(f)
+        return bboxes
+
+# Training pipeline for computer vision models
+class VisionTrainingPipeline:
+    def __init__(self, gt_data_dir):
+        self.gt_data_dir = gt_data_dir
+
+        # Data transforms
+        self.image_transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            transforms.RandomHorizontalFlip(p=0.5),
+            transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1)
+        ])
+
+        self.target_transform = transforms.Compose([
+            transforms.ToTensor()
+        ])
+
+    def create_dataloader(self, batch_size=8, shuffle=True, num_workers=4):
+        &quot;&quot;&quot;Create data loader for training&quot;&quot;&quot;
+        dataset = SyntheticDataLoader(
+            self.gt_data_dir,
+            transform=self.image_transform,
+            target_transform=self.target_transform
+        )
+
+        return data.DataLoader(
+            dataset,
+            batch_size=batch_size,
+            shuffle=shuffle,
+            num_workers=num_workers
+        )
+
+# Training loop example
+def train_vision_model():
+    &quot;&quot;&quot;Train computer vision model with synthetic data&quot;&quot;&quot;
+    gt_data_dir = &quot;synthetic_data/ground_truth&quot;
+
+    # Create data loader
+    pipeline = VisionTrainingPipeline(gt_data_dir)
+    train_loader = pipeline.create_dataloader(batch_size=4)
+
+    # Initialize model (example: segmentation model)
+    model = SegmentationModel(num_classes=8)
+
+    # Training loop
+    for epoch in range(100):
+        for batch in train_loader:
+            images = batch[&#x27;rgb&#x27;]
+            targets = batch[&#x27;semantic_segmentation&#x27;]
+
+            # Forward pass
+            outputs = model(images)
+            loss = calculate_loss(outputs, targets)
+
+            # Backward pass
+            loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
+
+            print(f&quot;Epoch {epoch}, Loss: {loss.item():.4f}&quot;)
+
+def calculate_loss(outputs, targets):
+    &quot;&quot;&quot;Calculate training loss&quot;&quot;&quot;
+    import torch.nn.functional as F
+
+    # Use CrossEntropyLoss for segmentation
+    criterion = torch.nn.CrossEntropyLoss()
+    return criterion(outputs, targets)
+
+# Class for model training evaluation
+class ModelEvaluator:
+    def __init__(self, model, test_loader):
+        self.model = model
+        self.test_loader = test_loader
+
+    def evaluate(self):
+        &quot;&quot;&quot;Evaluate model performance&quot;&quot;&quot;
+        self.model.eval()
+
+        total_loss = 0.0
+        total_samples = 0
+        iou_scores = []
+
+        with torch.no_grad():
+            for batch in self.test_loader:
+                images = batch[&#x27;rgb&#x27;]
+                targets = batch[&#x27;semantic_segmentation&#x27;]
+
+                outputs = self.model(images)
+                loss = calculate_loss(outputs, targets)
+
+                total_loss += loss.item()
+                total_samples += images.size(0)
+
+                # Calculate IoU for segmentation
+                iou = self.calculate_iou(outputs, targets)
+                iou_scores.append(iou)
+
+        avg_loss = total_loss / len(self.test_loader)
+        avg_iou = np.mean(iou_scores)
+
+        print(f&quot;Test Loss: {avg_loss:.4f}, Mean IoU: {avg_iou:.4f}&quot;)
+        return avg_loss, avg_iou
+
+    def calculate_iou(self, predictions, targets):
+        &quot;&quot;&quot;Calculate Intersection over Union&quot;&quot;&quot;
+        # Convert predictions to class indices
+        pred_classes = torch.argmax(predictions, dim=1)
+
+        # Calculate IoU for each class
+        intersection = (pred_classes == targets).float().sum((1, 2))
+        union = ((pred_classes == targets) | (pred_classes != targets)).float().sum((1, 2))
+
+        iou = intersection / (union + 1e-6)
+        return iou.mean().item()
+</code></pre>
+<h2 id="summary">Summary</h2>
+<p>This chapter explored NVIDIA Isaac Sim&#x27;s capabilities for advanced robotics simulation and synthetic data generation. Isaac Sim&#x27;s integration with AI training pipelines and domain randomization capabilities make it an essential tool for modern robotics development.</p>
+<p>Key takeaways:</p>
+<ul>
+<li>Isaac Sim provides photorealistic simulation environments</li>
+<li>Domain randomization is crucial for robust AI training</li>
+<li>Synthetic data generation accelerates model training</li>
+<li>Ground truth automation ensures accurate labeling</li>
+<li>Integration with AI training pipelines is seamless</li>
+<li>Cloud deployment enables scalable simulation</li>
+</ul>
+<h2 id="exercises">Exercises</h2>
+<h3 id="exercise-91-isaac-sim-setup">Exercise 9.1: Isaac Sim Setup</h3>
+<p>Set up Isaac Sim environment:</p>
+<ul>
+<li>Install Isaac Sim and required dependencies</li>
+<li>Configure simulation settings</li>
+<li>Create basic scene with objects</li>
+<li>Test physics simulation</li>
+<li>Validate rendering quality</li>
+</ul>
+<h3 id="exercise-92-domain-randomization">Exercise 9.2: Domain Randomization</h3>
+<p>Implement domain randomization:</p>
+<ul>
+<li>Create randomization parameters</li>
+<li>Apply lighting and material variations</li>
+<li>Test randomization effectiveness</li>
+<li>Measure impact on model performance</li>
+<li>Optimize randomization ranges</li>
+</ul>
+<h3 id="exercise-93-ground-truth-generation">Exercise 9.3: Ground Truth Generation</h3>
+<p>Develop ground truth generation:</p>
+<ul>
+<li>Implement semantic segmentation</li>
+<li>Create depth and normal maps</li>
+<li>Generate bounding box annotations</li>
+<li>Save data in standard formats</li>
+<li>Validate annotation accuracy</li>
+</ul>
+<h3 id="exercise-94-ai-training-pipeline">Exercise 9.4: AI Training Pipeline</h3>
+<p>Build AI training pipeline:</p>
+<ul>
+<li>Create synthetic data loader</li>
+<li>Implement data augmentation</li>
+<li>Train vision model</li>
+<li>Evaluate model performance</li>
+<li>Compare with real data training</li>
+</ul>
+<h3 id="exercise-95-advanced-isaac-sim-features">Exercise 9.5: Advanced Isaac Sim Features</h3>
+<p>Explore advanced features:</p>
+<ul>
+<li>Implement ray tracing simulation</li>
+<li>Create complex material systems</li>
+<li>Set up multi-robot scenarios</li>
+<li>Use cloud simulation</li>
+<li>Optimize performance</li>
+</ul>
+<h2 id="glossary-terms">Glossary Terms</h2>
+<ul>
+<li><strong>Isaac Sim</strong>: NVIDIA&#x27;s robotics simulation platform built on Omniverse</li>
+<li><strong>Omniverse</strong>: NVIDIA&#x27;s collaborative 3D simulation platform</li>
+<li><strong>USD (Universal Scene Description)</strong>: Pixar&#x27;s open 3D scene format</li>
+<li><strong>Domain Randomization</strong>: Systematic variation of simulation parameters</li>
+<li><strong>Synthetic Data</strong>: Computer-generated training data</li>
+<li><strong>Ground Truth</strong>: Accurate labels and annotations</li>
+<li><strong>PhysX 5</strong>: NVIDIA&#x27;s advanced physics engine</li>
+<li><strong>Ray Tracing</strong>: Real-time global illumination rendering</li>
+<li><strong>Subsurface Scattering</strong>: Light transport through translucent materials</li>
+<li><strong>Semantic Segmentation</strong>: Pixel-wise classification of scene elements</li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus/tree/main/docs/part-3-simulation/chapter-9-nvidia-isaac-synthetic-data.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-8-unity-robotics-visualization"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Unity for Robotics Visualization</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-10-physics-simulations"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Physics Simulations for Robotics</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#introduction" class="table-of-contents__link toc-highlight">Introduction</a></li><li><a href="#91-isaac-sim-architecture" class="table-of-contents__link toc-highlight">9.1 Isaac Sim Architecture</a><ul><li><a href="#911-omniverse-platform-foundation" class="table-of-contents__link toc-highlight">9.1.1 Omniverse Platform Foundation</a></li><li><a href="#912-key-components" class="table-of-contents__link toc-highlight">9.1.2 Key Components</a></li></ul></li><li><a href="#92-synthetic-data-generation" class="table-of-contents__link toc-highlight">9.2 Synthetic Data Generation</a><ul><li><a href="#921-domain-randomization" class="table-of-contents__link toc-highlight">9.2.1 Domain Randomization</a></li><li><a href="#922-ground-truth-generation" class="table-of-contents__link toc-highlight">9.2.2 Ground Truth Generation</a></li></ul></li><li><a href="#93-ai-training-integration" class="table-of-contents__link toc-highlight">9.3 AI Training Integration</a><ul><li><a href="#931-synthetic-data-pipeline" class="table-of-contents__link toc-highlight">9.3.1 Synthetic Data Pipeline</a></li></ul></li><li><a href="#summary" class="table-of-contents__link toc-highlight">Summary</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a><ul><li><a href="#exercise-91-isaac-sim-setup" class="table-of-contents__link toc-highlight">Exercise 9.1: Isaac Sim Setup</a></li><li><a href="#exercise-92-domain-randomization" class="table-of-contents__link toc-highlight">Exercise 9.2: Domain Randomization</a></li><li><a href="#exercise-93-ground-truth-generation" class="table-of-contents__link toc-highlight">Exercise 9.3: Ground Truth Generation</a></li><li><a href="#exercise-94-ai-training-pipeline" class="table-of-contents__link toc-highlight">Exercise 9.4: AI Training Pipeline</a></li><li><a href="#exercise-95-advanced-isaac-sim-features" class="table-of-contents__link toc-highlight">Exercise 9.5: Advanced Isaac Sim Features</a></li></ul></li><li><a href="#glossary-terms" class="table-of-contents__link toc-highlight">Glossary Terms</a></li></ul></div></div></div></div></main></div></div></div><footer class="nm-custom-footer" data-testid="custom-footer"><div class="nm-footer-container"><div class="nm-footer-grid"><div class="nm-footer-brand"><div class="nm-footer-logo"><h3>Physical AI &amp; Robotics</h3><p>An AI-Native Engineering Textbook</p></div><p class="nm-footer-description">Master the convergence of artificial intelligence and physical robotics through comprehensive, hands-on learning experiences.</p><div class="nm-footer-stats"><div class="nm-stat"><div class="nm-stat-number">1000+</div><div class="nm-stat-label">Pages</div></div><div class="nm-stat"><div class="nm-stat-number">50+</div><div class="nm-stat-label">Exercises</div></div><div class="nm-stat"><div class="nm-stat-number">24/7</div><div class="nm-stat-label">Access</div></div></div></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Resources</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai">Foundations</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals">ROS &amp; Navigation</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots">Computer Vision</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models">Machine Learning</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation">Simulation &amp; Control</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Learning Paths</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/beginner">Beginner Track</a></li><li><a href="/ai-native-textbook-docusaurus/intermediate">Intermediate Track</a></li><li><a href="/ai-native-textbook-docusaurus/advanced">Advanced Track</a></li><li><a href="/ai-native-textbook-docusaurus/projects">Hands-on Projects</a></li><li><a href="/ai-native-textbook-docusaurus/certification">Certification</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Community</h4><ul class="nm-footer-links"><li><a href="https://github.com/your-username/ai-native-textbook">GitHub</a></li><li><a href="https://discord.gg/your-server">Discord</a></li><li><a href="https://forum.example.com">Forum</a></li><li><a href="/ai-native-textbook-docusaurus/contributors">Contributors</a></li><li><a href="/ai-native-textbook-docusaurus/blog">Blog</a></li></ul></div><div class="nm-footer-section nm-footer-newsletter"><h4 class="nm-footer-heading">Stay Updated</h4><p class="nm-footer-subtext">Get the latest updates and exclusive content</p><div class="nm-newsletter-form"><input type="email" placeholder="Enter your email" class="nm-newsletter-input"><button type="button" class="nm-newsletter-button">Subscribe</button></div><div class="nm-footer-social"><a href="https://github.com" class="nm-social-link" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><a href="https://twitter.com" class="nm-social-link" aria-label="Twitter"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg></a><a href="https://linkedin.com" class="nm-social-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></a></div></div></div><div class="nm-footer-bottom"><div class="nm-footer-bottom-left"><span class="nm-footer-copyright">© <!-- -->2025<!-- --> AI-Native Textbook. All rights reserved. Created by SNN Studio.</span></div><div class="nm-footer-bottom-right"><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/privacy">Privacy Policy</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/terms">Terms of Service</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/code-of-conduct">Code of Conduct</a></div></div></div></footer><div class="chat-widget"><button class="chat-widget-button" aria-label="Open chat"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button></div></div>
+</body>
+</html>

@@ -1,0 +1,1099 @@
+<!doctype html>
+<html lang="en" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-part-5-embodied-intelligence/chapter-19-cognitive-planning-with-gpt" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">Chapter 19: Cognitive Planning with GPT | Physical AI &amp; Humanoid Robotics</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" name="twitter:image" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/img/docusaurus-social-card.jpg"><meta data-rh="true" property="og:url" content="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-19-cognitive-planning-with-gpt"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Chapter 19: Cognitive Planning with GPT | Physical AI &amp; Humanoid Robotics"><meta data-rh="true" name="description" content="Large language models for high-level reasoning, task decomposition, and cognitive planning in autonomous systems"><meta data-rh="true" property="og:description" content="Large language models for high-level reasoning, task decomposition, and cognitive planning in autonomous systems"><link data-rh="true" rel="icon" href="/ai-native-textbook-docusaurus/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-19-cognitive-planning-with-gpt"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-19-cognitive-planning-with-gpt" hreflang="en"><link data-rh="true" rel="alternate" href="https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-19-cognitive-planning-with-gpt" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Chapter 19: Cognitive Planning with GPT","item":"https://NaumanNavaid.github.io/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-19-cognitive-planning-with-gpt"}]}</script><link rel="alternate" type="application/rss+xml" href="/ai-native-textbook-docusaurus/blog/rss.xml" title="Physical AI &amp; Humanoid Robotics RSS Feed">
+<link rel="alternate" type="application/atom+xml" href="/ai-native-textbook-docusaurus/blog/atom.xml" title="Physical AI &amp; Humanoid Robotics Atom Feed"><link rel="stylesheet" href="/ai-native-textbook-docusaurus/assets/css/styles.6e378bed.css">
+<script src="/ai-native-textbook-docusaurus/assets/js/runtime~main.5e3ab4fa.js" defer="defer"></script>
+<script src="/ai-native-textbook-docusaurus/assets/js/main.17a86997.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><div role="region" aria-label="Skip to main content"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">Skip to main content</a></div><nav class="nm-custom-navbar"><div class="nm-navbar-container"><div class="nm-navbar-logo"><a class="nm-logo-link" href="/ai-native-textbook-docusaurus/"><div class="nm-logo-icon"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="currentColor"></rect><path d="M8 16C8 11.5817 11.5817 8 16 8C20.4183 8 24 11.5817 24 16C24 20.4183 20.4183 24 16 24C11.5817 24 8 20.4183 8 16Z" fill="var(--ifm-background-color)"></path><path d="M12 16L16 12L20 16M16 12V20" stroke="var(--ifm-color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></div><div class="nm-logo-text"><span class="nm-logo-title">Physical AI</span><span class="nm-logo-subtitle">&amp; Robotics</span></div></a></div><div class="nm-navbar-links"><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/">Home</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a><a class="nm-nav-link" href="/ai-native-textbook-docusaurus/about">About</a></div><div class="nm-navbar-actions"><div class="nm-search-container" style="margin-right:1rem"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div><button class="nm-action-button color-mode-toggle" aria-label="Toggle dark mode"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button><a href="https://github.com/NaumanNavaid/hackathon-1" class="nm-action-button" aria-label="GitHub" target="_blank" rel="noopener noreferrer"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><button class="nm-mobile-menu-toggle" aria-label="Toggle mobile menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu w-6 h-6" aria-hidden="true"><path d="M4 5h16"></path><path d="M4 12h16"></path><path d="M4 19h16"></path></svg></button></div></div></nav><nav aria-label="Main" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="Toggle navigation bar" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/ai-native-textbook-docusaurus/"><b class="navbar__title text--truncate">Physical AI &amp; Robotics</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/ai-native-textbook-docusaurus/">Home</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/chapters">Chapters</a><a class="navbar__item navbar__link" href="/ai-native-textbook-docusaurus/docs/intro">Documentation</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="Switch between dark and light mode (currently system mode)"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="Search" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="Docs sidebar" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai"><span title="Part 1: Foundations" class="categoryLinkLabel_W154">Part 1: Foundations</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals"><span title="Part 2: ROS Fundamentals" class="categoryLinkLabel_W154">Part 2: ROS Fundamentals</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation"><span title="Part 3: Simulation &amp; Digital Twins" class="categoryLinkLabel_W154">Part 3: Simulation &amp; Digital Twins</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots"><span title="Part 4: Perception &amp; State Estimation" class="categoryLinkLabel_W154">Part 4: Perception &amp; State Estimation</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models"><span title="Part 5: Embodied Intelligence" class="categoryLinkLabel_W154">Part 5: Embodied Intelligence</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models"><span title="Chapter 17: Vision-Language-Action Models" class="linkLabel_WmDU">Chapter 17: Vision-Language-Action Models</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-18-voice-to-action-pipelines-whisper"><span title="Chapter 18: Voice-to-Action Pipelines (Whisper)" class="linkLabel_WmDU">Chapter 18: Voice-to-Action Pipelines (Whisper)</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-19-cognitive-planning-with-gpt"><span title="Chapter 19: Cognitive Planning with GPT" class="linkLabel_WmDU">Chapter 19: Cognitive Planning with GPT</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-20-the-autonomous-humanoid"><span title="Chapter 20: The Autonomous Humanoid" class="linkLabel_WmDU">Chapter 20: The Autonomous Humanoid</span></a></li></ul></li></ul></nav></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="Breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="Home page" class="breadcrumbs__link" href="/ai-native-textbook-docusaurus/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">Part 5: Embodied Intelligence</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">Chapter 19: Cognitive Planning with GPT</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">On this page</button></div><div class="theme-doc-markdown markdown"><header><h1 id="chapter-19-cognitive-planning-with-gpt">Chapter 19: Cognitive Planning with GPT</h1></header>
+<h2 id="191-introduction-to-cognitive-planning">19.1 Introduction to Cognitive Planning</h2>
+<p>Cognitive planning represents the highest level of robotic intelligence, encompassing abstract reasoning, goal-directed behavior, and the ability to understand and execute complex, multi-step tasks. Large Language Models (LLMs) like GPT have emerged as powerful tools for enabling robots to perform human-like planning and decision-making.</p>
+<h3 id="1911-the-evolution-of-robotic-planning">19.1.1 The Evolution of Robotic Planning</h3>
+<pre><code class="language-mermaid">graph BT
+    A[Classical Planning&lt;br/&gt;STRIPS, PDDL] --&gt; B[Hierarchical Planning&lt;br/&gt;HTN, GOAP]
+    B --&gt; C[Probabilistic Planning&lt;br/&gt;POMDP, MDP]
+    C --&gt; D[Neural Planning&lt;br/&gt;Value Networks, Policy Networks]
+    D --&gt; E[LLM-Based Planning&lt;br/&gt;GPT, Foundation Models]
+    E --&gt; F[Neuro-Symbolic Planning&lt;br/&gt;Hybrid Systems]
+
+    style E fill:#e1f5fe
+    style F fill:#f3e5f5
+</code></pre>
+<p>The integration of GPT models into robotic planning systems represents a paradigm shift from traditional algorithmic approaches to more human-like, language-grounded reasoning capabilities.</p>
+<h3 id="1912-why-gpt-for-planning">19.1.2 Why GPT for Planning?</h3>
+<p><strong>Natural Language Understanding:</strong></p>
+<ul>
+<li>Direct interpretation of human instructions in natural language</li>
+<li>Ability to understand implicit goals and constraints</li>
+<li>Handling of ambiguity and clarification requests</li>
+</ul>
+<p><strong>World Knowledge Integration:</strong></p>
+<ul>
+<li>Access to vast amounts of commonsense knowledge</li>
+<li>Understanding of physical laws and social conventions</li>
+<li>Knowledge about object properties, affordances, and relationships</li>
+</ul>
+<p><strong>Generalization and Adaptation:</strong></p>
+<ul>
+<li>Zero-shot adaptation to novel tasks and environments</li>
+<li>Transfer learning from similar tasks</li>
+<li>Creative problem-solving beyond pre-programmed behaviors</li>
+</ul>
+<h3 id="1913-levels-of-cognitive-planning">19.1.3 Levels of Cognitive Planning</h3>
+<p><strong>1. Reactive Level:</strong></p>
+<ul>
+<li>Immediate response to sensory input</li>
+<li>Reflexive behaviors and stimulus-response patterns</li>
+<li>No deliberation or future planning</li>
+</ul>
+<p><strong>2. Deliberative Level:</strong></p>
+<ul>
+<li>Short-term planning and goal sequencing</li>
+<li>Task decomposition into subgoals</li>
+<li>Consideration of immediate consequences</li>
+</ul>
+<p><strong>3. Cognitive Level (GPT-based):</strong></p>
+<ul>
+<li>Long-term strategic planning</li>
+<li>Abstract reasoning and inference</li>
+<li>Understanding of user intentions and context</li>
+<li>Learning from experience and adaptation</li>
+</ul>
+<h2 id="192-gpt-architecture-for-planning">19.2 GPT Architecture for Planning</h2>
+<h3 id="1921-transformer-based-reasoning">19.2.1 Transformer-Based Reasoning</h3>
+<p>The transformer architecture that powers GPT models is particularly well-suited for planning tasks due to its ability to model long-range dependencies and maintain coherent representations across extended sequences.</p>
+<pre><code class="language-python">import torch
+import torch.nn as nn
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
+
+class CognitivePlanningGPT:
+    def __init__(self, model_name=&quot;gpt-4&quot;, device=&quot;cuda&quot;):
+        self.device = device
+        self.tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+        self.model = GPT2LMHeadModel.from_pretrained(model_name).to(device)
+
+        # Special tokens for planning
+        self.task_token = &quot;&lt;TASK&gt;&quot;
+        self.goal_token = &quot;&lt;GOAL&gt;&quot;
+        self.state_token = &quot;&lt;STATE&gt;&quot;
+        self.plan_token = &quot;&lt;PLAN&gt;&quot;
+        self.action_token = &quot;&lt;ACTION&gt;&quot;
+
+        # Add special tokens
+        self.tokenizer.add_special_tokens({
+            &#x27;additional_special_tokens&#x27;: [
+                self.task_token, self.goal_token,
+                self.state_token, self.plan_token, self.action_token
+            ]
+        })
+        self.model.resize_token_embeddings(len(self.tokenizer))
+
+    def generate_plan(self, task_description, current_state, goals):
+        &quot;&quot;&quot;Generate cognitive plan using GPT&quot;&quot;&quot;
+        # Create planning prompt
+        prompt = self.create_planning_prompt(
+            task_description, current_state, goals
+        )
+
+        # Tokenize input
+        inputs = self.tokenizer(
+            prompt,
+            return_tensors=&quot;pt&quot;,
+            padding=True,
+            truncation=True,
+            max_length=2048
+        ).to(self.device)
+
+        # Generate plan
+        with torch.no_grad():
+            outputs = self.model.generate(
+                inputs.input_ids,
+                max_length=inputs.input_ids.shape[1] + 512,
+                num_return_sequences=3,  # Generate multiple options
+                temperature=0.7,
+                top_p=0.9,
+                do_sample=True,
+                pad_token_id=self.tokenizer.eos_token_id
+            )
+
+        # Decode and parse plans
+        plans = []
+        for output in outputs:
+            plan_text = self.tokenizer.decode(
+                output[inputs.input_ids.shape[1]:],
+                skip_special_tokens=True
+            )
+            parsed_plan = self.parse_plan(plan_text)
+            plans.append(parsed_plan)
+
+        return self.select_best_plan(plans, task_description, current_state)
+</code></pre>
+<h3 id="1922-structured-planning-prompts">19.2.2 Structured Planning Prompts</h3>
+<p>Effective GPT-based planning requires carefully engineered prompts that structure the reasoning process and guide the model toward coherent, actionable plans.</p>
+<pre><code class="language-python">class PlanningPromptEngineer:
+    def __init__(self):
+        self.planning_templates = self.load_planning_templates()
+        self.example_plans = self.load_example_plans()
+
+    def create_planning_prompt(self, task, state, goals):
+        &quot;&quot;&quot;Create structured prompt for planning task&quot;&quot;&quot;
+        prompt = f&quot;&quot;&quot;{self.task_token} {task}
+
+{self.state_token} Current state: {self.format_state(state)}
+
+{self.goal_token} Goals: {self.format_goals(goals)}
+
+{self.plan_token} Please generate a detailed plan to accomplish the task.
+
+Consider:
+1. What are the necessary subgoals?
+2. What actions are needed for each subgoal?
+3. What are the potential obstacles and how to overcome them?
+4. What is the optimal sequence of actions?
+5. What are the safety considerations?
+
+Format your response as:
+SUBGOAL 1: [description]
+- ACTION 1.1: [action description]
+- ACTION 1.2: [action description]
+
+SUBGOAL 2: [description]
+- ACTION 2.1: [action description]
+...
+
+Here are examples of good plans:
+{self.format_examples()}
+
+Now generate a plan for the current task:&quot;&quot;&quot;
+
+        return prompt
+
+    def format_state(self, state):
+        &quot;&quot;&quot;Format current state for prompt&quot;&quot;&quot;
+        formatted = []
+        for key, value in state.items():
+            if isinstance(value, dict):
+                formatted.append(f&quot;{key}: {self.format_state(value)}&quot;)
+            elif isinstance(value, list):
+                formatted.append(f&quot;{key}: {&#x27;, &#x27;.join(value)}&quot;)
+            else:
+                formatted.append(f&quot;{key}: {value}&quot;)
+        return &quot;\n  &quot;.join(formatted)
+
+    def create_refinement_prompt(self, initial_plan, feedback):
+        &quot;&quot;&quot;Create prompt for plan refinement&quot;&quot;&quot;
+        return f&quot;&quot;&quot;{self.plan_token} Initial plan:
+{initial_plan}
+
+{self.feedback_token} Feedback:
+{feedback}
+
+{self.plan_token} Please refine the plan to address the feedback.
+Maintain the same format but improve the specific areas mentioned in the feedback.&quot;&quot;&quot;
+</code></pre>
+<h3 id="1923-chain-of-thought-planning">19.2.3 Chain-of-Thought Planning</h3>
+<p>Chain-of-thought prompting encourages the model to show its reasoning process, leading to more robust and explainable plans.</p>
+<pre><code class="language-python">class ChainOfThoughtPlanner:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+
+    def plan_with_reasoning(self, task, context):
+        &quot;&quot;&quot;Generate plan with explicit reasoning steps&quot;&quot;&quot;
+        reasoning_prompt = f&quot;&quot;&quot;Task: {task}
+
+Context: {context}
+
+Let&#x27;s think step by step to create a good plan:
+
+Step 1: Understand the goal
+- What is the main objective?
+- What are the constraints?
+- What resources are available?
+
+Step 2: Break down into subgoals
+- What are the logical phases of this task?
+- Which subgoals depend on others?
+- What are the prerequisites?
+
+Step 3: Plan actions for each subgoal
+- What specific actions are needed?
+- In what order should they be executed?
+- What could go wrong and how to prepare?
+
+Step 4: Optimize and validate
+- Can any actions be combined?
+- Are there redundant steps?
+- Is the plan safe and efficient?
+
+Now, based on this reasoning, here is the final plan:&quot;&quot;&quot;
+
+        return self.gpt_model.generate_plan(reasoning_prompt)
+</code></pre>
+<h2 id="193-task-decomposition-and-goal-hierarchies">19.3 Task Decomposition and Goal Hierarchies</h2>
+<h3 id="1931-hierarchical-task-networks">19.3.1 Hierarchical Task Networks</h3>
+<p>GPT can be used to automatically discover and create hierarchical task networks from high-level goals.</p>
+<pre><code class="language-python">class HTNGenerator:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+        self.task_library = TaskLibrary()
+
+    def generate_htn(self, high_level_task):
+        &quot;&quot;&quot;Generate hierarchical task network from high-level task&quot;&quot;&quot;
+        # Step 1: Identify main subtasks
+        subtask_prompt = f&quot;&quot;&quot;Break down the task &quot;{high_level_task}&quot; into main subtasks.
+List them in logical order of execution.&quot;&quot;&quot;
+
+        subtasks = self.gpt_model.query(subtask_prompt)
+
+        # Step 2: For each subtask, generate decomposition
+        htn = {
+            &quot;root&quot;: high_level_task,
+            &quot;subtasks&quot;: []
+        }
+
+        for subtask in subtasks:
+            decomposition = self.decompose_subtask(subtask)
+            htn[&quot;subtasks&quot;].append({
+                &quot;name&quot;: subtask,
+                &quot;decomposition&quot;: decomposition,
+                &quot;prerequisites&quot;: self.identify_prerequisites(subtask),
+                &quot;successors&quot;: self.identify_successors(subtask)
+            })
+
+        return htn
+
+    def decompose_subtask(self, subtask):
+        &quot;&quot;&quot;Decompose subtask into primitive actions&quot;&quot;&quot;
+        decomposition_prompt = f&quot;&quot;&quot;For the subtask &quot;{subtask}&quot;:
+1. What primitive actions are needed?
+2. In what order should they be executed?
+3. What are the parameters for each action?
+
+Format as:
+ACTION: [action_name]
+PARAMETERS: [param1=value1, param2=value2]
+
+Action sequence:&quot;&quot;&quot;
+
+        return self.gpt_model.query(decomposition_prompt)
+
+    def identify_prerequisites(self, subtask):
+        &quot;&quot;&quot;Identify prerequisites for subtask&quot;&quot;&quot;
+        prereq_prompt = f&quot;&quot;&quot;What conditions must be satisfied before executing &quot;{subtask}&quot;?
+Consider:
+- Required objects or tools
+- Preconditions on the environment
+- Previous tasks that must be completed
+
+List prerequisites:&quot;&quot;&quot;
+
+        return self.gpt_model.query(prereq_prompt)
+</code></pre>
+<h3 id="1932-goal-oriented-planning">19.3.2 Goal-Oriented Planning</h3>
+<p>GPT can understand and reason about abstract goals, converting them into concrete action sequences.</p>
+<pre><code class="language-python">class GoalOrientedPlanner:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+        self.goal_patterns = self.load_goal_patterns()
+
+    def plan_from_goal(self, goal_specification, world_state):
+        &quot;&quot;&quot;Plan actions to achieve specified goals&quot;&quot;&quot;
+        # Parse goal specification
+        parsed_goals = self.parse_goals(goal_specification)
+
+        # Generate initial plan
+        initial_plan = self.generate_initial_plan(parsed_goals, world_state)
+
+        # Validate against goals
+        validation = self.validate_plan(initial_plan, parsed_goals, world_state)
+
+        # Refine if necessary
+        if not validation[&quot;valid&quot;]:
+            refined_plan = self.refine_plan(initial_plan, validation[&quot;issues&quot;])
+        else:
+            refined_plan = initial_plan
+
+        return refined_plan
+
+    def parse_goals(self, goal_specification):
+        &quot;&quot;&quot;Parse natural language goal specification&quot;&quot;&quot;
+        parse_prompt = f&quot;&quot;&quot;Extract goals from this specification: &quot;{goal_specification}&quot;
+
+For each goal, identify:
+1. The desired end state
+2. Success criteria
+3. Constraints
+4. Priorities
+
+Format as:
+GOAL [N]: [description]
+SUCCESS: [criteria]
+CONSTRAINTS: [constraints]
+PRIORITY: [high/medium/low]&quot;&quot;&quot;
+
+        return self.gpt_model.query(parse_prompt)
+
+    def generate_initial_plan(self, goals, state):
+        &quot;&quot;&quot;Generate initial plan to achieve goals&quot;&quot;&quot;
+        planning_prompt = f&quot;&quot;&quot;Current state: {state}
+
+Goals to achieve:
+{self.format_goals(goals)}
+
+Generate a plan that achieves all goals efficiently.
+Consider dependencies between goals and potential conflicts.
+
+Plan:&quot;&quot;&quot;
+
+        return self.gpt_model.query(planning_prompt)
+</code></pre>
+<h2 id="194-world-modeling-and-simulation">19.4 World Modeling and Simulation</h2>
+<h3 id="1941-mental-simulation">19.4.1 Mental Simulation</h3>
+<p>GPT can perform mental simulation by reasoning about the consequences of actions without actual execution.</p>
+<pre><code class="language-python">class MentalSimulator:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+        self.physics_knowledge = self.load_physics_knowledge()
+        self.object_knowledge = self.load_object_knowledge()
+
+    def simulate_action(self, action, initial_state):
+        &quot;&quot;&quot;Simulate the outcome of an action&quot;&quot;&quot;
+        simulation_prompt = f&quot;&quot;&quot;Initial state: {self.format_state(initial_state)}
+
+Action to simulate: {self.format_action(action)}
+
+Using knowledge about physics and object properties, predict:
+1. Immediate effects of the action
+2. Changes to the environment
+3. New state after action execution
+4. Potential side effects or risks
+
+Simulated outcome:&quot;&quot;&quot;
+
+        outcome = self.gpt_model.query(simulation_prompt)
+        return self.parse_simulated_outcome(outcome)
+
+    def simulate_plan(self, plan, initial_state):
+        &quot;&quot;&quot;Simulate execution of entire plan&quot;&quot;&quot;
+        current_state = initial_state
+        simulation_log = []
+
+        for action in plan[&quot;actions&quot;]:
+            # Simulate single action
+            action_result = self.simulate_action(action, current_state)
+
+            # Update state
+            current_state = self.update_state(current_state, action_result)
+
+            # Log simulation
+            simulation_log.append({
+                &quot;action&quot;: action,
+                &quot;pre_state&quot;: current_state,
+                &quot;predicted_result&quot;: action_result,
+                &quot;post_state&quot;: current_state
+            })
+
+        return {
+            &quot;final_state&quot;: current_state,
+            &quot;simulation_log&quot;: simulation_log,
+            &quot;success&quot;: self.check_plan_success(plan[&quot;goals&quot;], current_state)
+        }
+</code></pre>
+<h3 id="1942-commonsense-reasoning">19.4.2 Commonsense Reasoning</h3>
+<p>Integrating commonsense knowledge enables more robust planning in everyday situations.</p>
+<pre><code class="language-python">class CommonsensePlanner:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+        self.commonsense_db = self.load_commonsense_knowledge()
+
+    def enhance_plan_with_commonsense(self, initial_plan, context):
+        &quot;&quot;&quot;Enhance plan with commonsense reasoning&quot;&quot;&quot;
+        enhanced_plan = initial_plan.copy()
+
+        # Check for commonsense violations
+        violations = self.check_commonsense_violations(enhanced_plan, context)
+
+        # Fix violations
+        for violation in violations:
+            fix = self.generate_fix(violation)
+            enhanced_plan = self.apply_fix(enhanced_plan, fix)
+
+        # Add commonsense optimizations
+        optimizations = self.suggest_commonsense_optimizations(enhanced_plan, context)
+        enhanced_plan = self.apply_optimizations(enhanced_plan, optimizations)
+
+        return enhanced_plan
+
+    def check_commonsense_violations(self, plan, context):
+        &quot;&quot;&quot;Check plan for commonsense violations&quot;&quot;&quot;
+        violation_prompt = f&quot;&quot;&quot;Review this plan for commonsense issues:
+
+Plan: {self.format_plan(plan)}
+Context: {context}
+
+Check for:
+- Actions that violate physical laws
+- Socially inappropriate behaviors
+- Unsafe or dangerous actions
+- Inefficient or impractical steps
+
+List any violations found:&quot;&quot;&quot;
+
+        return self.gpt_model.query(violation_prompt)
+</code></pre>
+<h2 id="195-adaptive-planning-and-learning">19.5 Adaptive Planning and Learning</h2>
+<h3 id="1951-plan-adaptation-based-on-feedback">19.5.1 Plan Adaptation Based on Feedback</h3>
+<p>GPT can adapt plans based on execution feedback and changing conditions.</p>
+<pre><code class="language-python">class AdaptivePlanner:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+        self.execution_history = ExecutionHistory()
+
+    def adapt_plan(self, current_plan, execution_feedback):
+        &quot;&quot;&quot;Adapt plan based on execution feedback&quot;&quot;&quot;
+        # Analyze feedback
+        analysis = self.analyze_feedback(execution_feedback)
+
+        # Determine adaptation strategy
+        if analysis[&quot;success_rate&quot;] &lt; 0.5:
+            strategy = &quot;replan&quot;
+        elif analysis[&quot;frequent_failures&quot;]:
+            strategy = &quot;modify_failing_steps&quot;
+        elif analysis[&quot;inefficient&quot;]:
+            strategy = &quot;optimize&quot;
+        else:
+            strategy = &quot;minor_adjustments&quot;
+
+        # Adapt plan
+        if strategy == &quot;replan&quot;:
+            return self.generate_new_plan(
+                current_plan[&quot;goal&quot;],
+                execution_feedback[&quot;current_state&quot;]
+            )
+        else:
+            return self.modify_plan(current_plan, analysis, strategy)
+
+    def analyze_feedback(self, feedback):
+        &quot;&quot;&quot;Analyze execution feedback&quot;&quot;&quot;
+        analysis_prompt = f&quot;&quot;&quot;Analyze this execution feedback:
+
+Feedback: {feedback}
+
+Determine:
+1. Overall success rate
+2. Most common failure points
+3. Efficiency assessment
+4. Patterns in failures
+5. Recommendations for improvement
+
+Analysis:&quot;&quot;&quot;
+
+        return self.gpt_model.query(analysis_prompt)
+
+    def learn_from_execution(self, plan, execution_log):
+        &quot;&quot;&quot;Learn from plan execution&quot;&quot;&quot;
+        learning_prompt = f&quot;&quot;&quot;Review this plan execution:
+
+Original plan: {self.format_plan(plan)}
+Execution log: {execution_log}
+
+Identify:
+1. What worked well
+2. What failed and why
+3. Better approaches for similar future tasks
+4. Generalizable lessons
+
+Learning insights:&quot;&quot;&quot;
+
+        insights = self.gpt_model.query(learning_prompt)
+        self.update_knowledge_base(insights)
+</code></pre>
+<h3 id="1952-continuous-learning">19.5.2 Continuous Learning</h3>
+<p>GPT-based planners can continuously improve through experience.</p>
+<pre><code class="language-python">class ContinuousLearningPlanner:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+        self.experience_buffer = []
+        self.success_patterns = []
+        self.failure_patterns = []
+
+    def update_from_experience(self, task, plan, execution_result):
+        &quot;&quot;&quot;Update planner based on new experience&quot;&quot;&quot;
+        experience = {
+            &quot;task&quot;: task,
+            &quot;plan&quot;: plan,
+            &quot;result&quot;: execution_result,
+            &quot;timestamp&quot;: time.time()
+        }
+
+        self.experience_buffer.append(experience)
+
+        # Extract patterns
+        if execution_result[&quot;success&quot;]:
+            self.extract_success_pattern(experience)
+        else:
+            self.extract_failure_pattern(experience)
+
+        # Retrain or fine-tune periodically
+        if len(self.experience_buffer) % 100 == 0:
+            self.update_model()
+
+    def extract_success_pattern(self, experience):
+        &quot;&quot;&quot;Extract patterns from successful executions&quot;&quot;&quot;
+        pattern_prompt = f&quot;&quot;&quot;Analyze this successful planning experience:
+
+Task: {experience[&#x27;task&#x27;]}
+Plan: {self.format_plan(experience[&#x27;plan&#x27;])}
+Result: {experience[&#x27;result&#x27;]}
+
+Identify:
+1. Key planning decisions that led to success
+2. Generalizable strategies
+3. Situations where this approach would work
+4. Pattern that can be applied to similar tasks
+
+Success pattern:&quot;&quot;&quot;
+
+        pattern = self.gpt_model.query(pattern_prompt)
+        self.success_patterns.append(pattern)
+
+    def adapt_to_new_domain(self, domain_examples):
+        &quot;&quot;&quot;Adapt planner to new domain using examples&quot;&quot;&quot;
+        domain_prompt = f&quot;&quot;&quot;Learn planning patterns for this domain from examples:
+
+Domain examples: {domain_examples}
+
+Extract:
+1. Domain-specific constraints
+2. Common task patterns
+3. Specialized strategies
+4. Domain knowledge to incorporate
+
+Domain adaptation guidelines:&quot;&quot;&quot;
+
+        guidelines = self.gpt_model.query(domain_prompt)
+        self.apply_domain_adaptation(guidelines)
+</code></pre>
+<h2 id="196-multi-agent-planning">19.6 Multi-Agent Planning</h2>
+<h3 id="1961-coordination-and-communication">19.6.1 Coordination and Communication</h3>
+<p>GPT can facilitate planning for multiple robots working together.</p>
+<pre><code class="language-python">class MultiAgentPlanner:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+        self.agent_capabilities = AgentCapabilities()
+
+    def coordinate_multi_agent_plan(self, task, agents):
+        &quot;&quot;&quot;Coordinate plan across multiple agents&quot;&quot;&quot;
+        # Analyze task for parallelization opportunities
+        parallelizable = self.analyze_parallelization(task, agents)
+
+        # Assign responsibilities
+        assignments = self.assign_tasks(parallelizable, agents)
+
+        # Generate individual plans
+        individual_plans = {}
+        for agent_id, assigned_tasks in assignments.items():
+            individual_plans[agent_id] = self.generate_individual_plan(
+                assigned_tasks, agents[agent_id]
+            )
+
+        # Generate coordination protocol
+        coordination = self.generate_coordination_protocol(
+            individual_plans, task
+        )
+
+        return {
+            &quot;individual_plans&quot;: individual_plans,
+            &quot;coordination_protocol&quot;: coordination,
+            &quot;dependencies&quot;: self.identify_dependencies(individual_plans)
+        }
+
+    def generate_coordination_protocol(self, plans, task):
+        &quot;&quot;&quot;Generate communication protocol for coordination&quot;&quot;&quot;
+        protocol_prompt = f&quot;&quot;&quot;Generate a coordination protocol for these agents executing this task:
+
+Task: {task}
+Agent plans: {self.format_plans(plans)}
+
+Specify:
+1. Communication events and messages
+2. Synchronization points
+3. Conflict resolution strategies
+4. Exception handling procedures
+5. Progress sharing mechanism
+
+Coordination protocol:&quot;&quot;&quot;
+
+        return self.gpt_model.query(protocol_prompt)
+</code></pre>
+<h3 id="1962-negotiation-and-conflict-resolution">19.6.2 Negotiation and Conflict Resolution</h3>
+<pre><code class="language-python">class NegotiationPlanner:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+
+    def negotiate_plan_conflicts(self, agent_plans, constraints):
+        &quot;&quot;&quot;Negotiate and resolve conflicts in multi-agent plans&quot;&quot;&quot;
+        # Identify conflicts
+        conflicts = self.identify_conflicts(agent_plans)
+
+        # Generate negotiation strategies
+        negotiation_prompt = f&quot;&quot;&quot;Agents have conflicting plans:
+
+Conflicts: {self.format_conflicts(conflicts)}
+Constraints: {constraints}
+Agent preferences: {self.get_agent_preferences()}
+
+Generate a negotiation strategy that:
+1. Identifies compromise solutions
+2. Prioritizes based on task criticality
+3. Ensures all agents can contribute
+4. Maintains overall system efficiency
+
+Negotiation approach:&quot;&quot;&quot;
+
+        negotiation_strategy = self.gpt_model.query(negotiation_prompt)
+
+        # Apply strategy to resolve conflicts
+        resolved_plans = self.apply_negotiation_strategy(
+            agent_plans, negotiation_strategy
+        )
+
+        return resolved_plans
+</code></pre>
+<h2 id="197-explainable-planning">19.7 Explainable Planning</h2>
+<h3 id="1911-plan-explanations">19.1.1 Plan Explanations</h3>
+<p>GPT can generate natural language explanations of planning decisions.</p>
+<pre><code class="language-python">class ExplainablePlanner:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+
+    def explain_plan(self, plan, task, context):
+        &quot;&quot;&quot;Generate explanation for planning decisions&quot;&quot;&quot;
+        explanation_prompt = f&quot;&quot;&quot;Explain this plan for the given task:
+
+Task: {task}
+Context: {context}
+Plan: {self.format_plan(plan)}
+
+Provide explanations for:
+1. Why this specific plan was chosen
+2. How each action contributes to the goal
+3. Alternative approaches that were considered
+4. Potential risks and mitigation strategies
+5. Expected outcomes and success criteria
+
+Generate a clear, step-by-step explanation:&quot;&quot;&quot;
+
+        return self.gpt_model.query(explanation_prompt)
+
+    def explain_failure(self, plan, failure_point, error):
+        &quot;&quot;&quot;Explain why a plan failed at a specific point&quot;&quot;&quot;
+        failure_explanation_prompt = f&quot;&quot;&quot;The plan failed at this point:
+
+Plan: {self.format_plan(plan)}
+Failure point: {failure_point}
+Error: {error}
+
+Explain:
+1. Root cause of the failure
+2. Why the plan didn&#x27;t account for this
+3. Assumptions that were violated
+4. How to prevent similar failures
+5. What to do to recover
+
+Failure analysis:&quot;&quot;&quot;
+
+        return self.gpt_model.query(failure_explanation_prompt)
+</code></pre>
+<h3 id="1972-interactive-planning">19.7.2 Interactive Planning</h3>
+<p>Allow humans to interact with and guide the planning process.</p>
+<pre><code class="language-python">class InteractivePlanner:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+        self.planning_session = None
+
+    def start_planning_session(self, task, user_preferences):
+        &quot;&quot;&quot;Start interactive planning session&quot;&quot;&quot;
+        self.planning_session = {
+            &quot;task&quot;: task,
+            &quot;preferences&quot;: user_preferences,
+            &quot;iterations&quot;: [],
+            &quot;feedback&quot;: []
+        }
+
+        # Generate initial plan
+        initial_plan = self.generate_initial_plan(task, user_preferences)
+        self.planning_session[&quot;current_plan&quot;] = initial_plan
+
+        return self.explain_current_plan()
+
+    def incorporate_feedback(self, feedback_type, details):
+        &quot;&quot;&quot;Incorporate user feedback into plan&quot;&quot;&quot;
+        self.planning_session[&quot;feedback&quot;].append({
+            &quot;type&quot;: feedback_type,
+            &quot;details&quot;: details,
+            &quot;timestamp&quot;: time.time()
+        })
+
+        # Modify plan based on feedback
+        if feedback_type == &quot;modify_action&quot;:
+            modified_plan = self.modify_action(details)
+        elif feedback_type == &quot;add_constraint&quot;:
+            modified_plan = self.add_constraint(details)
+        elif feedback_type == &quot;change_approach&quot;:
+            modified_plan = self.change_approach(details)
+        else:
+            modified_plan = self.general_refinement(details)
+
+        self.planning_session[&quot;current_plan&quot;] = modified_plan
+        return modified_plan
+
+    def suggest_improvements(self):
+        &quot;&quot;&quot;Suggest improvements to current plan&quot;&quot;&quot;
+        improvement_prompt = f&quot;&quot;&quot;Current plan: {self.format_plan(self.planning_session[&#x27;current_plan&#x27;])}
+User preferences: {self.planning_session[&#x27;preferences&#x27;]}
+Previous feedback: {self.planning_session[&#x27;feedback&#x27;]}
+
+Suggest improvements considering:
+1. User preferences and constraints
+2. Past feedback and iterations
+3. Alternative approaches not yet considered
+4. Optimizations for efficiency or safety
+
+Improvement suggestions:&quot;&quot;&quot;
+
+        return self.gpt_model.query(improvement_prompt)
+</code></pre>
+<h2 id="198-safety-and-constraint-handling">19.8 Safety and Constraint Handling</h2>
+<h3 id="1981-safety-constraint-integration">19.8.1 Safety Constraint Integration</h3>
+<p>Ensure all plans satisfy safety constraints.</p>
+<pre><code class="language-python">class SafetyAwarePlanner:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+        self.safety_constraints = self.load_safety_constraints()
+        self.safety_validator = SafetyValidator()
+
+    def generate_safe_plan(self, task, constraints):
+        &quot;&quot;&quot;Generate plan that satisfies all safety constraints&quot;&quot;&quot;
+        # Add safety constraints to task specification
+        constrained_task = self.add_safety_constraints(task, constraints)
+
+        # Generate initial plan
+        initial_plan = self.gpt_model.generate_plan(constrained_task)
+
+        # Validate safety
+        safety_check = self.safety_validator.validate(initial_plan)
+
+        if safety_check[&quot;safe&quot;]:
+            return initial_plan
+        else:
+            # Refine plan to address safety issues
+            return self.refine_for_safety(initial_plan, safety_check[&quot;violations&quot;])
+
+    def add_safety_constraints(self, task, constraints):
+        &quot;&quot;&quot;Add safety constraints to task specification&quot;&quot;&quot;
+        constrained_prompt = f&quot;&quot;&quot;Original task: {task}
+
+Safety constraints to enforce:
+{self.format_constraints(constraints)}
+
+Generate a plan that:
+1. Never violates these constraints
+2. Has built-in safety checks
+3. Includes verification steps
+4. Has emergency procedures
+
+Task with safety requirements:&quot;&quot;&quot;
+
+        return constrained_prompt
+
+    def refine_for_safety(self, plan, violations):
+        &quot;&quot;&quot;Refine plan to address safety violations&quot;&quot;&quot;
+        refinement_prompt = f&quot;&quot;&quot;Current plan has safety violations:
+
+Plan: {self.format_plan(plan)}
+Violations: {violations}
+
+Modify the plan to:
+1. Eliminate all safety violations
+2. Add redundant safety checks
+3. Include fail-safe mechanisms
+4. Maintain task feasibility
+
+Refined safe plan:&quot;&quot;&quot;
+
+        return self.gpt_model.query(refinement_prompt)
+</code></pre>
+<h3 id="1982-runtime-monitoring-and-adaptation">19.8.2 Runtime Monitoring and Adaptation</h3>
+<p>Monitor plan execution and adapt to maintain safety.</p>
+<pre><code class="language-python">class RuntimeSafetyMonitor:
+    def __init__(self, safety_planner):
+        self.planner = safety_planner
+        self.monitoring_active = False
+
+    def monitor_execution(self, plan):
+        &quot;&quot;&quot;Monitor plan execution for safety&quot;&quot;&quot;
+        self.monitoring_active = True
+
+        for action in plan[&quot;actions&quot;]:
+            # Pre-action safety check
+            if not self.pre_action_check(action):
+                self.handle_safety_violation(action, &quot;pre-execution&quot;)
+                break
+
+            # Execute with monitoring
+            execution_result = self.execute_with_monitoring(action)
+
+            # Post-action verification
+            if not self.post_action_verification(action, execution_result):
+                self.handle_safety_violation(action, &quot;post-execution&quot;)
+                break
+
+        self.monitoring_active = False
+
+    def handle_safety_violation(self, action, stage):
+        &quot;&quot;&quot;Handle detected safety violation&quot;&quot;&quot;
+        # Stop execution
+        self.emergency_stop()
+
+        # Analyze violation
+        analysis = self.analyze_violation(action, stage)
+
+        # Generate recovery plan
+        recovery_plan = self.planner.generate_recovery_plan(analysis)
+
+        return recovery_plan
+
+    def analyze_violation(self, action, stage):
+        &quot;&quot;&quot;Analyze safety violation&quot;&quot;&quot;
+        analysis_prompt = f&quot;&quot;&quot;Safety violation detected:
+
+Action: {action}
+Stage: {stage}
+Current state: {self.get_current_state()}
+
+Analyze:
+1. Why the violation occurred
+2. What assumptions were wrong
+3. System state impact
+4. Recovery requirements
+5. Prevention measures
+
+Violation analysis:&quot;&quot;&quot;
+
+        return self.gpt_model.query(analysis_prompt)
+</code></pre>
+<h2 id="199-domain-specific-applications">19.9 Domain-Specific Applications</h2>
+<h3 id="1991-manufacturing-planning">19.9.1 Manufacturing Planning</h3>
+<pre><code class="language-python">class ManufacturingPlanner:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+        self.manufacturing_knowledge = self.load_manufacturing_knowledge()
+
+    def plan_manufacturing_process(self, product_spec, resources):
+        &quot;&quot;&quot;Plan manufacturing process for product&quot;&quot;&quot;
+        planning_prompt = f&quot;&quot;&quot;Plan manufacturing process for:
+
+Product specification: {product_spec}
+Available resources: {resources}
+Manufacturing constraints: {self.get_manufacturing_constraints()}
+
+Generate process plan including:
+1. Required operations sequence
+2. Resource allocation
+3. Quality control checkpoints
+4. Tooling requirements
+5. Timeline estimation
+6. Risk assessment
+
+Manufacturing plan:&quot;&quot;&quot;
+
+        return self.gpt_model.query(planning_prompt)
+
+    def optimize_production_line(self, current_layout, production_goals):
+        &quot;&quot;&quot;Optimize production line layout and scheduling&quot;&quot;&quot;
+        optimization_prompt = f&quot;&quot;&quot;Optimize this production line:
+
+Current layout: {current_layout}
+Production goals: {production_goals}
+Bottlenecks: {self.identify_bottlenecks()}
+
+Consider:
+1. Workflow efficiency
+2. Resource utilization
+3. Quality improvement
+4. Cost reduction
+5. Flexibility for different products
+
+Optimization recommendations:&quot;&quot;&quot;
+
+        return self.gpt_model.query(optimization_prompt)
+</code></pre>
+<h3 id="1992-healthcare-service-planning">19.9.2 Healthcare Service Planning</h3>
+<pre><code class="language-python">class HealthcarePlanner:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+        self.medical_guidelines = self.load_medical_guidelines()
+
+    def plan_patient_care(self, patient_data, care_goals):
+        &quot;&quot;&quot;Plan patient care using medical guidelines&quot;&quot;&quot;
+        care_prompt = f&quot;&quot;&quot;Patient data: {patient_data}
+Care goals: {care_goals}
+Medical guidelines: {self.medical_guidelines}
+
+Generate care plan including:
+1. Daily care procedures
+2. Medication schedule
+3. Monitoring requirements
+4. Emergency protocols
+5. Progress evaluation
+6. Staff responsibilities
+
+Care plan (must follow medical guidelines):&quot;&quot;&quot;
+
+        return self.gpt_model.query(care_prompt)
+
+    def coordinate_surgical_team(self, surgery_details, team_members):
+        &quot;&quot;&quot;Coordinate surgical team activities&quot;&quot;&quot;
+        coordination_prompt = f&quot;&quot;&quot;Surgery details: {surgery_details}
+Surgical team: {team_members}
+
+Generate coordination plan:
+1. Pre-operative preparation
+2. Team member responsibilities
+3. Communication protocols
+4. Critical decision points
+5. Emergency procedures
+6. Post-operative care
+
+Surgical coordination plan:&quot;&quot;&quot;
+
+        return self.gpt_model.query(coordination_prompt)
+</code></pre>
+<h2 id="1910-future-directions">19.10 Future Directions</h2>
+<h3 id="19101-neuro-symbolic-integration">19.10.1 Neuro-Symbolic Integration</h3>
+<p>Combining neural networks (GPT) with symbolic reasoning for more robust planning.</p>
+<pre><code class="language-python">class NeuroSymbolicPlanner:
+    def __init__(self, gpt_model, symbolic_reasoner):
+        self.neural_planner = gpt_model
+        self.symbolic_reasoner = symbolic_reasoner
+
+    def hybrid_plan(self, task, constraints):
+        &quot;&quot;&quot;Use both neural and symbolic planning&quot;&quot;&quot;
+        # Neural planning for creativity and flexibility
+        neural_plan = self.neural_planner.generate_plan(task, constraints)
+
+        # Symbolic verification for correctness and completeness
+        symbolic_analysis = self.symbolic_reasoner.verify_plan(neural_plan)
+
+        if symbolic_analysis[&quot;valid&quot;]:
+            return neural_plan
+        else:
+            # Use symbolic reasoning to fix issues
+            fixed_plan = self.symbolic_reasoner.fix_plan(
+                neural_plan, symbolic_analysis[&quot;issues&quot;]
+            )
+            return fixed_plan
+
+    def learn_from_symbolic_feedback(self, plan, symbolic_feedback):
+        &quot;&quot;&quot;Use symbolic feedback to improve neural planning&quot;&quot;&quot;
+        # Convert symbolic feedback to natural language
+        nl_feedback = self.symbolic_to_nl(symbolic_feedback)
+
+        # Use feedback to fine-tune neural planner
+        self.neural_planner.learn_from_feedback(plan, nl_feedback)
+</code></pre>
+<h3 id="19102-continuous-learning-from-experience">19.10.2 Continuous Learning from Experience</h3>
+<pre><code class="language-python">class SelfImprovingPlanner:
+    def __init__(self, gpt_model):
+        self.gpt_model = gpt_model
+        self.experience_database = ExperienceDatabase()
+        self.meta_learner = MetaLearner()
+
+    def continuously_improve(self):
+        &quot;&quot;&quot;Continuously improve planning capabilities&quot;&quot;&quot;
+        while True:
+            # Get recent experiences
+            recent_experiences = self.experience_database.get_recent()
+
+            if recent_experiences:
+                # Learn from experiences
+                learning_prompt = self.create_learning_prompt(recent_experiences)
+                insights = self.gpt_model.query(learning_prompt)
+
+                # Update planning strategies
+                self.update_strategies(insights)
+
+                # Meta-learn about learning
+                self.meta_learner.analyze_learning_process(insights)
+
+            # Periodic evaluation
+            self.evaluate_performance()
+
+            # Sleep to avoid constant computation
+            time.sleep(3600)  # Learn every hour
+
+    def create_learning_prompt(self, experiences):
+        &quot;&quot;&quot;Create prompt for learning from experiences&quot;&quot;&quot;
+        return f&quot;&quot;&quot;Learn from these planning experiences:
+
+{self.format_experiences(experiences)}
+
+Identify:
+1. Patterns that lead to success
+2. Common failure modes
+3. Better planning strategies
+4. Domain-specific optimizations
+5. Generalizable principles
+
+Learning insights:&quot;&quot;&quot;
+</code></pre>
+<h2 id="1911-conclusion">19.11 Conclusion</h2>
+<p>GPT-based cognitive planning represents a transformative approach to robotic intelligence, enabling robots to understand complex goals, reason about actions, and adapt to changing circumstances in ways that were previously impossible. The combination of natural language understanding, world knowledge, and reasoning capabilities allows for more flexible, generalizable, and human-like planning behavior.</p>
+<h3 id="key-takeaways">Key Takeaways:</h3>
+<ol>
+<li><strong>GPT architectures</strong> enable sophisticated reasoning and planning capabilities</li>
+<li><strong>Structured prompting</strong> is crucial for eliciting high-quality plans</li>
+<li><strong>Hierarchical decomposition</strong> allows handling of complex, multi-step tasks</li>
+<li><strong>World modeling and mental simulation</strong> enable prediction of action outcomes</li>
+<li><strong>Continuous learning</strong> improves performance over time</li>
+<li><strong>Safety integration</strong> is essential for real-world deployment</li>
+<li><strong>Explainability</strong> builds trust and enables human-robot collaboration</li>
+</ol>
+<h3 id="future-directions">Future Directions:</h3>
+<ul>
+<li><strong>Neuro-symbolic integration</strong> for combining neural flexibility with symbolic rigor</li>
+<li><strong>Multi-agent coordination</strong> for complex collaborative tasks</li>
+<li><strong>Domain specialization</strong> while maintaining general capabilities</li>
+<li><strong>Real-time adaptation</strong> to dynamic environments</li>
+<li><strong>Ethical planning</strong> incorporating moral reasoning and social norms</li>
+</ul>
+<p>As GPT and other foundation models continue to advance, cognitive planning capabilities will become increasingly sophisticated, eventually enabling robots to handle complex, novel tasks with the same flexibility and understanding that humans demonstrate.</p>
+<h2 id="further-reading">Further Reading</h2>
+<ul>
+<li>&quot;Chain-of-Thought Prompting Elicits Reasoning in Large Language Models&quot; (Wei et al., 2022)</li>
+<li>&quot;GPT-4 can plan and reason about physical tasks&quot; (Bubeck et al., 2023)</li>
+<li>&quot;Language Models as Zero-Shot Planners&quot; (Liang et al., 2022)</li>
+<li>&quot;Foundations of Cognitive Robotics&quot; (Vernon et al., 2023)</li>
+<li>&quot;Explainable AI for Robotics&quot; (Adriaensen et al., 2024)</li>
+</ul>
+<h2 id="exercises">Exercises</h2>
+<h3 id="exercise-1-prompt-engineering-for-planning">Exercise 1: Prompt Engineering for Planning</h3>
+<p>Design and evaluate different prompting strategies for GPT-based planning. Compare chain-of-thought vs. direct prompting approaches.</p>
+<h3 id="exercise-2-plan-validation">Exercise 2: Plan Validation</h3>
+<p>Implement a system that validates GPT-generated plans against safety constraints and physical laws.</p>
+<h3 id="exercise-3-hierarchical-planning">Exercise 3: Hierarchical Planning</h3>
+<p>Create a system that automatically discovers task hierarchies from natural language instructions.</p>
+<h3 id="exercise-4-adaptive-planning">Exercise 4: Adaptive Planning</h3>
+<p>Implement a planner that learns from execution failures and adapts its planning strategies.</p>
+<h3 id="exercise-5-multi-agent-coordination">Exercise 5: Multi-Agent Coordination</h3>
+<p>Design a GPT-based system for coordinating multiple robots working on a shared task.</p></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/NaumanNavaid/ai-native-textbook-docusaurus/tree/main/docs/part-5-embodied-intelligence/chapter-19-cognitive-planning-with-gpt.mdx" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>Edit this page</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-18-voice-to-action-pipelines-whisper"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Chapter 18: Voice-to-Action Pipelines (Whisper)</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-20-the-autonomous-humanoid"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Chapter 20: The Autonomous Humanoid</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#191-introduction-to-cognitive-planning" class="table-of-contents__link toc-highlight">19.1 Introduction to Cognitive Planning</a><ul><li><a href="#1911-the-evolution-of-robotic-planning" class="table-of-contents__link toc-highlight">19.1.1 The Evolution of Robotic Planning</a></li><li><a href="#1912-why-gpt-for-planning" class="table-of-contents__link toc-highlight">19.1.2 Why GPT for Planning?</a></li><li><a href="#1913-levels-of-cognitive-planning" class="table-of-contents__link toc-highlight">19.1.3 Levels of Cognitive Planning</a></li></ul></li><li><a href="#192-gpt-architecture-for-planning" class="table-of-contents__link toc-highlight">19.2 GPT Architecture for Planning</a><ul><li><a href="#1921-transformer-based-reasoning" class="table-of-contents__link toc-highlight">19.2.1 Transformer-Based Reasoning</a></li><li><a href="#1922-structured-planning-prompts" class="table-of-contents__link toc-highlight">19.2.2 Structured Planning Prompts</a></li><li><a href="#1923-chain-of-thought-planning" class="table-of-contents__link toc-highlight">19.2.3 Chain-of-Thought Planning</a></li></ul></li><li><a href="#193-task-decomposition-and-goal-hierarchies" class="table-of-contents__link toc-highlight">19.3 Task Decomposition and Goal Hierarchies</a><ul><li><a href="#1931-hierarchical-task-networks" class="table-of-contents__link toc-highlight">19.3.1 Hierarchical Task Networks</a></li><li><a href="#1932-goal-oriented-planning" class="table-of-contents__link toc-highlight">19.3.2 Goal-Oriented Planning</a></li></ul></li><li><a href="#194-world-modeling-and-simulation" class="table-of-contents__link toc-highlight">19.4 World Modeling and Simulation</a><ul><li><a href="#1941-mental-simulation" class="table-of-contents__link toc-highlight">19.4.1 Mental Simulation</a></li><li><a href="#1942-commonsense-reasoning" class="table-of-contents__link toc-highlight">19.4.2 Commonsense Reasoning</a></li></ul></li><li><a href="#195-adaptive-planning-and-learning" class="table-of-contents__link toc-highlight">19.5 Adaptive Planning and Learning</a><ul><li><a href="#1951-plan-adaptation-based-on-feedback" class="table-of-contents__link toc-highlight">19.5.1 Plan Adaptation Based on Feedback</a></li><li><a href="#1952-continuous-learning" class="table-of-contents__link toc-highlight">19.5.2 Continuous Learning</a></li></ul></li><li><a href="#196-multi-agent-planning" class="table-of-contents__link toc-highlight">19.6 Multi-Agent Planning</a><ul><li><a href="#1961-coordination-and-communication" class="table-of-contents__link toc-highlight">19.6.1 Coordination and Communication</a></li><li><a href="#1962-negotiation-and-conflict-resolution" class="table-of-contents__link toc-highlight">19.6.2 Negotiation and Conflict Resolution</a></li></ul></li><li><a href="#197-explainable-planning" class="table-of-contents__link toc-highlight">19.7 Explainable Planning</a><ul><li><a href="#1911-plan-explanations" class="table-of-contents__link toc-highlight">19.1.1 Plan Explanations</a></li><li><a href="#1972-interactive-planning" class="table-of-contents__link toc-highlight">19.7.2 Interactive Planning</a></li></ul></li><li><a href="#198-safety-and-constraint-handling" class="table-of-contents__link toc-highlight">19.8 Safety and Constraint Handling</a><ul><li><a href="#1981-safety-constraint-integration" class="table-of-contents__link toc-highlight">19.8.1 Safety Constraint Integration</a></li><li><a href="#1982-runtime-monitoring-and-adaptation" class="table-of-contents__link toc-highlight">19.8.2 Runtime Monitoring and Adaptation</a></li></ul></li><li><a href="#199-domain-specific-applications" class="table-of-contents__link toc-highlight">19.9 Domain-Specific Applications</a><ul><li><a href="#1991-manufacturing-planning" class="table-of-contents__link toc-highlight">19.9.1 Manufacturing Planning</a></li><li><a href="#1992-healthcare-service-planning" class="table-of-contents__link toc-highlight">19.9.2 Healthcare Service Planning</a></li></ul></li><li><a href="#1910-future-directions" class="table-of-contents__link toc-highlight">19.10 Future Directions</a><ul><li><a href="#19101-neuro-symbolic-integration" class="table-of-contents__link toc-highlight">19.10.1 Neuro-Symbolic Integration</a></li><li><a href="#19102-continuous-learning-from-experience" class="table-of-contents__link toc-highlight">19.10.2 Continuous Learning from Experience</a></li></ul></li><li><a href="#1911-conclusion" class="table-of-contents__link toc-highlight">19.11 Conclusion</a><ul><li><a href="#key-takeaways" class="table-of-contents__link toc-highlight">Key Takeaways:</a></li><li><a href="#future-directions" class="table-of-contents__link toc-highlight">Future Directions:</a></li></ul></li><li><a href="#further-reading" class="table-of-contents__link toc-highlight">Further Reading</a></li><li><a href="#exercises" class="table-of-contents__link toc-highlight">Exercises</a><ul><li><a href="#exercise-1-prompt-engineering-for-planning" class="table-of-contents__link toc-highlight">Exercise 1: Prompt Engineering for Planning</a></li><li><a href="#exercise-2-plan-validation" class="table-of-contents__link toc-highlight">Exercise 2: Plan Validation</a></li><li><a href="#exercise-3-hierarchical-planning" class="table-of-contents__link toc-highlight">Exercise 3: Hierarchical Planning</a></li><li><a href="#exercise-4-adaptive-planning" class="table-of-contents__link toc-highlight">Exercise 4: Adaptive Planning</a></li><li><a href="#exercise-5-multi-agent-coordination" class="table-of-contents__link toc-highlight">Exercise 5: Multi-Agent Coordination</a></li></ul></li></ul></div></div></div></div></main></div></div></div><footer class="nm-custom-footer" data-testid="custom-footer"><div class="nm-footer-container"><div class="nm-footer-grid"><div class="nm-footer-brand"><div class="nm-footer-logo"><h3>Physical AI &amp; Robotics</h3><p>An AI-Native Engineering Textbook</p></div><p class="nm-footer-description">Master the convergence of artificial intelligence and physical robotics through comprehensive, hands-on learning experiences.</p><div class="nm-footer-stats"><div class="nm-stat"><div class="nm-stat-number">1000+</div><div class="nm-stat-label">Pages</div></div><div class="nm-stat"><div class="nm-stat-number">50+</div><div class="nm-stat-label">Exercises</div></div><div class="nm-stat"><div class="nm-stat-number">24/7</div><div class="nm-stat-label">Access</div></div></div></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Resources</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/docs/part-1-foundations/chapter-1-what-is-physical-ai">Foundations</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-2-ros/chapter-4-ros2-fundamentals">ROS &amp; Navigation</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-4-perception/chapter-13-computer-vision-robots">Computer Vision</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models">Machine Learning</a></li><li><a href="/ai-native-textbook-docusaurus/docs/part-3-simulation/chapter-7-gazebo-physics-simulation">Simulation &amp; Control</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Learning Paths</h4><ul class="nm-footer-links"><li><a href="/ai-native-textbook-docusaurus/beginner">Beginner Track</a></li><li><a href="/ai-native-textbook-docusaurus/intermediate">Intermediate Track</a></li><li><a href="/ai-native-textbook-docusaurus/advanced">Advanced Track</a></li><li><a href="/ai-native-textbook-docusaurus/projects">Hands-on Projects</a></li><li><a href="/ai-native-textbook-docusaurus/certification">Certification</a></li></ul></div><div class="nm-footer-section"><h4 class="nm-footer-heading">Community</h4><ul class="nm-footer-links"><li><a href="https://github.com/your-username/ai-native-textbook">GitHub</a></li><li><a href="https://discord.gg/your-server">Discord</a></li><li><a href="https://forum.example.com">Forum</a></li><li><a href="/ai-native-textbook-docusaurus/contributors">Contributors</a></li><li><a href="/ai-native-textbook-docusaurus/blog">Blog</a></li></ul></div><div class="nm-footer-section nm-footer-newsletter"><h4 class="nm-footer-heading">Stay Updated</h4><p class="nm-footer-subtext">Get the latest updates and exclusive content</p><div class="nm-newsletter-form"><input type="email" placeholder="Enter your email" class="nm-newsletter-input"><button type="button" class="nm-newsletter-button">Subscribe</button></div><div class="nm-footer-social"><a href="https://github.com" class="nm-social-link" aria-label="GitHub"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path></svg></a><a href="https://twitter.com" class="nm-social-link" aria-label="Twitter"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg></a><a href="https://linkedin.com" class="nm-social-link" aria-label="LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg></a></div></div></div><div class="nm-footer-bottom"><div class="nm-footer-bottom-left"><span class="nm-footer-copyright">© <!-- -->2025<!-- --> AI-Native Textbook. All rights reserved. Created by SNN Studio.</span></div><div class="nm-footer-bottom-right"><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/privacy">Privacy Policy</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/terms">Terms of Service</a><span class="nm-footer-separator">•</span><a class="nm-footer-link" href="/ai-native-textbook-docusaurus/code-of-conduct">Code of Conduct</a></div></div></div></footer><div class="chat-widget"><button class="chat-widget-button" aria-label="Open chat"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></button></div></div>
+</body>
+</html>
