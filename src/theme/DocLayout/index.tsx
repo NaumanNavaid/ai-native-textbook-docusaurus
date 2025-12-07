@@ -9,8 +9,14 @@ export default function DocLayout(props): React.JSX.Element {
   const {pathname} = useLocation();
 
   // Use custom book layout for chapter documentation pages
-  // Check if it's a chapter page (contains 'chapter-' in the path)
-  const isChapterPage = pathname.includes('/docs/part-') && pathname.includes('chapter-');
+  // Check if it's a chapter page (contains 'chapter-' or 'part-' in the path)
+  const isChapterPage = pathname.includes('/docs/part-') &&
+                        (pathname.includes('chapter-') ||
+                         pathname.includes('/part-1-') ||
+                         pathname.includes('/part-2-') ||
+                         pathname.includes('/part-3-') ||
+                         pathname.includes('/part-4-') ||
+                         pathname.includes('/part-5-'));
 
   // Exclude special pages from book layout
   const isSpecialPage = pathname.includes('/intro') ||

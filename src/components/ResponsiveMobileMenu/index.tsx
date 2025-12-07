@@ -4,6 +4,7 @@ import { useLocation } from '@docusaurus/router';
 import { usePageDetection, NavItem } from '../../hooks/usePageDetection';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronRight, Home, BookOpen, FileText, Hash, X, Menu } from 'lucide-react';
+import BookSidebar from '../../theme/BookLayout/BookSidebar';
 import './styles.css';
 
 interface ResponsiveMobileMenuProps {
@@ -20,6 +21,15 @@ export default function ResponsiveMobileMenu({
   const location = useLocation();
   const { pageType, contextualNav, isBookPage } = usePageDetection();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+
+  // Check if we're on a chapter page (book layout)
+  const isChapterPage = location.pathname.includes('/docs/part-') &&
+                       (location.pathname.includes('chapter-') ||
+                        location.pathname.includes('/part-1-') ||
+                        location.pathname.includes('/part-2-') ||
+                        location.pathname.includes('/part-3-') ||
+                        location.pathname.includes('/part-4-') ||
+                        location.pathname.includes('/part-5-'));
 
   // Auto-expand current category
   useEffect(() => {
@@ -184,7 +194,7 @@ export default function ResponsiveMobileMenu({
               <div className="responsive-menu-title">
                 <Menu className="w-5 h-5" />
                 <span>
-                  {isBookPage ? 'Book Contents' : pageType === 'docs' ? 'Documentation' : 'Menu'}
+                  {isChapterPage || isBookPage ? 'Book Contents' : pageType === 'docs' ? 'Documentation' : 'Menu'}
                 </span>
                 <button
                   className="responsive-menu-close-button"
@@ -198,9 +208,17 @@ export default function ResponsiveMobileMenu({
 
             {/* Menu Content */}
             <div className="responsive-menu-content">
-              <div className="responsive-menu-nav">
-                {contextualNav.map(item => renderNavItem(item))}
-              </div>
+              {isChapterPage || isBookPage ? (
+                // Show BookSidebar for chapter pages
+                <div className="mobile-book-sidebar">
+                  <BookSidebar />
+                </div>
+              ) : (
+                // Show regular navigation for other pages
+                <div className="responsive-menu-nav">
+                  {contextualNav.map(item => renderNavItem(item))}
+                </div>
+              )}
             </div>
 
             {/* Footer */}

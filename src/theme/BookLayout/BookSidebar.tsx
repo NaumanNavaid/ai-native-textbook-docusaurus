@@ -9,7 +9,7 @@ const bookStructure = [
   {
     part: 1,
     title: 'Foundations',
-    icon: <Globe className="w-4 h-4" />,
+    icon: Globe,
     chapters: [
       { num: 1, title: 'What is Physical AI?', slug: '/docs/part-1-foundations/chapter-1-what-is-physical-ai' },
       { num: 2, title: 'Embodied Intelligence', slug: '/docs/part-1-foundations/chapter-2-embodied-intelligence' },
@@ -19,7 +19,7 @@ const bookStructure = [
   {
     part: 2,
     title: 'ROS Fundamentals',
-    icon: <Cpu className="w-4 h-4" />,
+    icon: Cpu,
     chapters: [
       { num: 4, title: 'ROS2 Fundamentals', slug: '/docs/part-2-ros/chapter-4-ros2-fundamentals' },
       { num: 5, title: 'Nodes, Topics, Services & Actions', slug: '/docs/part-2-ros/chapter-5-nodes-topics-services-actions' },
@@ -29,7 +29,7 @@ const bookStructure = [
   {
     part: 3,
     title: 'Simulation & Digital Twins',
-    icon: <Zap className="w-4 h-4" />,
+    icon: Zap,
     chapters: [
       { num: 7, title: 'Gazebo Physics Simulation', slug: '/docs/part-3-simulation/chapter-7-gazebo-physics-simulation' },
       { num: 8, title: 'Unity Robotics Visualization', slug: '/docs/part-3-simulation/chapter-8-unity-robotics-visualization' },
@@ -42,7 +42,7 @@ const bookStructure = [
   {
     part: 4,
     title: 'Perception & State Estimation',
-    icon: <Brain className="w-4 h-4" />,
+    icon: Brain,
     chapters: [
       { num: 13, title: 'Computer Vision for Robots', slug: '/docs/part-4-perception/chapter-13-computer-vision-robots' },
       { num: 14, title: 'Sensor Fusion & State Estimation', slug: '/docs/part-4-perception/chapter-14-sensor-fusion-state-estimation' },
@@ -53,7 +53,7 @@ const bookStructure = [
   {
     part: 5,
     title: 'Embodied Intelligence',
-    icon: <CircuitBoard className="w-4 h-4" />,
+    icon: CircuitBoard,
     chapters: [
       { num: 17, title: 'Vision-Language-Action Models', slug: '/docs/part-5-embodied-intelligence/chapter-17-vision-language-action-models' },
       { num: 18, title: 'Voice-to-Action Pipelines (Whisper)', slug: '/docs/part-5-embodied-intelligence/chapter-18-voice-to-action-pipelines-whisper' },
@@ -128,7 +128,7 @@ export default function BookSidebar(): React.JSX.Element {
                 aria-expanded={isExpanded}
               >
                 <div className={styles.partHeaderContent}>
-                  <span className={styles.partIcon}>{part.icon}</span>
+                  <span className={styles.partIcon}>{React.createElement(part.icon, { className: "w-4 h-4" })}</span>
                   <span className={styles.partTitle}>
                     Part {part.part}: {part.title}
                   </span>
