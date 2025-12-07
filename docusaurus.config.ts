@@ -5,6 +5,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+// Config updated for deployment on December 7, 2025
 
 const config: Config = {
   title: 'Physical AI & Humanoid Robotics',
