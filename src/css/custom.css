@@ -300,6 +300,7 @@ hr {
   background: var(--ifm-navbar-background-color);
   border-bottom: 1px solid rgba(0, 217, 255, 0.1);
   box-shadow: var(--ifm-navbar-shadow);
+  margin-bottom: 3rem;
 }
 
 /* Hide hamburger menu on desktop */
@@ -311,6 +312,10 @@ hr {
 
 /* Mobile hamburger menu improvements */
 @media (max-width: 996px) {
+  .navbar {
+    margin-bottom: 2rem;
+  }
+
   .navbar__toggle {
     display: flex !important;
     align-items: center;
@@ -588,6 +593,39 @@ hr {
     padding: 0.5rem;
     min-width: 100px;
   }
+
+  /* Mobile spacing adjustments */
+  .markdown {
+    padding: 0 1rem;
+  }
+
+  main {
+    padding-bottom: 3rem;
+  }
+
+  article {
+    padding: 1.5rem 0;
+  }
+
+  .markdown h1,
+  .markdown h2,
+  .markdown h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .markdown p {
+    margin-bottom: 1rem;
+  }
+
+  .card {
+    margin: 1rem 0;
+  }
+
+  .callout,
+  .admonition {
+    margin: 1.5rem 0;
+  }
 }
 
 /* Neo-Machina Specific Components */
@@ -731,11 +769,59 @@ hr {
 /* Markdown page specific styles */
 .markdown {
   max-width: none;
-  padding: 0;
+  padding: 0 2rem;
 }
 
 .markdown h1:first-child {
   margin-top: 0;
+}
+
+/* Add more breathing room to main content */
+main {
+  padding-bottom: 4rem;
+}
+
+/* Enhanced spacing for sections */
+article {
+  padding: 2rem 0;
+}
+
+/* Increase spacing between elements */
+.markdown > * + * {
+  margin-top: 1.5rem;
+}
+
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+}
+
+.markdown p {
+  margin-bottom: 1.25rem;
+  line-height: 1.8;
+}
+
+/* Enhanced card spacing */
+.card {
+  margin: 1.5rem 0;
+}
+
+/* Better spacing for lists */
+.markdown ul,
+.markdown ol {
+  margin-bottom: 1.5rem;
+}
+
+.markdown li {
+  margin-bottom: 0.75rem;
+}
+
+/* Improved callout spacing */
+.callout,
+.admonition {
+  margin: 2rem 0;
 }
 
 /* Show custom footer even when book layout is active */

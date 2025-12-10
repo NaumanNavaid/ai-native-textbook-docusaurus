@@ -23,6 +23,7 @@
   background: #0b0b0c;
   border-bottom: 1px solid rgba(0, 217, 255, 0.1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 3rem;
 }
 
 .headerContent {
@@ -263,6 +264,10 @@
 }
 
 @media (max-width: 768px) {
+  .bookHeader {
+    margin-bottom: 2rem;
+  }
+
   .headerContent {
     padding: 1rem;
   }

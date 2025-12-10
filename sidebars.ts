@@ -62,6 +62,7 @@ const sidebars: SidebarsConfig = {
         'part-5-embodied-intelligence/chapter-18-voice-to-action-pipelines-whisper',
         'part-5-embodied-intelligence/chapter-19-cognitive-planning-with-gpt',
         'part-5-embodied-intelligence/chapter-20-the-autonomous-humanoid',
+        'part-5-embodied-intelligence/chapter-21-ethical-considerations-in-embodied-ai',
       ],
     },
   ],

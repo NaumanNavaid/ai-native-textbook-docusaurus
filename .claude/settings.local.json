@@ -22,7 +22,9 @@
       "Bash(npm run deploy:*)",
       "Bash(set:*)",
       "Bash($env:GIT_USER=\"NaumanNavaid\")",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(curl:*)",
+      "Bash(.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks)"
     ],
     "deny": [],
     "ask": []

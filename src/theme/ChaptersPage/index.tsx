@@ -188,6 +188,13 @@ const bookStructure = [
         duration: '120 min',
         difficulty: 'Expert'
       },
+       {
+        num: 21,
+        title: 'Ethical Considerations in Embodied AI',
+        slug: '/docs/part-5-embodied-intelligence/chapter-21-ethical-considerations-in-embodied-ai',
+        duration: '90 min',
+        difficulty: 'Expert'
+      },
     ]
   },
 ];

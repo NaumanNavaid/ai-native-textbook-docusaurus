@@ -43,20 +43,41 @@ export default function ChatWidget(): React.JSX.Element {
     setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
     setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(() => {
-      const responses = [
-        'That\'s a great question! Let me help you understand that concept better.',
-        'I can guide you through this topic step by step.',
-        'This relates to our discussion on robotics and AI integration.',
-        'Let me provide some additional context for this topic.',
-        'Would you like me to show you a practical example of this concept?'
-      ];
+    try {
+      // Call the API at the /chat endpoint
+      const response = await fetch('https://rag-chatbot-render.onrender.com/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: userMessage,
+          stream: false
+        }),
+      });
 
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-      setMessages(prev => [...prev, { role: 'assistant', content: randomResponse }]);
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // Add the assistant's response
+      if (data.response) {
+        setMessages(prev => [...prev, { role: 'assistant', content: data.response }]);
+      } else {
+        throw new Error('Invalid response format from API');
+      }
+    } catch (error) {
+      console.error('Error calling API:', error);
+      // Fallback response in case of error
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: 'Sorry, I encountered an error connecting to the API. Please try again later.'
+      }]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

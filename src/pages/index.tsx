@@ -1,8 +1,47 @@
 import React from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
-import { BookOpen, Cpu, Zap, Globe, Brain, CircuitBoard, ArrowRight, Play, Github } from 'lucide-react';
+import { BookOpen, Cpu, Zap, Globe, Brain, CircuitBoard, ArrowRight, Play, Github, Clock, Star } from 'lucide-react';
 import styles from './index.module.css';
+
+const featuredChapters = [
+  {
+    num: 1,
+    title: 'What is Physical AI?',
+    slug: '/docs/part-1-foundations/chapter-1-what-is-physical-ai',
+    duration: '45 min',
+    difficulty: 'Beginner',
+    description: 'Introduction to the concept of physical AI and embodied intelligence',
+    icon: <Globe className="w-6 h-6" />
+  },
+  {
+    num: 7,
+    title: 'Gazebo Physics Simulation',
+    slug: '/docs/part-3-simulation/chapter-7-gazebo-physics-simulation',
+    duration: '100 min',
+    difficulty: 'Advanced',
+    description: 'Create realistic physics simulations for robotic systems',
+    icon: <Zap className="w-6 h-6" />
+  },
+  {
+    num: 13,
+    title: 'Computer Vision for Robots',
+    slug: '/docs/part-4-perception/chapter-13-computer-vision-robots',
+    duration: '115 min',
+    difficulty: 'Advanced',
+    description: 'Implement vision systems that allow robots to understand their environment',
+    icon: <Brain className="w-6 h-6" />
+  },
+  {
+    num: 20,
+    title: 'The Autonomous Humanoid',
+    slug: '/docs/part-5-embodied-intelligence/chapter-20-the-autonomous-humanoid',
+    duration: '120 min',
+    difficulty: 'Expert',
+    description: 'Build complete autonomous humanoid robot systems',
+    icon: <CircuitBoard className="w-6 h-6" />
+  }
+];
 
 export default function Home(): React.JSX.Element {
   return (
@@ -47,7 +86,7 @@ export default function Home(): React.JSX.Element {
         <div className={styles.featuresContainer}>
           <h2 className={styles.sectionTitle}>What You'll Learn</h2>
           <div className={styles.featuresGrid}>
-            <div className={styles.featureCard}>
+            <Link to="/parts#part-1" className={styles.featureCard}>
               <div className={styles.featureIcon}>
                 <Globe className="w-8 h-8" />
               </div>
@@ -60,9 +99,10 @@ export default function Home(): React.JSX.Element {
                 <li>Sensors & Actuators</li>
                 <li>Physical Limits</li>
               </ul>
-            </div>
+              <ArrowRight className={styles.featureArrow} />
+            </Link>
 
-            <div className={styles.featureCard}>
+            <Link to="/parts#part-2" className={styles.featureCard}>
               <div className={styles.featureIcon}>
                 <Cpu className="w-8 h-8" />
               </div>
@@ -75,9 +115,10 @@ export default function Home(): React.JSX.Element {
                 <li>Nodes & Communication</li>
                 <li>URDF & TF Trees</li>
               </ul>
-            </div>
+              <ArrowRight className={styles.featureArrow} />
+            </Link>
 
-            <div className={styles.featureCard}>
+            <Link to="/parts#part-3" className={styles.featureCard}>
               <div className={styles.featureIcon}>
                 <Zap className="w-8 h-8" />
               </div>
@@ -90,9 +131,10 @@ export default function Home(): React.JSX.Element {
                 <li>Unity Robotics</li>
                 <li>NVIDIA Isaac</li>
               </ul>
-            </div>
+              <ArrowRight className={styles.featureArrow} />
+            </Link>
 
-            <div className={styles.featureCard}>
+            <Link to="/parts#part-4" className={styles.featureCard}>
               <div className={styles.featureIcon}>
                 <Brain className="w-8 h-8" />
               </div>
@@ -105,9 +147,10 @@ export default function Home(): React.JSX.Element {
                 <li>Sensor Fusion</li>
                 <li>SLAM & Navigation</li>
               </ul>
-            </div>
+              <ArrowRight className={styles.featureArrow} />
+            </Link>
 
-            <div className={styles.featureCard}>
+            <Link to="/parts#part-5" className={styles.featureCard}>
               <div className={styles.featureIcon}>
                 <CircuitBoard className="w-8 h-8" />
               </div>
@@ -120,22 +163,65 @@ export default function Home(): React.JSX.Element {
                 <li>Voice-to-Action</li>
                 <li>Cognitive Planning</li>
               </ul>
-            </div>
+              <ArrowRight className={styles.featureArrow} />
+            </Link>
 
-            <div className={styles.featureCard}>
+            <Link to="/chapters" className={styles.featureCard}>
               <div className={styles.featureIcon}>
                 <BookOpen className="w-8 h-8" />
               </div>
-              <h3 className={styles.featureTitle}>Hands-on Projects</h3>
+              <h3 className={styles.featureTitle}>All Chapters</h3>
               <p className={styles.featureDescription}>
-                Apply your knowledge through practical projects and real-world applications.
+                Explore all 21 chapters and dive deep into specific topics of interest.
               </p>
               <ul className={styles.featureList}>
-                <li>Build a Robot Arm</li>
-                <li>Create a Digital Twin</li>
-                <li>Deploy Humanoid Systems</li>
+                <li>Browse by Chapter</li>
+                <li>Track Progress</li>
+                <li>Hands-on Examples</li>
               </ul>
-            </div>
+              <ArrowRight className={styles.featureArrow} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.chaptersSection}>
+        <div className={styles.chaptersContainer}>
+          <h2 className={styles.sectionTitle}>Featured Chapters</h2>
+          <p className={styles.sectionSubtitle}>
+            Start your journey with our most popular chapters, covering key concepts from foundations to advanced topics
+          </p>
+          <div className={styles.chaptersGrid}>
+            {featuredChapters.map((chapter) => (
+              <Link key={chapter.num} to={chapter.slug} className={styles.chapterCard}>
+                <div className={styles.chapterHeader}>
+                  <div className={styles.chapterIcon}>
+                    {chapter.icon}
+                  </div>
+                  <div className={styles.chapterMeta}>
+                    <span className={styles.chapterNumber}>Chapter {chapter.num}</span>
+                    <span className={`${styles.difficulty} ${styles[chapter.difficulty.toLowerCase()]}`}>
+                      {chapter.difficulty}
+                    </span>
+                  </div>
+                </div>
+                <h3 className={styles.chapterTitle}>{chapter.title}</h3>
+                <p className={styles.chapterDescription}>{chapter.description}</p>
+                <div className={styles.chapterFooter}>
+                  <span className={styles.duration}>
+                    <Clock className="w-4 h-4" />
+                    {chapter.duration}
+                  </span>
+                  <ArrowRight className={styles.arrowIcon} />
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div className={styles.viewAllChapters}>
+            <Link to="/chapters" className={styles.viewAllButton}>
+              View All 21 Chapters
+              <ArrowRight className="w-5 h-5" />
+            </Link>
           </div>
         </div>
       </section>
@@ -163,7 +249,7 @@ export default function Home(): React.JSX.Element {
           </div>
           <div className={styles.stats}>
             <div className={styles.stat}>
-              <span className={styles.statNumber}>20</span>
+              <span className={styles.statNumber}>21</span>
               <span className={styles.statLabel}>Chapters</span>
             </div>
             <div className={styles.stat}>

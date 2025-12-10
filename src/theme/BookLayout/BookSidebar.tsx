@@ -59,6 +59,7 @@ const bookStructure = [
       { num: 18, title: 'Voice-to-Action Pipelines (Whisper)', slug: '/docs/part-5-embodied-intelligence/chapter-18-voice-to-action-pipelines-whisper' },
       { num: 19, title: 'Cognitive Planning with GPT', slug: '/docs/part-5-embodied-intelligence/chapter-19-cognitive-planning-with-gpt' },
       { num: 20, title: 'The Autonomous Humanoid', slug: '/docs/part-5-embodied-intelligence/chapter-20-the-autonomous-humanoid' },
+      { num: 21, title: 'Ethical Considerations in Embodied AI', slug: '/docs/part-5-embodied-intelligence/chapter-21-ethical-considerations-in-embodied-ai' },
     ]
   },
 ];
