@@ -301,14 +301,24 @@
 /* Ensure content doesn't hide behind fixed navbar */
 main,
 #__docusaurus > div > main,
-.markdown {
+#__docusaurus > div > div > main,
+#__docusaurus > main,
+.markdown,
+.docPage,
+.docs-wrapper,
+.main-wrapper {
   padding-top: 64px !important;
 }
 
 @media (max-width: 480px) {
   main,
  #__docusaurus > div > main,
- .markdown {
+ .markdown,
+  #__docusaurus > div > div > main,
+  #__docusaurus > main,
+  .docPage,
+  .docs-wrapper,
+  .main-wrapper {
     padding-top: 56px !important;
   }
 }
