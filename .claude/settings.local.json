@@ -25,7 +25,9 @@
       "Bash(node:*)",
       "Bash(curl:*)",
       "Bash(.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(cross-env GIT_USER=NaumanNavaid npm run deploy:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

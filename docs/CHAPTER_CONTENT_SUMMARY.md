@@ -18,21 +18,17 @@
 9. **NVIDIA Isaac Sim & Synthetic Data** - AI-based simulation, synthetic data generation
 
 ### Part IV: Perception & Navigation
-10. **Computer Vision for Robots** - Feature detection, 3D vision, deep learning
-11. **SLAM, VSLAM, and Navigation** - Localization algorithms, mapping, navigation stacks
-12. **Path Planning (Nav2)** - Planning algorithms, navigation frameworks
+13. **Computer Vision for Robots** - Feature detection, 3D vision, deep learning
+14. **Sensor Fusion and State Estimation** - Kalman filtering, sensor integration
+15. **SLAM, VSLAM, and Navigation** - Localization algorithms, mapping, navigation stacks
+16. **Path Planning Algorithms** - Planning algorithms, navigation frameworks
 
-### Part V: Embodied AI & VLA
-13. **LLMs + Robotics: VLA Systems** - Vision-Language-Action models, multimodal AI
-14. **Voice-to-Action Pipelines (Whisper)** - Speech recognition, command interpretation
-15. **Cognitive Planning with GPT** - High-level reasoning, task planning
-
-### Part VI: The Autonomous Humanoid
-16. **Humanoid Kinematics** - Forward/inverse kinematics, biomechanics
-17. **Bipedal Locomotion** - Balance, gait planning, stability
-18. **Manipulation & Grasping** - Hand design, grasp planning, tactile sensing
-19. **Human-Robot Interaction** - Social robotics, communication, safety
-20. **Full Capstone: Build a Humanoid Agent** - Integration project, complete system
+### Part V: Embodied Intelligence
+17. **Vision-Language-Action Models** - VLA systems, multimodal AI
+18. **Voice-to-Action Pipelines with Whisper** - Speech recognition, command interpretation
+19. **Cognitive Planning with GPT** - High-level reasoning, task planning
+20. **The Autonomous Humanoid** - Humanoid robotics, complete system
+21. **Ethical Considerations in Embodied AI** - Safety, ethics, responsible AI
 
 ---
 
@@ -109,50 +105,50 @@
 7.4.3 Contact and Friction Models
 ```
 
-### Chapter 10: Computer Vision for Robots
+### Chapter 13: Computer Vision for Robots
 ```
-10.1 Image Processing Fundamentals
-10.1.1 Camera Calibration
-10.1.2 Geometric Transformations
-10.1.3 Feature Detection
+13.1 Image Processing Fundamentals
+13.1.1 Camera Calibration
+13.1.2 Geometric Transformations
+13.1.3 Feature Detection
 
-10.2 3D Vision
-10.2.1 Stereo Vision
-10.2.2 Point Cloud Processing
-10.2.3 Depth from Defocus
+13.2 3D Vision
+13.2.1 Stereo Vision
+13.2.2 Point Cloud Processing
+13.2.3 Depth from Defocus
 
-10.3 Deep Learning for Vision
-10.3.1 Object Detection (YOLO, SSD)
-10.3.2 Semantic Segmentation
-10.3.3 Visual SLAM with Learning
+13.3 Deep Learning for Vision
+13.3.1 Object Detection (YOLO, SSD)
+13.3.2 Semantic Segmentation
+13.3.3 Visual SLAM with Learning
 
-10.4 Robot Vision Applications
-10.4.1 Visual Servoing
-10.4.2 Object Recognition
-10.4.3 Scene Understanding
+13.4 Robot Vision Applications
+13.4.1 Visual Servoing
+13.4.2 Object Recognition
+13.4.3 Scene Understanding
 ```
 
-### Chapter 13: LLMs + Robotics: VLA Systems
+### Chapter 17: Vision-Language-Action Models
 ```
-13.1 Vision-Language-Action Models
-13.1.1 Multimodal Architecture
-13.1.2 Grounding Language in Action
-13.1.3 Embodied Reasoning
+17.1 Vision-Language-Action Models
+17.1.1 Multimodal Architecture
+17.1.2 Grounding Language in Action
+17.1.3 Embodied Reasoning
 
-13.2 Implementation Architectures
-13.2.1 End-to-End VLA Models
-13.2.2 Modular Approaches
-13.2.3 Real-time Constraints
+17.2 Implementation Architectures
+17.2.1 End-to-End VLA Models
+17.2.2 Modular Approaches
+17.2.3 Real-time Constraints
 
-13.3 Training and Data
-13.3.1 Dataset Collection
-13.3.2 Simulation-based Training
-13.3.3 Transfer Learning
+17.3 Training and Data
+17.3.1 Dataset Collection
+17.3.2 Simulation-based Training
+17.3.3 Transfer Learning
 
-13.4 Applications
-13.4.1 Instruction Following
-13.4.2 Task Planning
-13.4.3 Human-Robot Dialogue
+17.4 Applications
+17.4.1 Instruction Following
+17.4.2 Task Planning
+17.4.3 Human-Robot Dialogue
 ```
 
 ---
